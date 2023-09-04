@@ -14,11 +14,6 @@ final class TabBarController: UIViewController {
     private let myPageVC = MyPageViewController()
     private let tabBarView = TabBarView(frame: .zero)
     
-    private lazy var contentView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,28 +21,16 @@ final class TabBarController: UIViewController {
         setLayout()
         configTabBarBtn()
     }
-    
-    @objc func didTappedHome() {
-        contentView.addSubview(homeVC.view)
-        changeTintColor()
-    }
-    
-    @objc func didTappedMyPage() {
-        contentView.addSubview(myPageVC.view)
-        changeTintColor()
-    }
 }
 
-extension TabBarController {
+private extension TabBarController {
     func configure() {
-        contentView.addSubview(homeVC.view)
-        homeVC.didMove(toParent: self)
+        view.backgroundColor = .systemBackground
+        view.addSubview(homeVC.view)
     }
     
     func setLayout() {
-        [contentView, tabBarView].forEach {
-            view.addSubview($0)
-        }
+        view.addSubview(tabBarView)
         
         tabBarView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -55,6 +38,18 @@ extension TabBarController {
             $0.width.equalTo(280)
             $0.height.equalTo(65)
         }
+    }
+    
+    @objc func didTappedHome() {
+        view.addSubview(homeVC.view)
+        setLayout()
+        changeTintColor()
+    }
+    
+    @objc func didTappedMyPage() {
+        view.addSubview(myPageVC.view)
+        setLayout()
+        changeTintColor()
     }
     
     func configTabBarBtn() {
