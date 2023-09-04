@@ -20,6 +20,9 @@
 		5632E6642AA5780100728F87 /* MyTubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6632AA5780100728F87 /* MyTubeTests.swift */; };
 		5632E66E2AA5780100728F87 /* MyTubeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E66D2AA5780100728F87 /* MyTubeUITests.swift */; };
 		5632E6702AA5780100728F87 /* MyTubeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E66F2AA5780100728F87 /* MyTubeUITestsLaunchTests.swift */; };
+		5632E67F2AA5A9A100728F87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E67E2AA5A9A100728F87 /* LoginViewController.swift */; };
+		5632E6812AA5B98300728F87 /* CustomTextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6802AA5B98300728F87 /* CustomTextfieldView.swift */; };
+		5632E6832AA5F18500728F87 /* JoinMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6822AA5F18500728F87 /* JoinMembershipViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		5632E6692AA5780100728F87 /* MyTubeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyTubeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5632E66D2AA5780100728F87 /* MyTubeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTubeUITests.swift; sourceTree = "<group>"; };
 		5632E66F2AA5780100728F87 /* MyTubeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTubeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5632E67E2AA5A9A100728F87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5632E6802AA5B98300728F87 /* CustomTextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfieldView.swift; sourceTree = "<group>"; };
+		5632E6822AA5F18500728F87 /* JoinMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMembershipViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +141,9 @@
 			children = (
 				5632E64C2AA577FD00728F87 /* AppDelegate.swift */,
 				5632E64E2AA577FD00728F87 /* SceneDelegate.swift */,
+				5632E67E2AA5A9A100728F87 /* LoginViewController.swift */,
+				5632E6802AA5B98300728F87 /* CustomTextfieldView.swift */,
+				5632E6822AA5F18500728F87 /* JoinMembershipViewController.swift */,
 				33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */,
 				33C87AF62AA594C000E86A45 /* Scenes */,
 				5632E6552AA5780100728F87 /* Assets.xcassets */,
@@ -299,8 +308,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5632E67F2AA5A9A100728F87 /* LoginViewController.swift in Sources */,
 				5632E64D2AA577FD00728F87 /* AppDelegate.swift in Sources */,
 				5632E64F2AA577FD00728F87 /* SceneDelegate.swift in Sources */,
+				5632E6832AA5F18500728F87 /* JoinMembershipViewController.swift in Sources */,
+				5632E6812AA5B98300728F87 /* CustomTextfieldView.swift in Sources */,
 				33C87AE92AA58B6A00E86A45 /* HomeViewController.swift in Sources */,
 				33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */,
 				33C87AEF2AA590D300E86A45 /* TabBarController.swift in Sources */,
