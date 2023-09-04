@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class detailPage: UIViewController {
+class DetailPage: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
