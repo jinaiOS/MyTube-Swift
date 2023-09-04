@@ -13,7 +13,7 @@ final class TabBarView: UIView {
     lazy var houseBtn: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "play.rectangle"), for: .normal)
-        button.tintColor = .red
+        button.tintColor = UIColor(red: 228, green: 0, blue: 0, alpha: 1.0)
         return button
     }()
     
