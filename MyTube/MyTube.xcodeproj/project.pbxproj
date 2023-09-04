@@ -16,6 +16,15 @@
 		5632E6642AA5780100728F87 /* MyTubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6632AA5780100728F87 /* MyTubeTests.swift */; };
 		5632E66E2AA5780100728F87 /* MyTubeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E66D2AA5780100728F87 /* MyTubeUITests.swift */; };
 		5632E6702AA5780100728F87 /* MyTubeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E66F2AA5780100728F87 /* MyTubeUITestsLaunchTests.swift */; };
+		5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */; };
+		5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */; };
+		5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6902AA6097200728F87 /* LoginViewController.swift */; };
+		5632E6932AA6099300728F87 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6922AA6099300728F87 /* TabBarView.swift */; };
+		5632E6952AA609BA00728F87 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6942AA609BA00728F87 /* TabBarController.swift */; };
+		5632E69A2AA60B1B00728F87 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5632E6992AA60B1B00728F87 /* SnapKit */; };
+		5632E69D2AA60B4900728F87 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5632E69C2AA60B4900728F87 /* Alamofire */; };
+		5632E6A22AA60C2800728F87 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6A12AA60C0B00728F87 /* MyPageViewController.swift */; };
+		5632E6A32AA60C2A00728F87 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E69F2AA60C0400728F87 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +58,13 @@
 		5632E6692AA5780100728F87 /* MyTubeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyTubeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5632E66D2AA5780100728F87 /* MyTubeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTubeUITests.swift; sourceTree = "<group>"; };
 		5632E66F2AA5780100728F87 /* MyTubeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTubeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfieldView.swift; sourceTree = "<group>"; };
+		5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMembershipViewController.swift; sourceTree = "<group>"; };
+		5632E6902AA6097200728F87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5632E6922AA6099300728F87 /* TabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		5632E6942AA609BA00728F87 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		5632E69F2AA60C0400728F87 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		5632E6A12AA60C0B00728F87 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5632E69A2AA60B1B00728F87 /* SnapKit in Frameworks */,
+				5632E69D2AA60B4900728F87 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +120,13 @@
 				5632E64C2AA577FD00728F87 /* AppDelegate.swift */,
 				5632E64E2AA577FD00728F87 /* SceneDelegate.swift */,
 				5632E6502AA577FD00728F87 /* ViewController.swift */,
+				5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */,
+				5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */,
+				5632E6902AA6097200728F87 /* LoginViewController.swift */,
+				5632E6922AA6099300728F87 /* TabBarView.swift */,
+				5632E6942AA609BA00728F87 /* TabBarController.swift */,
+				5632E6A02AA60C0B00728F87 /* MyPage */,
+				5632E69E2AA60C0400728F87 /* Home */,
 				5632E6522AA577FD00728F87 /* Main.storyboard */,
 				5632E6552AA5780100728F87 /* Assets.xcassets */,
 				5632E6572AA5780100728F87 /* LaunchScreen.storyboard */,
@@ -127,6 +152,22 @@
 			path = MyTubeUITests;
 			sourceTree = "<group>";
 		};
+		5632E69E2AA60C0400728F87 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5632E69F2AA60C0400728F87 /* HomeViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5632E6A02AA60C0B00728F87 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				5632E6A12AA60C0B00728F87 /* MyPageViewController.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +184,10 @@
 			dependencies = (
 			);
 			name = MyTube;
+			packageProductDependencies = (
+				5632E6992AA60B1B00728F87 /* SnapKit */,
+				5632E69C2AA60B4900728F87 /* Alamofire */,
+			);
 			productName = MyTube;
 			productReference = 5632E6492AA577FD00728F87 /* MyTube.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +260,10 @@
 				Base,
 			);
 			mainGroup = 5632E6402AA577FD00728F87;
+			packageReferences = (
+				5632E6982AA60B1B00728F87 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				5632E69B2AA60B4900728F87 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 5632E64A2AA577FD00728F87 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -258,9 +307,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */,
+				5632E6A22AA60C2800728F87 /* MyPageViewController.swift in Sources */,
+				5632E6952AA609BA00728F87 /* TabBarController.swift in Sources */,
 				5632E6512AA577FD00728F87 /* ViewController.swift in Sources */,
+				5632E6932AA6099300728F87 /* TabBarView.swift in Sources */,
+				5632E6A32AA60C2A00728F87 /* HomeViewController.swift in Sources */,
+				5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */,
 				5632E64D2AA577FD00728F87 /* AppDelegate.swift in Sources */,
 				5632E64F2AA577FD00728F87 /* SceneDelegate.swift in Sources */,
+				5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,6 +658,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5632E6982AA60B1B00728F87 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		5632E69B2AA60B4900728F87 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5632E6992AA60B1B00728F87 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5632E6982AA60B1B00728F87 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		5632E69C2AA60B4900728F87 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5632E69B2AA60B4900728F87 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5632E6412AA577FD00728F87 /* Project object */;
 }
