@@ -16,6 +16,8 @@
 		5632E6642AA5780100728F87 /* MyTubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6632AA5780100728F87 /* MyTubeTests.swift */; };
 		5632E66E2AA5780100728F87 /* MyTubeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E66D2AA5780100728F87 /* MyTubeUITests.swift */; };
 		5632E6702AA5780100728F87 /* MyTubeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E66F2AA5780100728F87 /* MyTubeUITestsLaunchTests.swift */; };
+		BD8A238F2AA584FF002FF5D7 /* detailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A238E2AA584FF002FF5D7 /* detailPage.swift */; };
+		BD8A23912AA5B388002FF5D7 /* detailPageConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A23902AA5B388002FF5D7 /* detailPageConstant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		5632E6692AA5780100728F87 /* MyTubeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyTubeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5632E66D2AA5780100728F87 /* MyTubeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTubeUITests.swift; sourceTree = "<group>"; };
 		5632E66F2AA5780100728F87 /* MyTubeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTubeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BD8A238E2AA584FF002FF5D7 /* detailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detailPage.swift; sourceTree = "<group>"; };
+		BD8A23902AA5B388002FF5D7 /* detailPageConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detailPageConstant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +106,8 @@
 				5632E64C2AA577FD00728F87 /* AppDelegate.swift */,
 				5632E64E2AA577FD00728F87 /* SceneDelegate.swift */,
 				5632E6502AA577FD00728F87 /* ViewController.swift */,
+				BD8A238E2AA584FF002FF5D7 /* detailPage.swift */,
+				BD8A23902AA5B388002FF5D7 /* detailPageConstant.swift */,
 				5632E6522AA577FD00728F87 /* Main.storyboard */,
 				5632E6552AA5780100728F87 /* Assets.xcassets */,
 				5632E6572AA5780100728F87 /* LaunchScreen.storyboard */,
@@ -261,6 +267,8 @@
 				5632E6512AA577FD00728F87 /* ViewController.swift in Sources */,
 				5632E64D2AA577FD00728F87 /* AppDelegate.swift in Sources */,
 				5632E64F2AA577FD00728F87 /* SceneDelegate.swift in Sources */,
+				BD8A23912AA5B388002FF5D7 /* detailPageConstant.swift in Sources */,
+				BD8A238F2AA584FF002FF5D7 /* detailPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
