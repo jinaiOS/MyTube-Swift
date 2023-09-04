@@ -12,27 +12,25 @@ final class YoutubeManger {
     static let shared = YoutubeManger()
     private init() { }
     
-    
-    
-    
-    func getThumbnail(page: Int) async {
+    func getThumbnails(page: Int) async -> Thumbnails? {
         let params = [
             "part": "snippet",
             "type": "video",
             "page": "\(page)",
             "maxResults": "20",
-            "key": key
+            "key": HANS_KEY
         ]
         
-        let dataTask = AF.request(thumbNailUrl, method: .get, parameters: params)
-            .serializingDecodable(Thumbnail.self)
+        let dataTask = AF.request(ThumbNailUrl, method: .get, parameters: params)
+            .serializingDecodable(Thumbnails.self)
         
         switch await dataTask.result {
         case .success(let result):
-            print("======> result: \(result)")
+            return result
             
         case .failure(let error):
             print(error.localizedDescription)
+            return nil
         }
     }
 }

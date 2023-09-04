@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		33610B9C2AA651CA004114D0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 33610B9B2AA651CA004114D0 /* Kingfisher */; };
+		33610B9E2AA65207004114D0 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33610B9D2AA65207004114D0 /* UIImageView+.swift */; };
+		33610BA32AA65E90004114D0 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33610BA22AA65E90004114D0 /* String+.swift */; };
 		336598BE2AA5B69100569B79 /* YoutubeManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598BD2AA5B69100569B79 /* YoutubeManger.swift */; };
 		336598C02AA5C97400569B79 /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598BF2AA5C97400569B79 /* ThumbnailCell.swift */; };
-		336598C22AA5E58900569B79 /* Thumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598C12AA5E58900569B79 /* Thumbnail.swift */; };
+		336598C22AA5E58900569B79 /* Thumbnails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598C12AA5E58900569B79 /* Thumbnails.swift */; };
 		336598C52AA5F20E00569B79 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598C42AA5F20D00569B79 /* Constants.swift */; };
+		336598C72AA5F4C800569B79 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598C62AA5F4C800569B79 /* HomeViewModel.swift */; };
 		33C87AE92AA58B6A00E86A45 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C87AE82AA58B6A00E86A45 /* HomeViewController.swift */; };
 		33C87AEB2AA58BE300E86A45 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C87AEA2AA58BE300E86A45 /* MyPageViewController.swift */; };
 		33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */; };
@@ -44,10 +48,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		33610B9D2AA65207004114D0 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		33610BA22AA65E90004114D0 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		336598BD2AA5B69100569B79 /* YoutubeManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeManger.swift; sourceTree = "<group>"; };
 		336598BF2AA5C97400569B79 /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
-		336598C12AA5E58900569B79 /* Thumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thumbnail.swift; sourceTree = "<group>"; };
+		336598C12AA5E58900569B79 /* Thumbnails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thumbnails.swift; sourceTree = "<group>"; };
 		336598C42AA5F20D00569B79 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		336598C62AA5F4C800569B79 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		33C87AE82AA58B6A00E86A45 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		33C87AEA2AA58BE300E86A45 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
@@ -70,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33610B9C2AA651CA004114D0 /* Kingfisher in Frameworks */,
 				33C87AF22AA5948300E86A45 /* Alamofire in Frameworks */,
 				33C87AF52AA5948D00E86A45 /* SnapKit in Frameworks */,
 			);
@@ -92,6 +100,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		33610B9F2AA6520E004114D0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				33610B9D2AA65207004114D0 /* UIImageView+.swift */,
+				33610BA22AA65E90004114D0 /* String+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		336598BC2AA5B67700569B79 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,7 +120,7 @@
 		336598C32AA5E59200569B79 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				336598C12AA5E58900569B79 /* Thumbnail.swift */,
+				336598C12AA5E58900569B79 /* Thumbnails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -121,6 +138,7 @@
 		33C87AF72AA594EC00E86A45 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				336598C62AA5F4C800569B79 /* HomeViewModel.swift */,
 				33C87AE82AA58B6A00E86A45 /* HomeViewController.swift */,
 				336598BF2AA5C97400569B79 /* ThumbnailCell.swift */,
 			);
@@ -162,6 +180,7 @@
 				5632E64E2AA577FD00728F87 /* SceneDelegate.swift */,
 				33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */,
 				336598C42AA5F20D00569B79 /* Constants.swift */,
+				33610B9F2AA6520E004114D0 /* Extensions */,
 				336598C32AA5E59200569B79 /* Models */,
 				336598BC2AA5B67700569B79 /* Managers */,
 				33C87AF62AA594C000E86A45 /* Scenes */,
@@ -208,6 +227,7 @@
 			packageProductDependencies = (
 				33C87AF12AA5948300E86A45 /* Alamofire */,
 				33C87AF42AA5948D00E86A45 /* SnapKit */,
+				33610B9B2AA651CA004114D0 /* Kingfisher */,
 			);
 			productName = MyTube;
 			productReference = 5632E6492AA577FD00728F87 /* MyTube.app */;
@@ -284,6 +304,7 @@
 			packageReferences = (
 				33C87AF02AA5948300E86A45 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				33C87AF32AA5948D00E86A45 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				33610B9A2AA651CA004114D0 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 5632E64A2AA577FD00728F87 /* Products */;
 			projectDirPath = "";
@@ -328,13 +349,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				5632E64D2AA577FD00728F87 /* AppDelegate.swift in Sources */,
+				336598C72AA5F4C800569B79 /* HomeViewModel.swift in Sources */,
 				5632E64F2AA577FD00728F87 /* SceneDelegate.swift in Sources */,
 				336598C02AA5C97400569B79 /* ThumbnailCell.swift in Sources */,
 				33C87AE92AA58B6A00E86A45 /* HomeViewController.swift in Sources */,
 				33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */,
 				336598C52AA5F20E00569B79 /* Constants.swift in Sources */,
-				336598C22AA5E58900569B79 /* Thumbnail.swift in Sources */,
+				336598C22AA5E58900569B79 /* Thumbnails.swift in Sources */,
 				33C87AEF2AA590D300E86A45 /* TabBarController.swift in Sources */,
+				33610B9E2AA65207004114D0 /* UIImageView+.swift in Sources */,
+				33610BA32AA65E90004114D0 /* String+.swift in Sources */,
 				336598BE2AA5B69100569B79 /* YoutubeManger.swift in Sources */,
 				33C87AEB2AA58BE300E86A45 /* MyPageViewController.swift in Sources */,
 			);
@@ -670,6 +694,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		33610B9A2AA651CA004114D0 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		33C87AF02AA5948300E86A45 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -689,6 +721,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		33610B9B2AA651CA004114D0 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 33610B9A2AA651CA004114D0 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		33C87AF12AA5948300E86A45 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 33C87AF02AA5948300E86A45 /* XCRemoteSwiftPackageReference "Alamofire" */;
