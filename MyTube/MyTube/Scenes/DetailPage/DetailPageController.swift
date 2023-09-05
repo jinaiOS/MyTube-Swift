@@ -124,6 +124,16 @@ class DetailPageController: UIViewController {
     let followStackView = UIStackView()
     
     //MARK: - 댓글 영역
+    let commentTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .gray
+        tableView.layer.cornerRadius = 10
+        tableView.clipsToBounds = true
+        tableView.allowsSelection = true
+        tableView.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
     
     //MARK: - 연관 영상 영역
     
@@ -135,6 +145,8 @@ class DetailPageController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.commentTableView.delegate = self
+        self.commentTableView.dataSource = self
     }
     
     
@@ -147,6 +159,7 @@ class DetailPageController: UIViewController {
         setTitleStackView()
         setProfileStackView()
         setFollowStackView()
+        setCommentTableView()
     }
     
     func setVideoConstraints() {
@@ -164,7 +177,7 @@ class DetailPageController: UIViewController {
         titleStackView.addArrangedSubview(statLabel)
         titleStackView.axis = .vertical
         titleStackView.spacing = 4
-
+        
         setTitleStackViewConstraints()
     }
     
@@ -219,7 +232,41 @@ class DetailPageController: UIViewController {
             followStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -224)
         ])
     }
-        deinit {
+    
+    func setCommentTableView() {
+        view.addSubview(commentTableView)
+        setCommentTableViewConstraints()
+    }
+    
+    func setCommentTableViewConstraints() {
+        NSLayoutConstraint.activate([
+            commentTableView.topAnchor.constraint(equalTo: followStackView.bottomAnchor, constant: 23),
+            commentTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            commentTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            commentTableView.heightAnchor.constraint(equalToConstant: 70)
+        ])
+    }
+
+    
+    deinit {
         print("deinit - 디테일 페이지")
+    }
+}
+
+extension DetailPageController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("눌렸습니다. \(indexPath.row)")
+    }
+}
+
+extension DetailPageController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = commentTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as? CommentCell else { fatalError("댓글 테이블뷰 셀이 생성되지 않았습니다.") }
+        cell.contentView.backgroundColor = .blue
+        return cell
     }
 }
