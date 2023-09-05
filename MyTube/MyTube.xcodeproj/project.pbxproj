@@ -11,7 +11,6 @@
 		334B6FD32AA6C6CF00C87609 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 334B6FD22AA6C6CF00C87609 /* Kingfisher */; };
 		334B6FD62AA6C6D700C87609 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 334B6FD52AA6C6D700C87609 /* Alamofire */; };
 		334B6FD92AA6C6E100C87609 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 334B6FD82AA6C6E100C87609 /* SnapKit */; };
-		334B6FDB2AA6C71800C87609 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FDA2AA6C71800C87609 /* Constants.swift */; };
 		334B6FDD2AA6C84100C87609 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FDC2AA6C84100C87609 /* HomeViewController.swift */; };
 		334B6FE02AA6C85300C87609 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FDE2AA6C85300C87609 /* HomeViewModel.swift */; };
 		334B6FE12AA6C85300C87609 /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FDF2AA6C85300C87609 /* ThumbnailCell.swift */; };
@@ -19,7 +18,7 @@
 		334B6FE82AA6C8D400C87609 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FE62AA6C8D400C87609 /* Model.swift */; };
 		334B6FE92AA6C8D400C87609 /* DetailPageConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FE52AA6C8D400C87609 /* DetailPageConstant.swift */; };
 		334B6FEA2AA6C8D400C87609 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FE72AA6C8D400C87609 /* Video.swift */; };
-		334B6FEB2AA6C8D400C87609 /* DetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FE42AA6C8D400C87609 /* DetailPage.swift */; };
+		334B6FEB2AA6C8D400C87609 /* DetailPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B6FE42AA6C8D400C87609 /* DetailPageController.swift */; };
 		33610B9C2AA651CA004114D0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 33610B9B2AA651CA004114D0 /* Kingfisher */; };
 		33610B9E2AA65207004114D0 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33610B9D2AA65207004114D0 /* UIImageView+.swift */; };
 		33610BA32AA65E90004114D0 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33610BA22AA65E90004114D0 /* String+.swift */; };
@@ -39,6 +38,7 @@
 		5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */; };
 		5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */; };
 		5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6902AA6097200728F87 /* LoginViewController.swift */; };
+		BD869DC62AA6FDCD0003F1DA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD869DC52AA6FDCD0003F1DA /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,12 +60,11 @@
 
 /* Begin PBXFileReference section */
 		334B6FCF2AA6C6AB00C87609 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = MyTube/TabBarController.swift; sourceTree = SOURCE_ROOT; };
-		334B6FDA2AA6C71800C87609 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		334B6FDC2AA6C84100C87609 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		334B6FDE2AA6C85300C87609 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		334B6FDF2AA6C85300C87609 /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
 		334B6FE22AA6C8C200C87609 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		334B6FE42AA6C8D400C87609 /* DetailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPage.swift; sourceTree = "<group>"; };
+		334B6FE42AA6C8D400C87609 /* DetailPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPageController.swift; sourceTree = "<group>"; };
 		334B6FE52AA6C8D400C87609 /* DetailPageConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPageConstant.swift; sourceTree = "<group>"; };
 		334B6FE62AA6C8D400C87609 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		334B6FE72AA6C8D400C87609 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
@@ -89,6 +88,7 @@
 		5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfieldView.swift; sourceTree = "<group>"; };
 		5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMembershipViewController.swift; sourceTree = "<group>"; };
 		5632E6902AA6097200728F87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		BD869DC52AA6FDCD0003F1DA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +135,7 @@
 		334B6FED2AA6C90F00C87609 /* DetailPage */ = {
 			isa = PBXGroup;
 			children = (
-				334B6FE42AA6C8D400C87609 /* DetailPage.swift */,
+				334B6FE42AA6C8D400C87609 /* DetailPageController.swift */,
 				334B6FE52AA6C8D400C87609 /* DetailPageConstant.swift */,
 				334B6FE72AA6C8D400C87609 /* Video.swift */,
 				334B6FE62AA6C8D400C87609 /* Model.swift */,
@@ -217,7 +217,7 @@
 				5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */,
 				5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */,
 				5632E6902AA6097200728F87 /* LoginViewController.swift */,
-				334B6FDA2AA6C71800C87609 /* Constants.swift */,
+				BD869DC52AA6FDCD0003F1DA /* Constants.swift */,
 				33610B9F2AA6520E004114D0 /* Extensions */,
 				336598C32AA5E59200569B79 /* Models */,
 				336598BC2AA5B67700569B79 /* Managers */,
@@ -389,7 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5632E6512AA577FD00728F87 /* ViewController.swift in Sources */,
-				334B6FEB2AA6C8D400C87609 /* DetailPage.swift in Sources */,
+				334B6FEB2AA6C8D400C87609 /* DetailPageController.swift in Sources */,
 				334B6FE32AA6C8C200C87609 /* MyPageViewController.swift in Sources */,
 				5632E64D2AA577FD00728F87 /* AppDelegate.swift in Sources */,
 				334B6FE12AA6C85300C87609 /* ThumbnailCell.swift in Sources */,
@@ -399,13 +399,13 @@
 				5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */,
 				5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */,
 				334B6FDD2AA6C84100C87609 /* HomeViewController.swift in Sources */,
+				BD869DC62AA6FDCD0003F1DA /* Constants.swift in Sources */,
 				5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */,
 				33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */,
 				336598C22AA5E58900569B79 /* Thumbnails.swift in Sources */,
 				33610B9E2AA65207004114D0 /* UIImageView+.swift in Sources */,
 				33610BA32AA65E90004114D0 /* String+.swift in Sources */,
 				334B6FD02AA6C6AB00C87609 /* TabBarController.swift in Sources */,
-				334B6FDB2AA6C71800C87609 /* Constants.swift in Sources */,
 				334B6FE82AA6C8D400C87609 /* Model.swift in Sources */,
 				336598BE2AA5B69100569B79 /* YoutubeManger.swift in Sources */,
 				334B6FEA2AA6C8D400C87609 /* Video.swift in Sources */,
