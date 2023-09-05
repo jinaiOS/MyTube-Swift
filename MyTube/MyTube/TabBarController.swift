@@ -14,11 +14,6 @@ final class TabBarController: UIViewController {
     private let myPageVC = MyPageViewController()
     private let tabBarView = TabBarView(frame: .zero)
     
-    private lazy var contentView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,28 +21,16 @@ final class TabBarController: UIViewController {
         setLayout()
         configTabBarBtn()
     }
-    
-    @objc func didTappedHome() {
-        contentView.addSubview(homeVC.view)
-        changeTintColor()
-    }
-    
-    @objc func didTappedMyPage() {
-        contentView.addSubview(myPageVC.view)
-        changeTintColor()
-    }
 }
 
-extension TabBarController {
+private extension TabBarController {
     func configure() {
-        contentView.addSubview(homeVC.view)
-        homeVC.didMove(toParent: self)
+        view.backgroundColor = .systemBackground
+        view.addSubview(homeVC.view)
     }
     
     func setLayout() {
-        [contentView, tabBarView].forEach {
-            view.addSubview($0)
-        }
+        view.addSubview(tabBarView)
         
         tabBarView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -57,13 +40,25 @@ extension TabBarController {
         }
     }
     
+    @objc func didTappedHome() {
+        view.addSubview(homeVC.view)
+        setLayout()
+        changeTintColor(buttonType: tabBarView.houseBtn)
+    }
+    
+    @objc func didTappedMyPage() {
+        view.addSubview(myPageVC.view)
+        setLayout()
+        changeTintColor(buttonType: tabBarView.personBtn)
+    }
+    
     func configTabBarBtn() {
         tabBarView.houseBtn.addTarget(self, action: #selector(didTappedHome), for: .touchUpInside)
         tabBarView.personBtn.addTarget(self, action: #selector(didTappedMyPage), for: .touchUpInside)
     }
     
-    func changeTintColor() {
-        tabBarView.houseBtn.tintColor = (tabBarView.houseBtn.tintColor == .systemGray) ? .systemPink : .systemGray
-        tabBarView.personBtn.tintColor = (tabBarView.personBtn.tintColor == .systemGray) ? .systemPink : .systemGray
+    func changeTintColor(buttonType: UIButton) {
+        tabBarView.houseBtn.tintColor = (buttonType == tabBarView.houseBtn) ? .systemRed : .systemGray
+        tabBarView.personBtn.tintColor = (buttonType == tabBarView.personBtn) ? .systemRed : .systemGray
     }
 }
