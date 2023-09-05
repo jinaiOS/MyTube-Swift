@@ -43,13 +43,13 @@ private extension TabBarController {
     @objc func didTappedHome() {
         view.addSubview(homeVC.view)
         setLayout()
-        changeTintColor()
+        changeTintColor(buttonType: tabBarView.houseBtn)
     }
     
     @objc func didTappedMyPage() {
         view.addSubview(myPageVC.view)
         setLayout()
-        changeTintColor()
+        changeTintColor(buttonType: tabBarView.personBtn)
     }
     
     func configTabBarBtn() {
@@ -57,8 +57,8 @@ private extension TabBarController {
         tabBarView.personBtn.addTarget(self, action: #selector(didTappedMyPage), for: .touchUpInside)
     }
     
-    func changeTintColor() {
-        tabBarView.houseBtn.tintColor = (tabBarView.houseBtn.tintColor == .systemGray) ? .systemPink : .systemGray
-        tabBarView.personBtn.tintColor = (tabBarView.personBtn.tintColor == .systemGray) ? .systemPink : .systemGray
+    func changeTintColor(buttonType: UIButton) {
+        tabBarView.houseBtn.tintColor = (buttonType == tabBarView.houseBtn) ? .systemRed : .systemGray
+        tabBarView.personBtn.tintColor = (buttonType == tabBarView.personBtn) ? .systemRed : .systemGray
     }
 }

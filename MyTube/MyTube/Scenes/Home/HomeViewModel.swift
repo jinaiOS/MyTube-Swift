@@ -19,16 +19,4 @@ final class HomeViewModel: ObservableObject {
             ThumbnailList = result
         }
     }
-    
-//    func getVideoUrl(url: String) -> String? {
-//        // 정규식 패턴
-//        let pattern = #"\/vi\/([A-Za-z0-9_-]+)\/"#  // YouTube 동영상 ID를 추출하는 패턴
-//        if let range = url.range(of: pattern, options: .regularExpression) {
-//            let videoID = url[range].replacingOccurrences(of: "/vi/", with: "").replacingOccurrences(of: "/", with: "")
-//            return videoID
-//        } else {
-//            print("YouTube Video ID를 찾을 수 없습니다.")
-//            return nil
-//        }
-//    }
 }
