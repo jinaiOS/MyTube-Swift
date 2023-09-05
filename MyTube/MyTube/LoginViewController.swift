@@ -11,13 +11,11 @@ class LoginViewController: UIViewController {
     
     lazy var tfID: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "아이디를 입력해 주세요"
         return textfield
     }()
     
     lazy var tfPassword: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "패스워드를 입력해 주세요"
         return textfield
     }()
     
@@ -88,11 +86,25 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //하단 인디케이터 1초뒤 삭제
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.setNeedsUpdateOfHomeIndicatorAutoHidden()
+        }
+        
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        //gesture의 이벤트가 끝나도 뒤에 이벤트를 View로 전달
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+        
+        tfID.initTextFieldText(placeHolder: "Email", delegate: self)
+        tfPassword.initTextFieldText(placeHolder: "pass", delegate: self)
 
         setLayout()
     }
     
     private func setLayout() {
+
         view.addSubview(imgIcon)
         view.addSubview(stackView)
         view.addSubview(managementIDStackView)
@@ -116,6 +128,9 @@ class LoginViewController: UIViewController {
         
         vButton.addSubview(btnLogin)
         setButtonLayout()
+        
+        
+           
     }
     
     func setButtonLayout() {
@@ -129,11 +144,49 @@ class LoginViewController: UIViewController {
         }
     }
     
+    // 화면에 터치 했을 때 키보드 사라짐
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
     @objc func loginButtonTouched() {
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false)
+        UserdefaultManager.shared.requestUserInfoList()
+//        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false)
     }
     
     @objc func joinMembershipButtonTouched() {
         self.navigationController?.pushViewController(JoinMembershipViewController(), animated: true)
     }
+}
+extension LoginViewController: CustomTextfieldViewDelegate {
+    func customTextFieldShouldReturn(_ textField: UITextField) -> Bool {
+       if textField == tfID.tf {
+            tfPassword.tf.becomeFirstResponder() // next 버튼 선택 시 -> tfPW 포커싱
+        } else {
+            tfPassword.tf.resignFirstResponder() // return 버튼 선택 시 -> 키보드 내려감
+        }
+        return true
+    }
+    
+    func customTextFieldValueChanged(_ textfield: UITextField) {
+        
+    }
+    
+    func customTextFieldDidEndEditing(_ textField: UITextField) {
+        
+    }
+    
+    func customTextFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }
+    
+    func customTextField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return true
+    }
+    
+    func errorStatus(isError: Bool, view: CustomTextfieldView) {
+        
+    }
+    
+    
 }

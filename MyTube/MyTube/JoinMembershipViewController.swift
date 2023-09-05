@@ -11,37 +11,31 @@ class JoinMembershipViewController: UIViewController {
 
     lazy var tfID: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "아이디를 입력해 주세요"
         return textfield
     }()
     
     lazy var tfNickName: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "아이디를 입력해 주세요"
         return textfield
     }()
     
     lazy var tfPassword: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "아이디를 입력해 주세요"
         return textfield
     }()
     
     lazy var tfRePassword: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "아이디를 입력해 주세요"
         return textfield
     }()
     
     lazy var tfName: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "아이디를 입력해 주세요"
         return textfield
     }()
     
     lazy var tfBirth: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
-        textfield.placeholder = "아이디를 입력해 주세요"
         return textfield
     }()
     
@@ -50,6 +44,11 @@ class JoinMembershipViewController: UIViewController {
         button.setTitle("회원가입", for: .normal)
         button.backgroundColor = .red
         return button
+    }()
+    
+    lazy var scrollView: UIScrollView = {
+      let scrollView = UIScrollView()
+      return scrollView
     }()
     
     private lazy var stackView: UIStackView = {
@@ -69,22 +68,78 @@ class JoinMembershipViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // keyboard scroll
+        scrollView.keyboardDismissMode = .interactive
+        
         setLayout()
+        registerDelegate()
         
         navigationItem.title = "회원가입"
         navigationItem.leftBarButtonItem?.image = UIImage(systemName: "back")
+        
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        //gesture의 이벤트가 끝나도 뒤에 이벤트를 View로 전달
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+        
+        // Register Keyboard notifications
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+    
+    // 화면에 터치 했을 때 키보드 사라짐
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+        }
+        
+        let contentInset = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: keyboardFrame.size.height,
+            right: 0.0)
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+    
+    @objc private func keyboardWillHide() {
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+    
     func setLayout() {
-        view.addSubview(stackView)
+        self.view.addSubview(scrollView)
+        
+        scrollView.addSubview(stackView)
         view.addSubview(btnComplete)
         
-        stackView.snp.makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.top.equalTo(view).offset(140)
             $0.leading.equalTo(view).offset(24)
             $0.trailing.equalTo(view).offset(-24)
+            $0.bottom.equalTo(btnComplete.snp_bottomMargin).offset(-10)
         }
+        
+        stackView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.centerX.equalTo(scrollView)
+        }
+        
+        btnComplete.addTarget(self, action: #selector(joinButtonTouched), for: .touchUpInside)
         
         btnComplete.snp.makeConstraints {
             $0.top.greaterThanOrEqualTo(stackView.snp_bottomMargin).offset(20)
@@ -92,5 +147,45 @@ class JoinMembershipViewController: UIViewController {
             $0.height.equalTo(50)
             $0.bottom.equalTo(view).offset(-40)
         }
+        
+        tfID.snp.makeConstraints({ $0.height.equalTo(50) })
+        tfNickName.snp.makeConstraints({ $0.height.equalTo(50) })
+        tfPassword.snp.makeConstraints({ $0.height.equalTo(50) })
+        tfRePassword.snp.makeConstraints({ $0.height.equalTo(50) })
+        tfName.snp.makeConstraints({ $0.height.equalTo(50) })
+        tfBirth.snp.makeConstraints({ $0.height.equalTo(50) })
     }
+    
+    func registerDelegate() {
+        tfID.initTextFieldText(placeHolder: "ID", delegate: self)
+        tfNickName.initTextFieldText(placeHolder: "Nickname", delegate: self)
+        tfPassword.initTextFieldText(placeHolder: "Password", delegate: self)
+        tfRePassword.initTextFieldText(placeHolder: "RePassword", delegate: self)
+        tfName.initTextFieldText(placeHolder: "Name", delegate: self)
+        tfBirth.initTextFieldText(placeHolder: "Birth", delegate: self)
+    }
+    
+    @objc func joinButtonTouched() {
+        UserdefaultManager.shared.requestJoinMembership(id: tfID.tf.text ?? "", nickName: tfNickName.tf.text ?? "", password: tfPassword.tf.text ?? "", name: tfName.tf.text ?? "", birth: tfBirth.tf.text ?? "")
+    }
+}
+
+extension JoinMembershipViewController: CustomTextfieldViewDelegate {
+    func customTextFieldValueChanged(_ textfield: UITextField) {
+        
+    }
+    
+    func customTextFieldDidEndEditing(_ textField: UITextField) {
+        
+    }
+    
+    func customTextFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }
+    
+    func errorStatus(isError: Bool, view: CustomTextfieldView) {
+        
+    }
+    
+    
 }
