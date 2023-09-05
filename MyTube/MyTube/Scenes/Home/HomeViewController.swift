@@ -30,7 +30,7 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setLayout()
         bindViewModel()
-        viewModel.getThumbnailData(page: 0)
+        viewModel.getThumbnailData()
     }
     
     deinit {
@@ -49,8 +49,7 @@ private extension HomeViewController {
     
     func bindViewModel() {
         viewModel.$ThumbnailList.sink { [weak self] thumbnails in
-            guard let self = self,
-                  let thumbnails = thumbnails else { return }
+            guard let self = self else { return }
             print("thumbnails: \(thumbnails)")
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -61,13 +60,13 @@ private extension HomeViewController {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.ThumbnailList?.items.count ?? 0
+        return viewModel.ThumbnailList.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier,
-                                                            for: indexPath) as? ThumbnailCell,
-              let item = viewModel.ThumbnailList?.items[indexPath.item] else { return UICollectionViewCell() }
+                                                            for: indexPath) as? ThumbnailCell else { return UICollectionViewCell() }
+        let item = viewModel.ThumbnailList[indexPath.item]
         cell.configure(data: item)
         return cell
     }
@@ -82,9 +81,17 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let snippet = viewModel.ThumbnailList?.items[indexPath.item].snippet,
-              let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
+        let snippet = viewModel.ThumbnailList[indexPath.item].snippet
+        guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
         let url = "https://youtu.be/" + videoID
         print("snippet: \(url)")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let currentRow = indexPath.row
+        if (currentRow % viewModel.display) == viewModel.display - 5
+            && (currentRow / viewModel.display) == (viewModel.getRequestPage - 1) {
+            viewModel.getThumbnailData()
+        }
     }
 }

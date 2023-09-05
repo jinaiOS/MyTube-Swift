@@ -9,14 +9,21 @@ import Foundation
 import Combine
 
 final class HomeViewModel: ObservableObject {
-    let manager = YoutubeManger.shared
+    private let manager = YoutubeManger.shared
+    private var requestPage: Int = 0
+    let display: Int = 20
     
-    @Published var ThumbnailList: Thumbnails?
+    var getRequestPage: Int {
+        return requestPage
+    }
     
-    func getThumbnailData(page: Int) {
+    @Published var ThumbnailList: [Thumbnails.Item] = []
+    
+    func getThumbnailData() {
         Task {
-            let result = await manager.getThumbnails(page: page)
-            ThumbnailList = result
+            guard let result = await manager.getThumbnails(page: requestPage) else { return }
+            ThumbnailList += result.items
+            requestPage += 1
         }
     }
 }

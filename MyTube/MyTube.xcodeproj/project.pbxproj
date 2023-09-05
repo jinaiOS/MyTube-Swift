@@ -13,8 +13,8 @@
 		336598BE2AA5B69100569B79 /* YoutubeManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598BD2AA5B69100569B79 /* YoutubeManger.swift */; };
 		336598C02AA5C97400569B79 /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598BF2AA5C97400569B79 /* ThumbnailCell.swift */; };
 		336598C22AA5E58900569B79 /* Thumbnails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598C12AA5E58900569B79 /* Thumbnails.swift */; };
-		336598C52AA5F20E00569B79 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598C42AA5F20D00569B79 /* Constants.swift */; };
 		336598C72AA5F4C800569B79 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336598C62AA5F4C800569B79 /* HomeViewModel.swift */; };
+		3386EC262AA6D29300A37D9C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386EC252AA6D29300A37D9C /* Constants.swift */; };
 		33C87AE92AA58B6A00E86A45 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C87AE82AA58B6A00E86A45 /* HomeViewController.swift */; };
 		33C87AEB2AA58BE300E86A45 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C87AEA2AA58BE300E86A45 /* MyPageViewController.swift */; };
 		33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */; };
@@ -53,8 +53,8 @@
 		336598BD2AA5B69100569B79 /* YoutubeManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeManger.swift; sourceTree = "<group>"; };
 		336598BF2AA5C97400569B79 /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
 		336598C12AA5E58900569B79 /* Thumbnails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thumbnails.swift; sourceTree = "<group>"; };
-		336598C42AA5F20D00569B79 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		336598C62AA5F4C800569B79 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		3386EC252AA6D29300A37D9C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		33C87AE82AA58B6A00E86A45 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		33C87AEA2AA58BE300E86A45 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 				5632E64C2AA577FD00728F87 /* AppDelegate.swift */,
 				5632E64E2AA577FD00728F87 /* SceneDelegate.swift */,
 				33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */,
-				336598C42AA5F20D00569B79 /* Constants.swift */,
+				3386EC252AA6D29300A37D9C /* Constants.swift */,
 				33610B9F2AA6520E004114D0 /* Extensions */,
 				336598C32AA5E59200569B79 /* Models */,
 				336598BC2AA5B67700569B79 /* Managers */,
@@ -354,8 +354,8 @@
 				336598C02AA5C97400569B79 /* ThumbnailCell.swift in Sources */,
 				33C87AE92AA58B6A00E86A45 /* HomeViewController.swift in Sources */,
 				33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */,
-				336598C52AA5F20E00569B79 /* Constants.swift in Sources */,
 				336598C22AA5E58900569B79 /* Thumbnails.swift in Sources */,
+				3386EC262AA6D29300A37D9C /* Constants.swift in Sources */,
 				33C87AEF2AA590D300E86A45 /* TabBarController.swift in Sources */,
 				33610B9E2AA65207004114D0 /* UIImageView+.swift in Sources */,
 				33610BA32AA65E90004114D0 /* String+.swift in Sources */,
