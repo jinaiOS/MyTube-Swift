@@ -38,6 +38,9 @@
 		5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */; };
 		5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */; };
 		5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6902AA6097200728F87 /* LoginViewController.swift */; };
+		5632E6AD2AA7280F00728F87 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */; };
+		5632E6AF2AA7292E00728F87 /* User.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5632E6AE2AA7292E00728F87 /* User.plist */; };
+		5632E6B12AA72A7400728F87 /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6B02AA72A7400728F87 /* UserInfoModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +90,9 @@
 		5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfieldView.swift; sourceTree = "<group>"; };
 		5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMembershipViewController.swift; sourceTree = "<group>"; };
 		5632E6902AA6097200728F87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
+		5632E6AE2AA7292E00728F87 /* User.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = User.plist; sourceTree = "<group>"; };
+		5632E6B02AA72A7400728F87 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				336598BD2AA5B69100569B79 /* YoutubeManger.swift */,
+				5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				336598C12AA5E58900569B79 /* Thumbnails.swift */,
+				5632E6B02AA72A7400728F87 /* UserInfoModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -223,6 +231,7 @@
 				5632E6552AA5780100728F87 /* Assets.xcassets */,
 				5632E6572AA5780100728F87 /* LaunchScreen.storyboard */,
 				5632E65A2AA5780100728F87 /* Info.plist */,
+				5632E6AE2AA7292E00728F87 /* User.plist */,
 			);
 			path = MyTube;
 			sourceTree = "<group>";
@@ -360,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5632E6592AA5780100728F87 /* LaunchScreen.storyboard in Resources */,
+				5632E6AF2AA7292E00728F87 /* User.plist in Resources */,
 				5632E6562AA5780100728F87 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -385,12 +395,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5632E6B12AA72A7400728F87 /* UserInfoModel.swift in Sources */,
 				334B6FEB2AA6C8D400C87609 /* DetailPage.swift in Sources */,
 				334B6FE32AA6C8C200C87609 /* MyPageViewController.swift in Sources */,
 				5632E64D2AA577FD00728F87 /* AppDelegate.swift in Sources */,
 				334B6FE12AA6C85300C87609 /* ThumbnailCell.swift in Sources */,
 				5632E64F2AA577FD00728F87 /* SceneDelegate.swift in Sources */,
 				334B6FE92AA6C8D400C87609 /* DetailPageConstant.swift in Sources */,
+				5632E6AD2AA7280F00728F87 /* UserDefaultManager.swift in Sources */,
 				5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */,
 				5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */,
 				5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */,
