@@ -46,6 +46,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
         button.setTitle("비밀번호 재설정", for: .normal)
+        button.titleLabel?.minimumScaleFactor = 5
          return button
     }()
     
@@ -55,6 +56,21 @@ class LoginViewController: UIViewController {
         button.setTitle("회원가입", for: .normal)
         button.addTarget(self, action: #selector(joinMembershipButtonTouched), for: .touchUpInside)
          return button
+    }()
+    
+    lazy var vLoginStatus: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    lazy var btnLoginStatus: UIButton = {
+       let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .selected)
+        button.addTarget(self, action: #selector(loginStatusButtonTouched(_:)), for: .touchUpInside)
+        button.setTitle("로그인 상태 유지", for: .normal)
+        button.tintColor = .red
+        return button
     }()
     
     private lazy var stackView: UIStackView = {
@@ -126,22 +142,50 @@ class LoginViewController: UIViewController {
             $0.leading.trailing.equalTo(stackView)
         }
         
+        tfID.snp.makeConstraints {
+            $0.height.equalTo(50)
+        }
+        
+        tfPassword.snp.makeConstraints {
+            $0.height.equalTo(50)
+        }
+        
         vButton.addSubview(btnLogin)
         setButtonLayout()
+        setLoginStatusButtonLayout()
         
         
-           
+    }
+    
+    func setLoginStatusButtonLayout() {
+        vLoginStatus.snp.makeConstraints {
+            $0.height.equalTo(121)
+        }
+        
+        vLoginStatus.addSubview(btnLoginStatus)
+        
+        btnLoginStatus.setTitleColor(.black, for: .normal)
+        
+        btnLoginStatus.snp.makeConstraints {
+            $0.leading.equalTo(vLoginStatus)
+            $0.top.equalTo(vLoginStatus).offset(32)
+        }
     }
     
     func setButtonLayout() {
-        btnLogin.setTitle("Login", for: .normal)
+        btnLogin.setTitle("로그인", for: .normal)
         btnLogin.addTarget(self, action: #selector(loginButtonTouched), for: .touchUpInside)
         btnLogin.backgroundColor = UIColor.red
         btnLogin.layer.cornerRadius = 20
         btnLogin.snp.makeConstraints {
             $0.top.trailing.leading.equalTo(vButton)
             $0.height.equalTo(50)
+            $0.width.equalTo(stackView)
         }
+    }
+    
+    @objc func loginStatusButtonTouched(_ button: UIButton) {
+        button.isSelected = !button.isSelected
     }
     
     // 화면에 터치 했을 때 키보드 사라짐
@@ -150,8 +194,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginButtonTouched() {
-        UserdefaultManager.shared.requestUserInfoList()
-//        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false)
+        UserDefaultManager.shared.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false) : nil
     }
     
     @objc func joinMembershipButtonTouched() {
