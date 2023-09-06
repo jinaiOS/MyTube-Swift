@@ -10,8 +10,8 @@ import SnapKit
 
 final class TabBarController: UIViewController {
     
-    private let homeVC = HomeViewController()
-    private let myPageVC = MyPageViewController()
+    private let homeVC = UINavigationController(rootViewController: HomeViewController())
+    private let myPageVC = UINavigationController(rootViewController: MyPageViewController())
     private let tabBarView = TabBarView(frame: .zero)
     
     override func viewDidLoad() {
