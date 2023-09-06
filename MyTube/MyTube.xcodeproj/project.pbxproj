@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		332156102AA7AE690045FC4C /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3321560F2AA7AE690045FC4C /* ImageCacheManager.swift */; };
 		334B6FD32AA6C6CF00C87609 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 334B6FD22AA6C6CF00C87609 /* Kingfisher */; };
 		334B6FD62AA6C6D700C87609 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 334B6FD52AA6C6D700C87609 /* Alamofire */; };
 		334B6FD92AA6C6E100C87609 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 334B6FD82AA6C6E100C87609 /* SnapKit */; };
@@ -61,6 +62,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3321560F2AA7AE690045FC4C /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		334B6FCF2AA6C6AB00C87609 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = MyTube/Scenes/TabBarController.swift; sourceTree = SOURCE_ROOT; };
 		334B6FDF2AA6C85300C87609 /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
 		334B6FE22AA6C8C200C87609 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 		336598BC2AA5B67700569B79 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				3321560F2AA7AE690045FC4C /* ImageCacheManager.swift */,
 				336598BD2AA5B69100569B79 /* YoutubeManger.swift */,
 				5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */,
 			);
@@ -417,6 +420,7 @@
 				334B6FE82AA6C8D400C87609 /* Model.swift in Sources */,
 				336598BE2AA5B69100569B79 /* YoutubeManger.swift in Sources */,
 				334B6FEA2AA6C8D400C87609 /* Video.swift in Sources */,
+				332156102AA7AE690045FC4C /* ImageCacheManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

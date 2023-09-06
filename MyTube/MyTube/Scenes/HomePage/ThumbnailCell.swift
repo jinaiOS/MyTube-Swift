@@ -95,7 +95,11 @@ final class ThumbnailCell: UICollectionViewCell {
     }
     
     func configure(data: Thumbnails.Item) {
-        imageView.urlImageLoad(imageUrl: data.snippet.thumbnails.high.url)
+        let url = data.snippet.thumbnails.high.url
+        Task {
+            let image = await ImageCacheManager.shared.loadImage(url: url)
+            imageView.image = image
+        }
         channelTitle.text = data.snippet.channelTitle
         titleLabel.text = data.snippet.title
         subTitleLabel.text = data.snippet.description
