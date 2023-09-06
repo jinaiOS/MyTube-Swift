@@ -26,7 +26,8 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        navigationItem.title = "YouTube"
         view.backgroundColor = .systemBackground
         setLayout()
         bindViewModel()
@@ -43,7 +44,8 @@ private extension HomeViewController {
         view.addSubview(collectionView)
         
         collectionView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalToSuperview()
+            $0.leading.bottom.trailing.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
