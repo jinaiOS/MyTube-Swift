@@ -11,27 +11,25 @@ class CommentCell: UITableViewCell {
     static let identifier = "CommentCell"
     
     // 댓글 프로필 이미지
-    private let profileImage: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(systemName: "person.fill")
-        image.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        image.layer.cornerRadius = 10
-        image.clipsToBounds = true
-        image.tintColor = .green
-        image.contentMode = .scaleAspectFit
-        return image
+    let profileImage: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "person.circle")
+        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFit
+        return view
     }()
     
-    private let commentLabel: UILabel = {
+    let commentLabel: UILabel = {
         let label = UILabel()
-        label.text = "테스트"
-        label.font = UIFont.systemFont(ofSize: 8)
+        label.text = "진짜 한번 꼭 보세요라고 지은님이 말함"
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
@@ -39,21 +37,21 @@ class CommentCell: UITableViewCell {
     }
     
     func setupUI() {
-        self.contentView.addSubview(profileImage)
-        self.contentView.addSubview(commentLabel)
+        contentView.addSubview(profileImage)
+        contentView.addSubview(commentLabel)
         
         profileImage.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        commentLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            profileImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 8),
-            profileImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 32),
-            profileImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 12),
+            profileImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            profileImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            profileImage.widthAnchor.constraint(equalToConstant: 30),
+            profileImage.heightAnchor.constraint(equalToConstant: 30),
             
             commentLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 5),
-            commentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 37),
-            commentLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 8),
-            commentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 17),
+            commentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            commentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 8),
         ])
     }
 }

@@ -30,7 +30,7 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setLayout()
         bindViewModel()
-        viewModel.getThumbnailData(page: 0)
+//        viewModel.getThumbnailData(page: 0)
     }
     
     deinit {
