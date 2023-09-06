@@ -43,6 +43,7 @@ class JoinMembershipViewController: UIViewController {
        let button = UIButton()
         button.setTitle("회원가입", for: .normal)
         button.backgroundColor = .red
+        button.layer.cornerRadius = 20
         return button
     }()
     
@@ -68,6 +69,7 @@ class JoinMembershipViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // keyboard scroll
         scrollView.keyboardDismissMode = .interactive
         
@@ -166,7 +168,8 @@ class JoinMembershipViewController: UIViewController {
     }
     
     @objc func joinButtonTouched() {
-        UserdefaultManager.shared.requestJoinMembership(id: tfID.tf.text ?? "", nickName: tfNickName.tf.text ?? "", password: tfPassword.tf.text ?? "", name: tfName.tf.text ?? "", birth: tfBirth.tf.text ?? "")
+        UserDefaultManager.shared.saveToFile(with: UserInfoModel(id: tfID.tf.text ?? "", nickName: tfNickName.tf.text ?? "", password: tfPassword.tf.text ?? "", name: tfName.tf.text ?? "", birth: tfBirth.tf.text ?? ""))
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

@@ -136,11 +136,6 @@ class CustomTextfieldView: UIView {
         vBorder.layer.borderWidth = 1
         vBorder.layer.borderColor = UIColor.gray.cgColor
         btnTitle.setTitleColor(.gray, for: .normal)
-//        btnTitle.addTarget(self, action: #selector(textfieldValueChanged(_:)), for: .editingChanged)
-//        btnTitle.setTitle(placeholder, for: .normal)
-//        btnTitle.setTitleColor(.black, for: .normal)
-//        btnTitle.titleLabel?.font = UIFont.systemFont(ofSize: 12.0, weight: .bold)
-//        btnTitle.backgroundColor = .white
         btnTitle.contentHorizontalAlignment = .left
         
         vBorder.addSubview(btnTitle)
@@ -193,7 +188,6 @@ class CustomTextfieldView: UIView {
             } completion: { (finished) in
                 
             }
-            
         } else {
             self.buttonWidthConstraint?.update(offset: -(self.frame.height / 2))
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) { [weak self] in
@@ -209,35 +203,14 @@ class CustomTextfieldView: UIView {
                 self.btnTitle.alpha = 1
             }
         }
-        //        if !isEditing {
-        //            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) { [weak self] in
-        //                guard let `self` = self else {return}
-        //                btnTitle.snp.updateConstraints {
-        //                    $0.bottom.equalTo(self.vBorder).offset(0)
-        //                }
-        //                btnTitle.layoutIfNeeded()
-        //            } completion: {[weak self] (finished) in
-        //                guard let `self` = self else {return}
-        //                btnTitle.snp.updateConstraints {
-        //                    $0.bottom.equalTo(self.vBorder).offset(20)
-        //                }
-        //                btnTitle.layoutIfNeeded()
-        //            }
-        //        } else {
-        ////            btnTitle.snp.updateConstraints {
-        ////                $0.bottom.equalTo(self).offset(20)
-        ////            }
-        ////            btnTitle.layoutIfNeeded()
-        //        }
-        
     }
 }
 extension CustomTextfieldView : UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         tfDelegate?.customTextFieldDidBeginEditing(textField)
-//        isError = false
+        //        isError = false
         textfieldEditing(isEditing: true)
-
+        
         if textField.text?.isEmpty ?? true {
             placeHolderAnimation(isEditing: true)
         }
@@ -257,20 +230,20 @@ extension CustomTextfieldView : UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return tfDelegate?.customTextField(self.tf, shouldChangeCharactersIn: range, replacementString: string) ?? true
-//        guard let text = textField.text else {return false}
-//        let maxLength = 20
-//               // 최대 글자수 이상을 입력한 이후에는 중간에 다른 글자를 추가할 수 없게끔 작동(25자리)
-//               if text.count >= maxLength && range.length == 0 && range.location >= maxLength {
-//                   return false
-//               }
-//
-//               return true
+        //        guard let text = textField.text else {return false}
+        //        let maxLength = 20
+        //               // 최대 글자수 이상을 입력한 이후에는 중간에 다른 글자를 추가할 수 없게끔 작동(25자리)
+        //               if text.count >= maxLength && range.length == 0 && range.location >= maxLength {
+        //                   return false
+        //               }
+        //
+        //               return true
     }
 }
 extension UITextField {
-func addLeftPadding() {
-let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: self.frame.height))
-self.leftView = paddingView
-self.leftViewMode = ViewMode.always
-  }
+    func addLeftPadding() {
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: self.frame.height))
+        self.leftView = paddingView
+        self.leftViewMode = ViewMode.always
+    }
 }

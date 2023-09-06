@@ -7,52 +7,87 @@
 
 import Foundation
 
-struct UserdefaultManager {
-    static let shared = UserdefaultManager()
-    
-    func requestJoinMembership(id: String, nickName: String, password: String, name: String, birth: String) {
-        guard let url = Bundle.main.url(forResource: "User", withExtension: "plist") else {
-            return
-        }
+class UserDefaultManager {
+    static let shared = UserDefaultManager()
         
-        let join = UserInfoModel(id: id, nickName: nickName, password: password, name: name, birth: birth)
-        let encoder = PropertyListEncoder()
-        encoder.outputFormat = .xml
-        do {
-          let data = try encoder.encode(join)
-          try data.write(to: url)
-        } catch {
-          // Handle error
-          print(error)
-        }
+    private let userDefaults = UserDefaults.standard
+    private let contactKey = "Root"
+    private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    private var archiveURL: URL
+    
+    init() {
+        archiveURL = Bundle.main.url(forResource: "User", withExtension: "plist")!
     }
     
-    func requestUserInfoList() {
-        guard let url = Bundle.main.url(forResource: "User", withExtension: "plist") else {
+    // MARK: userDefaults
+    
+    func fetchContacts() -> [UserInfoModel] {
+        guard let data = userDefaults.object(forKey: contactKey) as? Data else { return [] }
+        guard let contacts = try? JSONDecoder().decode([UserInfoModel].self, from: data) else { return [] }
+        return contacts
+    }
+    
+    func save(contact: UserInfoModel) {
+        var contacts = fetchContacts()
+        contacts.append(contact)
+        guard let data = try? JSONEncoder().encode(contacts) else { return }
+        userDefaults.setValue(data, forKey: contactKey)
+    }
+    
+    func deleteContact(at index: Int) {
+        var contacts = fetchContacts()
+        contacts.remove(at: index)
+        guard let data = try? JSONEncoder().encode(contacts) else { return }
+        userDefaults.setValue(data, forKey: contactKey)
+    }
+    
+    // MARK: plist
+    
+    func fetchFromFile() -> [UserInfoModel] {
+        guard let data = try? Data(contentsOf: archiveURL) else { return [] }
+        guard let contacts = try? PropertyListDecoder().decode([UserInfoModel].self, from: data) else { return [] }
+        return contacts
+        
+    }
+    
+    func requestLogin(id: String, pw: String) -> Bool {
+        var contacts = fetchFromFile()
+        
+        for i in contacts {
+            if i.id == id && i.password == pw {
+                print("login complete")
+                return true
+            }
+        }
+        print("login fail")
+        return false
+    }
+    
+    func saveToFile(with contact: UserInfoModel, index: Int? = nil) {
+        var contacts = fetchFromFile()
+        if let index = index {
+            contacts[index] = contact
+        } else {
+            contacts.append(contact)
+        }
+
+        guard let data = try? PropertyListEncoder().encode(contacts) else {
             return
         }
         
-        do {
-            let data = try Data(contentsOf: url)
-            let result = try PropertyListDecoder().decode([UserInfoModel].self, from: data)
-            
-            print(result)
-        } catch let DecodingError.dataCorrupted(context) {
-            print(context)
-        } catch let DecodingError.keyNotFound(key, context) {
-            print("Key '\(key)' not found:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-        } catch let DecodingError.valueNotFound(value, context) {
-            print("Value '\(value)' not found:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-        } catch let DecodingError.typeMismatch(type, context)  {
-            print("Type '\(type)' mismatch:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-        } catch {
-            print("error: ", error)
+        try? data.write(to: archiveURL, options: .noFileProtection)
+        print(fetchFromFile())
+    }
+    
+    func deleteFromFile(at index: Int) {
+        var contacts = fetchFromFile()
+        contacts.remove(at: index)
         
-        } catch {
-            print(error.localizedDescription)
+        guard let data = try? PropertyListEncoder().encode(contacts) else {
+            return
         }
+    
+        try? data.write(to: archiveURL, options: .noFileProtection)
+        print(fetchFromFile())
     }
 }
