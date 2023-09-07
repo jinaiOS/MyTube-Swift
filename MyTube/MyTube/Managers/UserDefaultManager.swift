@@ -92,4 +92,8 @@ class UserDefaultManager {
         try? data.write(to: archiveURL, options: .noFileProtection)
         print(fetchFromFile())
     }
+    
+    func saveCurrentVideo(videoId: String) {
+        userDefaults.set(videoId, forKey: "currentVideoId")
+    }
 }

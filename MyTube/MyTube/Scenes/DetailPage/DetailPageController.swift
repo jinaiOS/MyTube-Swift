@@ -7,12 +7,15 @@
 
 import Foundation
 import UIKit
-import AVFoundation
+import SwiftUI
 
 class DetailPageController: UIViewController {
     //MARK: - 전역 변수
     private let commentTableView = CommentTableViewController()
     private let inset: CGFloat = 24
+    let homeModel = HomeViewModel()
+    private var url: String?
+    private var data: Thumbnails.Item?
     
     //MARK: - 영상 + 프로필 영역
     lazy var tempVideoView: UIImageView = {
@@ -100,6 +103,7 @@ class DetailPageController: UIViewController {
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(addVideoToList), for: .touchUpInside)
         return button
     }()
     
@@ -258,11 +262,11 @@ class DetailPageController: UIViewController {
         return collectionView
     }()
     
-    
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        homeModel.getThumbnailData()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         commentStack.addGestureRecognizer(tapGesture)
@@ -335,19 +339,19 @@ class DetailPageController: UIViewController {
         ])
     }
     
-        func configureCollectionSection() {
-            view.addSubview(videoCollectionView)
-            setVideoCollectionView()
-        }
+    func configureCollectionSection() {
+        view.addSubview(videoCollectionView)
+        setVideoCollectionView()
+    }
     
-        func setVideoCollectionView() {
-            NSLayoutConstraint.activate([
-                videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
-                videoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                videoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
-                videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
-            ])
-        }
+    func setVideoCollectionView() {
+        NSLayoutConstraint.activate([
+            videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
+            videoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            videoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
+            videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
+        ])
+    }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
@@ -355,6 +359,24 @@ class DetailPageController: UIViewController {
             sheet.detents = [.medium()]
         }
         self.present(self.commentTableView, animated: true, completion: nil)
+    }
+    
+    func configureData(url: String, data: Thumbnails.Item) {
+        self.url = url
+        self.data = data
+    }
+    
+    @objc func addVideoToList() {
+        UserDefaults.standard.string(forKey: "currentVideoId")
+        if let data = data {
+            sendData(data: data)
+        }
+    }
+    
+    func sendData(data: Thumbnails.Item) -> Thumbnails.Item {
+        print("비디오 아이디입니다. \(data.id.videoId)")
+        print("채널 아이디입니다. \(data.snippet.channelId)")
+        return data
     }
     
     deinit {
@@ -367,16 +389,46 @@ extension DetailPageController: UICollectionViewDelegate {
 }
 
 extension DetailPageController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.identifier, for: indexPath) as! VideoCell
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let currentRow = indexPath.row
+        if (currentRow % homeModel.display) == homeModel.display - 5
+            && (currentRow / homeModel.display) == (homeModel.getRequestPage - 1) {
+            homeModel.getThumbnailData()
+        }
+    }
 }
 
 extension DetailPageController: UICollectionViewDelegateFlowLayout {
-    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 345, height: 238)
+    }
+}
+
+
+struct DetailPageController_Previews: PreviewProvider {
+    static var previews: some View {
+        VCRepresentable().edgesIgnoringSafeArea(.all)
+    }
+}
+struct VCRepresentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        let viewController = DetailPageController()
+        return UINavigationController(rootViewController: viewController)
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }
