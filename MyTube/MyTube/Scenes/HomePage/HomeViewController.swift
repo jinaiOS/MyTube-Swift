@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Combine
+import SwiftUI
 
 final class HomeViewController: UIViewController {
     
@@ -87,7 +88,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
         let url = "https://youtu.be/" + videoID
         print("snippet: \(url)")
+        
+        let detailVC = DetailPageController()
+        detailVC.configure(url: url, data: snippet)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let currentRow = indexPath.row
@@ -96,4 +103,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             viewModel.getThumbnailData()
         }
     }
+}
+
+// SwiftUI를 활용한 미리보기
+struct HomeViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeVCReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct HomeVCReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        let homeViewController = HomeViewController()
+        return UINavigationController(rootViewController: homeViewController)
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }

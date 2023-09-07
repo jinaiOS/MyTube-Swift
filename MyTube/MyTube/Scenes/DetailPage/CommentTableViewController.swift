@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class CommentTableViewController: UIViewController {
     let commentTableView: UITableView = {
@@ -45,4 +46,19 @@ extension CommentTableViewController: UITableViewDataSource {
         cell.contentView.backgroundColor = .white
         return cell
     }
+}
+
+// SwiftUI를 활용한 미리보기
+struct CommentTableViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        CommentTableVCReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct CommentTableVCReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UINavigationController(rootViewController: CommentTableViewController())
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }
