@@ -23,6 +23,7 @@ final class ThumbnailCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 15, weight: .semibold)
         label.textColor = .label
         label.textAlignment = .center
+        label.numberOfLines = 1
         label.snp.makeConstraints {
             $0.width.height.equalTo(34)
         }
@@ -34,6 +35,7 @@ final class ThumbnailCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 15, weight: .semibold)
         label.textColor = .label
         label.textAlignment = .left
+        label.numberOfLines = 1
         return label
     }()
 
@@ -42,6 +44,7 @@ final class ThumbnailCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 10, weight: .semibold)
         label.textColor = .darkGray
         label.textAlignment = .left
+        label.numberOfLines = 1
         return label
     }()
 

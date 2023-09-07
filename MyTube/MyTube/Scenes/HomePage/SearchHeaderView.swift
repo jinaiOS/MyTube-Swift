@@ -37,6 +37,8 @@ final class SearchHeaderView: UICollectionReusableView {
 
 extension SearchHeaderView: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let text = searchBar.text
+        viewModel?.getThumbnailData(searchText: text)
         endEditing(true)
     }
 }

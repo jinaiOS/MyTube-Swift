@@ -110,6 +110,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             viewModel.getThumbnailData()
         }
     }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
 }
 
 // SwiftUI를 활용한 미리보기
