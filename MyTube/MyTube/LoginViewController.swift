@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class LoginViewController: UIViewController {
     
@@ -232,4 +233,19 @@ extension LoginViewController: CustomTextfieldViewDelegate {
     }
     
     
+}
+
+// SwiftUI를 활용한 미리보기
+struct LoginViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginViewControllerReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct LoginViewControllerReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UINavigationController(rootViewController: LoginViewController())
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }

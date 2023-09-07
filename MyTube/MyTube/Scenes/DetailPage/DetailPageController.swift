@@ -268,6 +268,9 @@ class DetailPageController: UIViewController {
         setupUI()
         homeModel.getThumbnailData()
         
+        view.backgroundColor = .systemBackground
+        
+        setupUI()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         commentStack.addGestureRecognizer(tapGesture)
     }
@@ -353,6 +356,11 @@ class DetailPageController: UIViewController {
         ])
     }
     
+    func configure(url: String, data: Thumbnails.Snippet) {
+        self.url = url
+        self.data = data
+    }
+    
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
         if let sheet = self.commentTableView.sheetPresentationController {
@@ -429,6 +437,21 @@ struct VCRepresentable: UIViewControllerRepresentable {
         return UINavigationController(rootViewController: viewController)
     }
 
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
+}
+
+// SwiftUI를 활용한 미리보기
+struct DetailPageController_Previews: PreviewProvider {
+    static var previews: some View {
+        DetailPageControllerReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct DetailPageControllerReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UINavigationController(rootViewController: DetailPageController())
+    }
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
     typealias UIViewControllerType = UIViewController
 }
