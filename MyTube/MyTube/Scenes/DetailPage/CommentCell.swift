@@ -14,7 +14,8 @@ class CommentCell: UITableViewCell {
     let profileImage: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "person.circle")
-        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 30).isActive = true
         view.layer.cornerRadius = 15
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFit
@@ -46,8 +47,6 @@ class CommentCell: UITableViewCell {
         NSLayoutConstraint.activate([
             profileImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             profileImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            profileImage.widthAnchor.constraint(equalToConstant: 30),
-            profileImage.heightAnchor.constraint(equalToConstant: 30),
             
             commentLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 5),
             commentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
