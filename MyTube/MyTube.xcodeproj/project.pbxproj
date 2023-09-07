@@ -26,6 +26,8 @@
 		338214122AA7253800EE7338 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338214102AA7253800EE7338 /* HomeViewController.swift */; };
 		338214132AA7253800EE7338 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338214112AA7253800EE7338 /* HomeViewModel.swift */; };
 		3386EC262AA6D29300A37D9C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386EC252AA6D29300A37D9C /* Constants.swift */; };
+		33C85DE72AA9AC2400B24D85 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C85DE62AA9AC2400B24D85 /* SearchHeaderView.swift */; };
+		33C85DE92AA9FA0700B24D85 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C85DE82AA9FA0700B24D85 /* UIViewController+.swift */; };
 		33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */; };
 		33C87AF22AA5948300E86A45 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		33C87AF52AA5948D00E86A45 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
@@ -39,13 +41,12 @@
 		5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */; };
 		5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */; };
 		5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6902AA6097200728F87 /* LoginViewController.swift */; };
-		BD2C37D72AA7019000B4CA25 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2C37D62AA7019000B4CA25 /* CommentCell.swift */; };
-		BD2C37DB2AA70DC900B4CA25 /* CommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2C37DA2AA70DC900B4CA25 /* CommentTableViewController.swift */; };
-		BD72935B2AA85C82003F4B6F /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD72935A2AA85C82003F4B6F /* VideoCell.swift */; };
-		BD869DC62AA6FDCD0003F1DA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD869DC52AA6FDCD0003F1DA /* Constants.swift */; };
 		5632E6AD2AA7280F00728F87 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */; };
 		5632E6AF2AA7292E00728F87 /* User.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5632E6AE2AA7292E00728F87 /* User.plist */; };
 		5632E6B12AA72A7400728F87 /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6B02AA72A7400728F87 /* UserInfoModel.swift */; };
+		BD2C37D72AA7019000B4CA25 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2C37D62AA7019000B4CA25 /* CommentCell.swift */; };
+		BD2C37DB2AA70DC900B4CA25 /* CommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2C37DA2AA70DC900B4CA25 /* CommentTableViewController.swift */; };
+		BD72935B2AA85C82003F4B6F /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD72935A2AA85C82003F4B6F /* VideoCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,8 @@
 		338214102AA7253800EE7338 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		338214112AA7253800EE7338 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		3386EC252AA6D29300A37D9C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		33C85DE62AA9AC2400B24D85 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
+		33C85DE82AA9FA0700B24D85 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		5632E6492AA577FD00728F87 /* MyTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5632E64C2AA577FD00728F87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -96,13 +99,12 @@
 		5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfieldView.swift; sourceTree = "<group>"; };
 		5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMembershipViewController.swift; sourceTree = "<group>"; };
 		5632E6902AA6097200728F87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		BD2C37D62AA7019000B4CA25 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
-		BD2C37DA2AA70DC900B4CA25 /* CommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewController.swift; sourceTree = "<group>"; };
-		BD72935A2AA85C82003F4B6F /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
-		BD869DC52AA6FDCD0003F1DA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		5632E6AE2AA7292E00728F87 /* User.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = User.plist; sourceTree = "<group>"; };
 		5632E6B02AA72A7400728F87 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
+		BD2C37D62AA7019000B4CA25 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		BD2C37DA2AA70DC900B4CA25 /* CommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewController.swift; sourceTree = "<group>"; };
+		BD72935A2AA85C82003F4B6F /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,8 +141,9 @@
 		334B6FEC2AA6C8FC00C87609 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
-				338214102AA7253800EE7338 /* HomeViewController.swift */,
 				338214112AA7253800EE7338 /* HomeViewModel.swift */,
+				338214102AA7253800EE7338 /* HomeViewController.swift */,
+				33C85DE62AA9AC2400B24D85 /* SearchHeaderView.swift */,
 				334B6FDF2AA6C85300C87609 /* ThumbnailCell.swift */,
 			);
 			path = HomePage;
@@ -164,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				33610B9D2AA65207004114D0 /* UIImageView+.swift */,
+				33C85DE82AA9FA0700B24D85 /* UIViewController+.swift */,
 				33610BA22AA65E90004114D0 /* String+.swift */,
 			);
 			path = Extensions;
@@ -411,7 +415,7 @@
 			files = (
 				334B6FEB2AA6C8D400C87609 /* DetailPageController.swift in Sources */,
 				5632E6B12AA72A7400728F87 /* UserInfoModel.swift in Sources */,
-				334B6FEB2AA6C8D400C87609 /* DetailPage.swift in Sources */,
+				334B6FEB2AA6C8D400C87609 /* DetailPageController.swift in Sources */,
 				334B6FE32AA6C8C200C87609 /* MyPageViewController.swift in Sources */,
 				BD2C37DB2AA70DC900B4CA25 /* CommentTableViewController.swift in Sources */,
 				BD2C37D72AA7019000B4CA25 /* CommentCell.swift in Sources */,
@@ -431,8 +435,10 @@
 				33610B9E2AA65207004114D0 /* UIImageView+.swift in Sources */,
 				338214122AA7253800EE7338 /* HomeViewController.swift in Sources */,
 				338214132AA7253800EE7338 /* HomeViewModel.swift in Sources */,
+				33C85DE92AA9FA0700B24D85 /* UIViewController+.swift in Sources */,
 				33610BA32AA65E90004114D0 /* String+.swift in Sources */,
 				334B6FE82AA6C8D400C87609 /* Model.swift in Sources */,
+				33C85DE72AA9AC2400B24D85 /* SearchHeaderView.swift in Sources */,
 				336598BE2AA5B69100569B79 /* YoutubeManger.swift in Sources */,
 				334B6FEA2AA6C8D400C87609 /* Video.swift in Sources */,
 				332156102AA7AE690045FC4C /* ImageCacheManager.swift in Sources */,

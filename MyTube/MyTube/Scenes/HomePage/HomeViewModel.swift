@@ -18,6 +18,7 @@ final class HomeViewModel: ObservableObject {
     }
     
     @Published var ThumbnailList: [Thumbnails.Item] = []
+    @Published var searchList: [Thumbnails.Item] = []
     
     func getThumbnailData() {
         Task {
@@ -25,5 +26,9 @@ final class HomeViewModel: ObservableObject {
             ThumbnailList += result.items
             requestPage += 1
         }
+    }
+    
+    func getSearchThumbnailData(searchText: String) {
+        
     }
 }

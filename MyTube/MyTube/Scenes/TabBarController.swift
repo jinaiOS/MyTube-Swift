@@ -10,51 +10,56 @@ import SnapKit
 
 final class TabBarController: UIViewController {
     
-    private let homeVC = UINavigationController(rootViewController: HomeViewController())
-    private let myPageVC = UINavigationController(rootViewController: MyPageViewController())
+    private let homeVC = HomeViewController()
+    private let myPageVC = MyPageViewController()
+    private var homeNavigationVC: UINavigationController
+    private var myPageNavigationVC: UINavigationController
     private let tabBarView = TabBarView(frame: .zero)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configure()
-        setLayout()
+        setLayout(vc: homeVC)
         configTabBarBtn()
+    }
+    
+    init() {
+        homeNavigationVC = UINavigationController(rootViewController: homeVC)
+        myPageNavigationVC = UINavigationController(rootViewController: myPageVC)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
 private extension TabBarController {
     func configure() {
         view.backgroundColor = .systemBackground
-        view.addSubview(homeVC.view)
+        view.addSubview(homeNavigationVC.view)
     }
     
-    func setLayout() {
-        view.addSubview(tabBarView)
-        
-        tabBarView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-            $0.width.equalTo(280)
-            $0.height.equalTo(65)
-        }
-    }
-    
-    @objc func didTappedHome() {
-        view.addSubview(homeVC.view)
-        setLayout()
-        changeTintColor(buttonType: tabBarView.houseBtn)
-    }
-    
-    @objc func didTappedMyPage() {
-        view.addSubview(myPageVC.view)
-        setLayout()
-        changeTintColor(buttonType: tabBarView.personBtn)
+    func setLayout(vc: UIViewController) {
+        vc.addTabBar(tabBarView: tabBarView)
     }
     
     func configTabBarBtn() {
         tabBarView.houseBtn.addTarget(self, action: #selector(didTappedHome), for: .touchUpInside)
         tabBarView.personBtn.addTarget(self, action: #selector(didTappedMyPage), for: .touchUpInside)
+    }
+    
+    @objc func didTappedHome() {
+        view.addSubview(homeNavigationVC.view)
+        setLayout(vc: homeVC)
+        changeTintColor(buttonType: tabBarView.houseBtn)
+    }
+    
+    @objc func didTappedMyPage() {
+        view.addSubview(myPageNavigationVC.view)
+        setLayout(vc: myPageVC)
+        changeTintColor(buttonType: tabBarView.personBtn)
     }
     
     func changeTintColor(buttonType: UIButton) {

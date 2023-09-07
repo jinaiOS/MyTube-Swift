@@ -22,6 +22,7 @@ final class HomeViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
+        collectionView.register(SearchHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier)
         return collectionView
     }()
     
@@ -87,14 +88,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let snippet = viewModel.ThumbnailList[indexPath.item].snippet
         guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
         let url = "https://youtu.be/" + videoID
-        print("snippet: \(url)")
-        
         let detailVC = DetailPageController()
         detailVC.configure(url: url, data: snippet)
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier, for: indexPath) as? SearchHeaderView else { return UICollectionReusableView() }
+        header.configure(viewModel: viewModel)
+        return header
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.bounds.width, height: 50)
+    }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let currentRow = indexPath.row
