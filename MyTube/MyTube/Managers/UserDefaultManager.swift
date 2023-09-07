@@ -14,6 +14,7 @@ class UserDefaultManager {
     private let contactKey = "Root"
     private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     private var archiveURL: URL
+    var userInfo: UserInfoModel?
     
     init() {
         archiveURL = Bundle.main.url(forResource: "User", withExtension: "plist")!
@@ -56,6 +57,7 @@ class UserDefaultManager {
         for i in contacts {
             if i.id == id && i.password == pw {
                 print("login complete")
+                userInfo = i
                 return true
             }
         }
