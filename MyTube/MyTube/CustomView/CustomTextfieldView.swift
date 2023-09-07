@@ -38,26 +38,31 @@ extension CustomTextfieldViewDelegate {
 
 class CustomTextfieldView: UIView {
     
+    /** @brief Container View */
     lazy var vContainer: UIView = {
         let view = UIView()
         return view
     }()
     
+    /** @brief Border View */
     lazy var vBorder: UIView = {
         let view = UIView()
         return view
     }()
     
+    /** @brief TextField */
     lazy var tf: UITextField = {
         let textfield = UITextField()
         return textfield
     }()
     
+    /** @brief Title Button */
     lazy var btnTitle: UIButton = {
         let button = UIButton()
         return button
     }()
     
+    /** @brief StackView */
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -72,21 +77,21 @@ class CustomTextfieldView: UIView {
         return stack
     }()
     
-    var placeholder : String = "hi"
-    private var buttonWidthConstraint: Constraint?
-    private var buttonTopConstraint: Constraint?
-    weak var tfDelegate : CustomTextfieldViewDelegate?
+    var placeholder : String = ""  // placeholder
+    private var buttonBottomConstraint: Constraint? // Title Button Bottom Constraint
+    private var buttonTopConstraint: Constraint? // Title Button Top Constraint
+    weak var tfDelegate : CustomTextfieldViewDelegate? // Custom Textfield View Delegate
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayout()
+        setToolbar() 
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setLayout()
-        
-        
+        setToolbar()
     }
     
     private func setLayout() {
@@ -96,59 +101,80 @@ class CustomTextfieldView: UIView {
         setTitleButton()
     }
     
+    /// 에러상태변환 체크
+    var isError : Bool = false {
+        didSet {
+            if isError {
+                vBorder.layer.borderWidth = 1
+                vBorder.layer.borderColor = UIColor.red.cgColor
+                btnTitle.setTitleColor(.red, for: .normal)
+            } else {
+                if tf.isFirstResponder {
+                    vBorder.layer.borderWidth = 2
+                    vBorder.layer.borderColor = UIColor.red.cgColor
+                    btnTitle.setTitleColor(.red, for: .normal)
+                } else {
+                    vBorder.layer.borderWidth = 1
+                    vBorder.layer.borderColor = UIColor.gray.cgColor
+                    btnTitle.setTitleColor(.gray, for: .normal)
+                }
+            }
+            tfDelegate?.errorStatus(isError: isError, view: self)
+        }
+    }
+    
+    /// Container View Layout
     func setContainerView() {
         self.addSubview(vContainer)
         vContainer.snp.makeConstraints {
             $0.height.equalTo(60)
             $0.edges.equalTo(self)
         }
-        
         vContainer.addSubview(vBorder)
         vContainer.addSubview(tf)
     }
     
+    /// Border View Layout
     func setBorderView() {
         vBorder.snp.makeConstraints {
             $0.edges.equalTo(vContainer)
         }
         
         vBorder.layer.cornerRadius = 10
-        vBorder.layer.borderColor = UIColor.black.cgColor
+        vBorder.layer.borderColor = UIColor.gray.cgColor
         vBorder.layer.borderWidth = 1
-        
     }
     
+    /// Textfield Layout
     func setTextField(){
         tf.snp.makeConstraints {
             $0.edges.equalTo(vContainer)
         }
+        
+        tf.addLeftPadding()
+        tf.delegate = self
+        self.tf.addTarget(self, action: #selector(textfieldValueChanged(_:)), for: .editingChanged)
     }
     
+    /// Button Layout
     func setTitleButton() {
         //버튼 패딩
         btnTitle.isHidden = true
         btnTitle.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         btnTitle.tintColor = .white
         btnTitle.isUserInteractionEnabled = false
-        tf.addLeftPadding()
-        tf.delegate = self
-        self.tf.addTarget(self, action: #selector(textfieldValueChanged(_:)), for: .editingChanged)
-        vBorder.layer.borderWidth = 1
-        vBorder.layer.borderColor = UIColor.gray.cgColor
+        btnTitle.backgroundColor = .white
         btnTitle.setTitleColor(.gray, for: .normal)
         btnTitle.contentHorizontalAlignment = .left
         
-        vBorder.addSubview(btnTitle)
+        vContainer.addSubview(btnTitle)
         
         btnTitle.snp.makeConstraints {
             $0.leading.equalTo(self).offset(17)
             $0.centerY.equalTo(self)
-            $0.bottom.equalTo(self)
-            $0.top.equalTo(self)
-            $0.trailing.equalTo(self)
-            $0.height.equalTo(15)
+            $0.height.equalTo(12)
             buttonTopConstraint = $0.top.equalTo(self).constraint
-            buttonWidthConstraint = $0.bottom.equalTo(self).constraint
+            buttonBottomConstraint = $0.bottom.equalTo(self).constraint
         }
     }
     
@@ -156,9 +182,23 @@ class CustomTextfieldView: UIView {
         tfDelegate?.customTextFieldValueChanged(textField)
     }
     
+    func setToolbar() {
+        let toolbar = UIToolbar()
+        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(done))
+        let flexibleSpaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.sizeToFit()
+        toolbar.setItems([flexibleSpaceButton, doneBtn], animated: false)
+        tf.inputAccessoryView = toolbar
+    }
+    
+    @objc func done() {
+        tf.resignFirstResponder()
+    }
+    
     func initTextFieldText(placeHolder : String, delegate: CustomTextfieldViewDelegate) {
         btnTitle.setTitle(placeHolder, for: .normal)
         tf.placeholder = placeHolder
+        self.placeholder = placeHolder
         tfDelegate = delegate
     }
     
@@ -178,22 +218,23 @@ class CustomTextfieldView: UIView {
         if isEditing {
             btnTitle.isHidden = false
             self.buttonTopConstraint?.update(offset: 0)
-            self.buttonWidthConstraint?.update(offset: 0)
+            self.buttonBottomConstraint?.update(offset: 0)
             tf.placeholder = ""
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) { [weak self] in
                 guard let `self` = self else {return}
-                self.buttonTopConstraint?.update(offset: -(self.frame.height / 2))
-                self.buttonWidthConstraint?.update(offset: -(self.frame.height / 2))
+                self.buttonTopConstraint?.update(offset: -(self.frame.height / 2) + 20)
+                self.buttonBottomConstraint?.update(offset: -(self.frame.height / 2) - 10)
                 self.layoutIfNeeded()
             } completion: { (finished) in
                 
             }
         } else {
-            self.buttonWidthConstraint?.update(offset: -(self.frame.height / 2))
+            self.buttonTopConstraint?.update(offset: -(self.frame.height / 2) + 20)
+            self.buttonBottomConstraint?.update(offset: -(self.frame.height / 2) - 10)
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) { [weak self] in
                 guard let `self` = self else {return}
                 self.buttonTopConstraint?.update(offset: 0)
-                self.buttonWidthConstraint?.update(offset: 0)
+                self.buttonBottomConstraint?.update(offset: 0)
                 self.btnTitle.alpha = 0
                 self.layoutIfNeeded()
             } completion: {[weak self] (finished) in
@@ -208,7 +249,7 @@ class CustomTextfieldView: UIView {
 extension CustomTextfieldView : UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         tfDelegate?.customTextFieldDidBeginEditing(textField)
-        //        isError = false
+        isError = false
         textfieldEditing(isEditing: true)
         
         if textField.text?.isEmpty ?? true {
@@ -230,20 +271,5 @@ extension CustomTextfieldView : UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return tfDelegate?.customTextField(self.tf, shouldChangeCharactersIn: range, replacementString: string) ?? true
-        //        guard let text = textField.text else {return false}
-        //        let maxLength = 20
-        //               // 최대 글자수 이상을 입력한 이후에는 중간에 다른 글자를 추가할 수 없게끔 작동(25자리)
-        //               if text.count >= maxLength && range.length == 0 && range.location >= maxLength {
-        //                   return false
-        //               }
-        //
-        //               return true
-    }
-}
-extension UITextField {
-    func addLeftPadding() {
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: self.frame.height))
-        self.leftView = paddingView
-        self.leftViewMode = ViewMode.always
     }
 }
