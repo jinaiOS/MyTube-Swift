@@ -8,11 +8,14 @@
 import Foundation
 import UIKit
 import AVFoundation
+import SwiftUI
 
 class DetailPageController: UIViewController {
     //MARK: - 전역 변수
     private let commentTableView = CommentTableViewController()
     private let inset: CGFloat = 24
+    private var url: String?
+    private var data: Thumbnails.Snippet?
     
     //MARK: - 영상 + 프로필 영역
     lazy var tempVideoView: UIImageView = {
@@ -262,8 +265,10 @@ class DetailPageController: UIViewController {
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
         
+        view.backgroundColor = .systemBackground
+        
+        setupUI()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         commentStack.addGestureRecognizer(tapGesture)
     }
@@ -349,6 +354,11 @@ class DetailPageController: UIViewController {
             ])
         }
     
+    func configure(url: String, data: Thumbnails.Snippet) {
+        self.url = url
+        self.data = data
+    }
+    
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
         if let sheet = self.commentTableView.sheetPresentationController {
@@ -379,4 +389,19 @@ extension DetailPageController: UICollectionViewDataSource {
 
 extension DetailPageController: UICollectionViewDelegateFlowLayout {
     
+}
+
+// SwiftUI를 활용한 미리보기
+struct DetailPageController_Previews: PreviewProvider {
+    static var previews: some View {
+        DetailPageControllerReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct DetailPageControllerReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UINavigationController(rootViewController: DetailPageController())
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }
