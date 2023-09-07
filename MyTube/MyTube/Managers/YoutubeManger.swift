@@ -18,7 +18,7 @@ final class YoutubeManger {
             "type": "video",
             "page": "\(page)",
             "maxResults": "20",
-            "key": HANS_KEY
+            "key": TEST_KEY
         ]
         
         let dataTask = AF.request(ThumbNailUrl, method: .get, parameters: params)
