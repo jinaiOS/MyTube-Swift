@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 final class TabBarView: UIView {
-    
     lazy var houseBtn: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "house"), for: .normal)
@@ -37,7 +36,6 @@ final class TabBarView: UIView {
         stack.layer.shadowOffset = CGSize(width: 0, height: 2) // 그림자의 위치 (수평, 수직)
         stack.layer.shadowOpacity = 0.1 // 그림자 투명도
         stack.layer.shadowRadius = 10 // 그림자 반경
-        
         
         [houseBtn, personBtn].forEach {
             stack.addArrangedSubview($0)

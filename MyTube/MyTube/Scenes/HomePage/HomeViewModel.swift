@@ -19,11 +19,19 @@ final class HomeViewModel: ObservableObject {
     
     @Published var ThumbnailList: [Thumbnails.Item] = []
     
-    func getThumbnailData() {
+    func getThumbnailData(searchText: String? = nil) {
+        if searchText != nil {
+            reset()
+        }
         Task {
-            guard let result = await manager.getThumbnails(page: requestPage) else { return }
+            guard let result = await manager.getThumbnails(page: requestPage, searchText: searchText) else { return }
             ThumbnailList += result.items
             requestPage += 1
         }
+    }
+    
+    private func reset() {
+        requestPage = 0
+        ThumbnailList.removeAll()
     }
 }
