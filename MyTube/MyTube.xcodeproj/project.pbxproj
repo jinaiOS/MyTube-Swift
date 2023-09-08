@@ -230,7 +230,7 @@
 			children = (
 				5632E64C2AA577FD00728F87 /* AppDelegate.swift */,
 				5632E64E2AA577FD00728F87 /* SceneDelegate.swift */,
-				B34D8B892AA9BEBB000BC1DA /* Constants.swift */,
+				B3011F0D2AAABCF1006BBB02 /* Constants.swift */,
 				565C29182AA94ECC008344D9 /* CustomView */,
 				33610B9F2AA6520E004114D0 /* Extensions */,
 				336598C32AA5E59200569B79 /* Models */,
@@ -419,7 +419,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B34D8B8A2AA9BEBB000BC1DA /* Constants.swift in Sources */,
 				334B6FEB2AA6C8D400C87609 /* DetailPageController.swift in Sources */,
 				5632E6B12AA72A7400728F87 /* UserInfoModel.swift in Sources */,
 				334B6FEB2AA6C8D400C87609 /* DetailPageController.swift in Sources */,
@@ -431,6 +430,7 @@
 				334B6FE12AA6C85300C87609 /* ThumbnailCell.swift in Sources */,
 				5632E64F2AA577FD00728F87 /* SceneDelegate.swift in Sources */,
 				334B6FE92AA6C8D400C87609 /* DetailPageConstant.swift in Sources */,
+				B3011F0E2AAABCF1006BBB02 /* Constants.swift in Sources */,
 				5632E6AD2AA7280F00728F87 /* UserDefaultManager.swift in Sources */,
 				5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */,
 				5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */,

@@ -11,6 +11,9 @@ import SwiftUI
 
 class DetailPageController: UIViewController {
     //MARK: - 전역 변수
+    
+    
+    
     private let commentTableView = CommentTableViewController()
     private let inset: CGFloat = 24
     let homeModel = HomeViewModel()

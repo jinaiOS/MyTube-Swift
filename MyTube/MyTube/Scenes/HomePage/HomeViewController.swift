@@ -100,6 +100,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let detailVC = DetailPageController()
         detailVC.configureData(url: url, data: data)
         navigationController?.pushViewController(detailVC, animated: true)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

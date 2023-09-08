@@ -16,13 +16,22 @@ import UIKit
 import SnapKit
 
 class MyPageViewController: UIViewController {
+    let nicknameLabel = UILabel()
+    let idLabel = UILabel()
     
     let logoutButton = UIButton(type: .system)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let nickname = UserDefaults.standard.string(forKey: "nickname"),
+           let id = UserDefaults.standard.string(forKey: "id") {
+            nicknameLabel.text = nickname
+            idLabel.text = "@" + id
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
         
         lazy var scrollView : UIScrollView = {
             let scrollView = UIScrollView()
@@ -39,7 +48,7 @@ class MyPageViewController: UIViewController {
             stackView.snp.makeConstraints {
                 $0.top.leading.bottom.trailing.equalTo(scrollView)
                 $0.centerX.equalTo(scrollView)
-//                stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+                //                stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
             }
             
             return stackView
@@ -64,7 +73,7 @@ class MyPageViewController: UIViewController {
         profileIcon.layer.cornerRadius = 25
         profileIcon.translatesAutoresizingMaskIntoConstraints = false
         vProfile.addSubview(profileIcon)
-
+        
         profileIcon.snp.makeConstraints { make in
             make.leading.equalTo(vProfile).offset(24)
             make.top.equalTo(vProfile).offset(24)
@@ -103,8 +112,9 @@ class MyPageViewController: UIViewController {
             make.width.equalTo(200)
             make.height.equalTo(20)
         }
-
-
+        
+        
+        
         // 화살표 아이콘
         let editButton = UIButton(type: .system)
         let editIcon = UIImage(systemName: "chevron.right")
@@ -112,12 +122,12 @@ class MyPageViewController: UIViewController {
         editButton.tintColor = .black // 아이콘 색상 설정
         editButton.translatesAutoresizingMaskIntoConstraints = false
         vProfile.addSubview(editButton)
-
+        
         editButton.snp.makeConstraints { make in
             make.trailing.equalTo(vProfile).offset(-24)
             make.top.equalTo(vProfile).offset(34)
             make.width.equalTo(30)
-//            make.height.equalTo(30)
+            //            make.height.equalTo(30)
         }
         
         // editButton에 탭 이벤트를 추가합니다.
@@ -128,7 +138,7 @@ class MyPageViewController: UIViewController {
         lineView.backgroundColor = .systemGray5
         lineView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(lineView)
-
+        
         lineView.snp.makeConstraints { make in
             make.height.equalTo(2)
         }
@@ -150,7 +160,7 @@ class MyPageViewController: UIViewController {
             make.width.equalTo(200)
             make.height.equalTo(20)
         }
-
+        
         
         // 구독한 채널
         let circleScrollView = UIScrollView()
@@ -179,7 +189,7 @@ class MyPageViewController: UIViewController {
             // 원 모양 이미지 뷰를 스택 뷰에 추가
             circleStackView.addArrangedSubview(circleImageView)
         }
-
+        
         // 원 모양 이미지 뷰 스택 뷰의 레이아웃 설정
         circleStackView.snp.makeConstraints { make in
             make.top.equalTo(circleScrollView.snp.top)
@@ -187,7 +197,7 @@ class MyPageViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-24)
             make.bottom.equalTo(circleScrollView.snp.bottom)
         }
-
+        
         // 스크롤 뷰의 레이아웃 설정
         circleScrollView.snp.makeConstraints { make in
             make.top.equalTo(subscribeLabel.snp.bottom).offset(16)
@@ -195,7 +205,7 @@ class MyPageViewController: UIViewController {
             make.trailing.equalToSuperview()
             make.height.equalTo(90) // 스크롤 뷰의 높이 조절
         }
-
+        
         
         
         // 좋아요 영상 텍스트
@@ -219,14 +229,14 @@ class MyPageViewController: UIViewController {
         rectangleScrollView.showsHorizontalScrollIndicator = false // 가로 스크롤 바 숨김
         rectangleScrollView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(rectangleScrollView)
-
+        
         // 사각형 모양의 뷰들을 담을 스택 뷰
         let rectangleStackView = UIStackView()
         rectangleStackView.axis = .horizontal
         rectangleStackView.spacing = 14 // 사각형 뷰들 사이의 간격 조절
         rectangleStackView.translatesAutoresizingMaskIntoConstraints = false
         rectangleScrollView.addSubview(rectangleStackView)
-
+        
         // 사각형 모양의 뷰를 6개 추가
         for _ in 0..<6 {
             let rectangleView = UIView()
@@ -234,11 +244,11 @@ class MyPageViewController: UIViewController {
             rectangleView.translatesAutoresizingMaskIntoConstraints = false
             rectangleView.layer.cornerRadius = 6 // 모서리 반지름 설정
             rectangleStackView.addArrangedSubview(rectangleView)
-
+            
             rectangleView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
             rectangleView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
         }
-
+        
         // 스크롤 뷰와 스택 뷰의 레이아웃 설정
         rectangleScrollView.snp.makeConstraints { make in
             make.top.equalTo(likeLabel.snp.bottom).offset(16)
@@ -246,14 +256,14 @@ class MyPageViewController: UIViewController {
             make.trailing.equalToSuperview().offset(0)
             make.height.equalTo(100) // 스크롤 뷰의 높이 조절
         }
-
+        
         rectangleStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
             make.height.equalTo(100) // 스택 뷰의 높이 조절
         }
-
-
+        
+        
         
         // 시청 기록 텍스트
         let historyLabel = UILabel()
@@ -277,26 +287,26 @@ class MyPageViewController: UIViewController {
         historyScrollView.showsHorizontalScrollIndicator = false // 가로 스크롤 바 숨김
         historyScrollView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(historyScrollView)
-
+        
         // 사각형 모양의 뷰들을 담을 스택 뷰
         let historyStackView = UIStackView()
         historyStackView.axis = .horizontal
         historyStackView.spacing = 14 // 사각형 뷰들 사이의 간격 조절
         historyStackView.translatesAutoresizingMaskIntoConstraints = false
         historyScrollView.addSubview(historyStackView)
-
+        
         // 사각형 모양의 뷰를 6개 추가
-        for _ in 0..<6 {
+        for _ in 0..<8 {
             let historyItemView = UIView()
             historyItemView.backgroundColor = .gray // 원하는 색상으로 설정하세요
             historyItemView.translatesAutoresizingMaskIntoConstraints = false
             historyItemView.layer.cornerRadius = 6 // 모서리 반지름 설정
             historyStackView.addArrangedSubview(historyItemView)
-
+            
             historyItemView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
             historyItemView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
         }
-
+        
         // 스크롤 뷰와 스택 뷰의 레이아웃 설정
         historyScrollView.snp.makeConstraints { make in
             make.top.equalTo(historyLabel.snp.bottom).offset(16)
@@ -304,7 +314,7 @@ class MyPageViewController: UIViewController {
             make.trailing.equalToSuperview().offset(0)
             make.height.equalTo(100) // 스크롤 뷰의 높이 조절
         }
-
+        
         historyStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
@@ -322,13 +332,13 @@ class MyPageViewController: UIViewController {
         transparentRectangle.layer.borderWidth = 0 // 테두리 두께 설정
         transparentRectangle.layer.borderColor = UIColor.black.cgColor // 테두리 색상 설정
         historyScrollView.addSubview(transparentRectangle)
-
+        
         transparentRectangle.snp.makeConstraints { make in
             make.top.equalTo(historyScrollView.snp.bottom).offset(24)
             make.width.equalTo(200)
             make.height.equalTo(600)
         }
- 
+        
         NSLayoutConstraint.activate([
             historyScrollView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -16)
         ])
@@ -341,16 +351,21 @@ class MyPageViewController: UIViewController {
         emptyView.snp.makeConstraints {
             $0.height.equalTo(100)
         }
-
+        
+        
     }
-
+    // 로그아웃 버튼을 눌렀을 때 호출될 메서드
+    @objc func logoutButtonTapped() {
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController(), animated: false)
+    }
     
     @objc func editButtonTapped() {
         let joinMembershipVC = JoinMembershipViewController()
         
         self.navigationController?.pushViewController(joinMembershipVC, animated: true)
+        
     }
-
+    
     deinit {
         print("deinit - MyPageVC")
     }
