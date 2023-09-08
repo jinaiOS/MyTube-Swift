@@ -249,7 +249,7 @@ class CustomTextfieldView: UIView {
 extension CustomTextfieldView : UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         tfDelegate?.customTextFieldDidBeginEditing(textField)
-        isError = false
+                isError = false
         textfieldEditing(isEditing: true)
         
         if textField.text?.isEmpty ?? true {

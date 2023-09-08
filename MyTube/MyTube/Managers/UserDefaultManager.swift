@@ -11,6 +11,8 @@ class UserDefaultManager {
     
     static let sharedInstance = UserDefaultManager()
     
+    var userInfo : UserInfoModel?
+    
     var userList = [UserInfoModel]() {
         didSet {
             self.saveUserInfo()
@@ -47,9 +49,12 @@ class UserDefaultManager {
     }
     
     func requestLogin(id: String, pw: String) -> Bool {
-       for _ in userList {
-            print("login complete")
-            return true
+       for i in userList {
+           if i.id == id && i.password == pw {
+               print("login complete")
+               userInfo = i
+               return true
+           }
         }
         print("login fail")
         return false
