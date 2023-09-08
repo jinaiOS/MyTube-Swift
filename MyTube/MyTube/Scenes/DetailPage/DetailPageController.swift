@@ -5,28 +5,30 @@
 //  Created by Jack Lee on 2023/09/04.
 //
 
-import Foundation
+import Combine
 import UIKit
-import SwiftUI
+import GoogleAPIClientForREST
+import youtube_ios_player_helper
 
 class DetailPageController: UIViewController {
+    
     //MARK: - 전역 변수
     private let commentTableView = CommentTableViewController()
+    private let homeModel = HomeViewModel()
     private let inset: CGFloat = 24
-    let homeModel = HomeViewModel()
     private var url: String?
-    private var data: Thumbnails.Item?
+    var data: Thumbnails.Item?
+    var subscription = Set<AnyCancellable>()
     
     //MARK: - 영상 + 프로필 영역
-    lazy var tempVideoView: UIImageView = {
-        let video = UIImageView()
-        video.image = UIImage(systemName: "video.fill")
+    lazy var videoPlayerView: YTPlayerView = {
+        let video = YTPlayerView()
         video.contentMode = .scaleAspectFit
         video.translatesAutoresizingMaskIntoConstraints = false
         return video
     }()
     
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         let newSize = label.intrinsicContentSize
         label.textColor = .black
@@ -37,7 +39,7 @@ class DetailPageController: UIViewController {
         return label
     }()
     
-    let statLabel: UILabel = {
+    private let statLabel: UILabel = {
         let label = UILabel()
         let newSize = label.intrinsicContentSize
         label.textColor = .black
@@ -265,8 +267,12 @@ class DetailPageController: UIViewController {
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         setupUI()
-        homeModel.getThumbnailData()
+        
+        print(data)
+        YoutubeManger.shared.getComments(from: data!.id.videoId)
+//        commentTableView.recieveData(data: data ?? nil)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         commentStack.addGestureRecognizer(tapGesture)
@@ -279,12 +285,19 @@ class DetailPageController: UIViewController {
     }
     
     func setVideo() {
-        view.addSubview(tempVideoView)
+        view.addSubview(videoPlayerView)
+        
+        if let data = data {
+            DispatchQueue.main.async {
+                self.videoPlayerView.load(withVideoId: data.id.videoId)
+            }
+        }
+        
         NSLayoutConstraint.activate([
-            tempVideoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tempVideoView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: inset),
-            tempVideoView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -inset),
-            tempVideoView.heightAnchor.constraint(equalToConstant: 219)
+            videoPlayerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            videoPlayerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),// constant: inset),
+            videoPlayerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),// constant: -inset),
+            videoPlayerView.heightAnchor.constraint(equalToConstant: 219)
         ])
     }
     
@@ -297,8 +310,10 @@ class DetailPageController: UIViewController {
     }
     
     func setTitleContainer() {
+        titleLabel.text = data?.snippet.title
+        
         NSLayoutConstraint.activate([
-            titleContainerStack.topAnchor.constraint(equalTo: tempVideoView.bottomAnchor, constant: 11),
+            titleContainerStack.topAnchor.constraint(equalTo: videoPlayerView.bottomAnchor, constant: 11),
             titleContainerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: inset),
             titleContainerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -inset),
             titleContainerStack.heightAnchor.constraint(equalToConstant: 64)
@@ -306,6 +321,8 @@ class DetailPageController: UIViewController {
     }
     
     func setProfileView() {
+        profileName.text = data?.snippet.channelTitle
+        
         NSLayoutConstraint.activate([
             profileContainerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: inset),
             profileContainerStack.topAnchor.constraint(equalTo: titleContainerStack.bottomAnchor, constant: 12),
@@ -369,13 +386,12 @@ class DetailPageController: UIViewController {
     @objc func addVideoToList() {
         UserDefaults.standard.string(forKey: "currentVideoId")
         if let data = data {
+            print("비디오 아이디는 \(data.id.videoId)")
             sendData(data: data)
         }
     }
     
     func sendData(data: Thumbnails.Item) -> Thumbnails.Item {
-        print("비디오 아이디입니다. \(data.id.videoId)")
-        print("채널 아이디입니다. \(data.snippet.channelId)")
         return data
     }
     
@@ -383,6 +399,8 @@ class DetailPageController: UIViewController {
         print("deinit - 디테일 페이지")
     }
 }
+
+//MARK: - CollectionView Delegate
 
 extension DetailPageController: UICollectionViewDelegate {
     
@@ -411,24 +429,16 @@ extension DetailPageController: UICollectionViewDataSource {
     }
 }
 
+//MARK: - CollectionView FlowLayout
+
 extension DetailPageController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 345, height: 238)
     }
 }
 
+//MARK: - YTPlayerViewDelegate
 
-struct DetailPageController_Previews: PreviewProvider {
-    static var previews: some View {
-        VCRepresentable().edgesIgnoringSafeArea(.all)
-    }
-}
-struct VCRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let viewController = DetailPageController()
-        return UINavigationController(rootViewController: viewController)
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
-    typealias UIViewControllerType = UIViewController
+extension DetailPageController: YTPlayerViewDelegate {
+    
 }
