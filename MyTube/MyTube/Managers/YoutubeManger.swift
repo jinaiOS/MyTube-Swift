@@ -40,17 +40,32 @@ final class YoutubeManger {
             "part": "snippet",
             "videoId": "\(videoId)",
             "maxResults": "10",
-            "key": TEST_KEY
+            "key": TEST2_KEY
         ]
         
         AF.request(CommentURL, method: .get, parameters: params).response { response in
             switch response.result {
             case .success(let data):
                 do {
-                    let jsonData = try JSONDecoder().decode([Comments].self, from: data!)
+                    let decoder = JSONDecoder()
+                     decoder.dateDecodingStrategy = .iso8601
+                    let jsonData = try decoder.decode(Comments.self, from: data!)
+                    print(jsonData)
+                } catch let DecodingError.dataCorrupted(context) {
+                    print(context)
+                } catch let DecodingError.keyNotFound(key, context) {
+                    print("Key '\(key)' not found:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch let DecodingError.valueNotFound(value, context) {
+                    print("Value '\(value)' not found:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch let DecodingError.typeMismatch(type, context)  {
+                    print("Type '\(type)' mismatch:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
                 } catch {
-                    print(error.localizedDescription)
+                    print("error: ", error)
                 }
+
             case .failure(let error):
                 print(error.localizedDescription)
             }
