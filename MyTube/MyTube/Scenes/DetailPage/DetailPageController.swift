@@ -270,10 +270,10 @@ class DetailPageController: UIViewController {
         view.backgroundColor = .systemBackground
         setupUI()
         
-        print(data)
-//        YoutubeManger.shared.getComments(from: data?.id.videoId)
-        
         view.backgroundColor = .systemBackground
+        if let data = data {
+            YoutubeManger.shared.getComments(from: data.id.videoId)
+        }
         
         setupUI()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))

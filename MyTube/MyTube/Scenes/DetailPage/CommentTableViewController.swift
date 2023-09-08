@@ -12,7 +12,6 @@ import SwiftUI
 class CommentTableViewController: UIViewController {
     //MARK: - 전역 변수
     private let youtubeManager = YoutubeManger.shared
-    var data: Thumbnails.Item?
     
     //MARK: - IBOutlet
     let commentTableView: UITableView = {
@@ -33,14 +32,6 @@ class CommentTableViewController: UIViewController {
         commentTableView.delegate = self
         
         commentTableView.frame = view.bounds
-        
-//        if let data = data {
-//            youtubeManager.getComments(from: data.id.videoId)
-//        }
-    }
-    
-    func recieveData(data: Thumbnails.Item) {
-        self.data = data
     }
 }
 
@@ -73,6 +64,7 @@ struct CommentTableVCReprsentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         return UINavigationController(rootViewController: CommentTableViewController())
     }
+    
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
     typealias UIViewControllerType = UIViewController
 }
