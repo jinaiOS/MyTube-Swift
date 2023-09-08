@@ -60,27 +60,25 @@ class MyPageViewController: UIViewController {
         contentView.addSubview(mainLabel)
 
         mainLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(64) // contentView의 top에 고정
+            make.top.equalTo(contentView.snp.top).offset(-30) // contentView의 top에 고정
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
             make.height.equalTo(20)
         }
         
         // 로그아웃 아이콘
-          let logoutButton = UIButton(type: .system)
-          let logoutIcon = UIImage(systemName: "rectangle.portrait.and.arrow.right")
-          logoutButton.setImage(logoutIcon, for: .normal)
-          logoutButton.tintColor = .black
-          logoutButton.translatesAutoresizingMaskIntoConstraints = false
-          contentView.addSubview(logoutButton)
-          
-          logoutButton.snp.makeConstraints { make in
-              make.top.equalToSuperview().offset(58)
-              make.trailing.equalToSuperview().offset(-24)
-              make.width.equalTo(30)
-              make.height.equalTo(30)
-          }
+        let logoutButton = UIButton(type: .system)
+        let logoutIcon = UIImage(systemName: "rectangle.portrait.and.arrow.right")
+        logoutButton.setImage(logoutIcon, for: .normal)
+        logoutButton.tintColor = .black
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+
+        // UIBarButtonItem 생성 및 customView 설정
+        let logoutBarButtonItem = UIBarButtonItem(customView: logoutButton)
+
+        // 네비게이션 바의 오른쪽 아이템으로 설정
+        self.navigationItem.rightBarButtonItem = logoutBarButtonItem
                 
         // 프로필 사진 아이콘
         let profileIcon = UIImageView(image: UIImage(named: "image1"))
@@ -366,18 +364,18 @@ class MyPageViewController: UIViewController {
     // 로그아웃 버튼을 눌렀을 때 호출될 메서드
         @objc func logoutButtonTapped() {
             // LoginViewController를 생성합니다.
-            let loginVC = LoginViewController()
-            
-            // 네비게이션 컨트롤러를 이용하여 LoginViewController로 화면을 전환합니다.
-            if let navigationController = self.navigationController {
-                navigationController.setViewControllers([loginVC], animated: true)
-            } else {
-                // 네비게이션 컨트롤러가 없는 경우, 새로운 네비게이션 컨트롤러를 생성하여 전환합니다.
-                let navigationController = UINavigationController(rootViewController: loginVC)
-                navigationController.modalPresentationStyle = .fullScreen
-                self.present(navigationController, animated: true, completion: nil)
-            }
+//            let loginVC = LoginViewController()
+//
+//            if let navigationController = self.navigationController {
+//                navigationController.setViewControllers([loginVC], animated: true)
+//            } else {
+//                let navigationController = UINavigationController(rootViewController: loginVC)
+//                navigationController.modalPresentationStyle = .fullScreen
+//                self.present(navigationController, animated: true, completion: nil)
+//            }
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController(), animated: false)
         }
+    
     @objc func editButtonTapped() {
         let joinMembershipVC = JoinMembershipViewController()
         

@@ -195,7 +195,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginButtonTouched() {
-        UserDefaultManager.shared.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false) : nil
+                UserDefaultManager.shared.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false) : nil
     }
     
     @objc func joinMembershipButtonTouched() {
