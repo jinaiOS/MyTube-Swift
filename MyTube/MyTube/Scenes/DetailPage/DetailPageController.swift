@@ -271,9 +271,11 @@ class DetailPageController: UIViewController {
         setupUI()
         
         print(data)
-        YoutubeManger.shared.getComments(from: data!.id.videoId)
-//        commentTableView.recieveData(data: data ?? nil)
+//        YoutubeManger.shared.getComments(from: data?.id.videoId)
         
+        view.backgroundColor = .systemBackground
+        
+        setupUI()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         commentStack.addGestureRecognizer(tapGesture)
     }
@@ -368,6 +370,11 @@ class DetailPageController: UIViewController {
             videoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
             videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
         ])
+    }
+    
+    func configure(url: String, data: Thumbnails.Item) {
+        self.url = url
+        self.data = data
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {

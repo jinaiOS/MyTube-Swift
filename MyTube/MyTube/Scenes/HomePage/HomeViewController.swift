@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Combine
+import SwiftUI
 
 final class HomeViewController: UIViewController {
     
@@ -95,6 +96,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let currentRow = indexPath.row
         if (currentRow % viewModel.display) == viewModel.display - 5
@@ -102,4 +105,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             viewModel.getThumbnailData()
         }
     }
+}
+
+// SwiftUI를 활용한 미리보기
+struct HomeViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeVCReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct HomeVCReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        let homeViewController = HomeViewController()
+        return UINavigationController(rootViewController: homeViewController)
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }
