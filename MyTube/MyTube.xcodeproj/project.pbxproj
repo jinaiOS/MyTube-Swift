@@ -37,9 +37,9 @@
 		5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */; };
 		5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6902AA6097200728F87 /* LoginViewController.swift */; };
 		5632E6AD2AA7280F00728F87 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */; };
-		5632E6AF2AA7292E00728F87 /* User.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5632E6AE2AA7292E00728F87 /* User.plist */; };
 		5632E6B12AA72A7400728F87 /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632E6B02AA72A7400728F87 /* UserInfoModel.swift */; };
 		B34D8B8A2AA9BEBB000BC1DA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34D8B892AA9BEBB000BC1DA /* Constants.swift */; };
+		565C29162AA94DF4008344D9 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565C29152AA94DF4008344D9 /* UITextField+.swift */; };
 		BD2C37D72AA7019000B4CA25 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2C37D62AA7019000B4CA25 /* CommentCell.swift */; };
 		BD2C37DB2AA70DC900B4CA25 /* CommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2C37DA2AA70DC900B4CA25 /* CommentTableViewController.swift */; };
 		BD72935B2AA85C82003F4B6F /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD72935A2AA85C82003F4B6F /* VideoCell.swift */; };
@@ -91,9 +91,12 @@
 		5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMembershipViewController.swift; sourceTree = "<group>"; };
 		5632E6902AA6097200728F87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
-		5632E6AE2AA7292E00728F87 /* User.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = User.plist; sourceTree = "<group>"; };
 		5632E6B02AA72A7400728F87 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
+
 		B34D8B892AA9BEBB000BC1DA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+
+		565C29152AA94DF4008344D9 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+
 		BD2C37D62AA7019000B4CA25 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		BD2C37DA2AA70DC900B4CA25 /* CommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewController.swift; sourceTree = "<group>"; };
 		BD72935A2AA85C82003F4B6F /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
@@ -157,6 +160,7 @@
 			children = (
 				33610B9D2AA65207004114D0 /* UIImageView+.swift */,
 				33610BA22AA65E90004114D0 /* String+.swift */,
+				565C29152AA94DF4008344D9 /* UITextField+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -185,6 +189,7 @@
 			children = (
 				33C87AEC2AA58D0F00E86A45 /* TabBarView.swift */,
 				334B6FCF2AA6C6AB00C87609 /* TabBarController.swift */,
+				565C29172AA94E6E008344D9 /* Login&Join */,
 				334B6FEC2AA6C8FC00C87609 /* HomePage */,
 				334B6FED2AA6C90F00C87609 /* DetailPage */,
 			);
@@ -229,6 +234,7 @@
 				5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */,
 				5632E6902AA6097200728F87 /* LoginViewController.swift */,
 				B34D8B892AA9BEBB000BC1DA /* Constants.swift */,
+				565C29182AA94ECC008344D9 /* CustomView */,
 				33610B9F2AA6520E004114D0 /* Extensions */,
 				336598C32AA5E59200569B79 /* Models */,
 				336598BC2AA5B67700569B79 /* Managers */,
@@ -237,7 +243,6 @@
 				5632E6552AA5780100728F87 /* Assets.xcassets */,
 				5632E6572AA5780100728F87 /* LaunchScreen.storyboard */,
 				5632E65A2AA5780100728F87 /* Info.plist */,
-				5632E6AE2AA7292E00728F87 /* User.plist */,
 			);
 			path = MyTube;
 			sourceTree = "<group>";
@@ -257,6 +262,23 @@
 				5632E66F2AA5780100728F87 /* MyTubeUITestsLaunchTests.swift */,
 			);
 			path = MyTubeUITests;
+			sourceTree = "<group>";
+		};
+		565C29172AA94E6E008344D9 /* Login&Join */ = {
+			isa = PBXGroup;
+			children = (
+				5632E6902AA6097200728F87 /* LoginViewController.swift */,
+				5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */,
+			);
+			path = "Login&Join";
+			sourceTree = "<group>";
+		};
+		565C29182AA94ECC008344D9 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */,
+			);
+			path = CustomView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -375,7 +397,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5632E6592AA5780100728F87 /* LaunchScreen.storyboard in Resources */,
-				5632E6AF2AA7292E00728F87 /* User.plist in Resources */,
 				5632E6562AA5780100728F87 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -417,6 +438,7 @@
 				5632E6912AA6097200728F87 /* LoginViewController.swift in Sources */,
 				5632E68F2AA6096000728F87 /* JoinMembershipViewController.swift in Sources */,
 				5632E68D2AA6094F00728F87 /* CustomTextfieldView.swift in Sources */,
+				565C29162AA94DF4008344D9 /* UITextField+.swift in Sources */,
 				3382140F2AA724F200EE7338 /* TabBarController.swift in Sources */,
 				33C87AED2AA58D0F00E86A45 /* TabBarView.swift in Sources */,
 				336598C22AA5E58900569B79 /* Thumbnails.swift in Sources */,
