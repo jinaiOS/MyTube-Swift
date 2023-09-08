@@ -13,6 +13,9 @@ import youtube_ios_player_helper
 class DetailPageController: UIViewController {
     
     //MARK: - 전역 변수
+    
+    
+    
     private let commentTableView = CommentTableViewController()
     private let homeModel = HomeViewModel()
     private let inset: CGFloat = 24
@@ -381,7 +384,7 @@ class DetailPageController: UIViewController {
             videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
         ])
     }
-    
+  
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
         if let sheet = self.commentTableView.sheetPresentationController {

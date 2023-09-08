@@ -19,16 +19,18 @@ final class HomeViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
+        collectionView.refreshControl = refresh
+        collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
+        collectionView.register(SearchHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
         return collectionView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.title = "YouTube"
         view.backgroundColor = .systemBackground
         setLayout()
         bindViewModel()
@@ -55,9 +57,16 @@ private extension HomeViewController {
             guard let self = self else { return }
             print("thumbnails: \(thumbnails)")
             DispatchQueue.main.async {
+                self.collectionView.refreshControl?.endRefreshing()
                 self.collectionView.reloadData()
             }
         }.store(in: &subscriptions)
+    }
+    
+    @objc func refreshCollection() {
+        collectionView.refreshControl?.beginRefreshing()
+        viewModel.refresh = true
+        viewModel.getThumbnailData()
     }
 }
 
@@ -89,14 +98,21 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
         let url = "https://youtu.be/" + videoID
-        print("snippet: \(url)")
-        
         let detailVC = DetailPageController()
         detailVC.configureData(url: url, data: data)
         navigationController?.pushViewController(detailVC, animated: true)
+        
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier, for: indexPath) as? SearchHeaderView else { return UICollectionReusableView() }
+        header.configure(viewModel: viewModel)
+        return header
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.bounds.width, height: 50)
+    }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let currentRow = indexPath.row
@@ -104,6 +120,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             && (currentRow / viewModel.display) == (viewModel.getRequestPage - 1) {
             viewModel.getThumbnailData()
         }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
 }
 

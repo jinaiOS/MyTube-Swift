@@ -6,51 +6,41 @@
 //
 
 import UIKit
-import SwiftUI
 
 class LoginViewController: UIViewController {
     
+    /** @brief ID Textfield */
     lazy var tfID: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
         return textfield
     }()
     
+    /** @brief Password Textfield */
     lazy var tfPassword: CustomTextfieldView = {
         let textfield = CustomTextfieldView()
         return textfield
     }()
     
+    /** @brief Main Image */
     lazy var imgIcon: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "MainIcon")
         return image
     }()
     
+    /** @brief login button view */
     lazy var vButton: UIView = {
        let view = UIView()
         return view
     }()
     
+    /** @brief login button */
     lazy var btnLogin: UIButton = {
        let button = UIButton()
         return button
     }()
     
-    lazy var btnFindID: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.black, for: .normal)
-        button.setTitle("아이디 찾기", for: .normal)
-         return button
-    }()
-    
-    lazy var btnRePassword: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.black, for: .normal)
-        button.setTitle("비밀번호 재설정", for: .normal)
-        button.titleLabel?.minimumScaleFactor = 5
-         return button
-    }()
-    
+    /** @brief join membership button */
     lazy var btnJoinMembership: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
@@ -59,11 +49,13 @@ class LoginViewController: UIViewController {
          return button
     }()
     
+    /** @brief login status view */
     lazy var vLoginStatus: UIView = {
         let view = UIView()
         return view
     }()
     
+    /** @brief login status button */
     lazy var btnLoginStatus: UIButton = {
        let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
@@ -74,6 +66,7 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    /** @brief stackview */
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -89,13 +82,14 @@ class LoginViewController: UIViewController {
         return stack
     }()
     
+    /** @brief management ID Stacview */
     private lazy var managementIDStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.alignment = .fill
         stack.distribution = .fillEqually
-        stack.backgroundColor = .white
-        [btnFindID, btnRePassword, btnJoinMembership].forEach {
+        stack.backgroundColor = .clear
+        [btnLoginStatus, btnJoinMembership].forEach {
             stack.addArrangedSubview($0)
         }
         return stack
@@ -103,7 +97,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UserDefaultManager.sharedInstance.loadUsers()
         //하단 인디케이터 1초뒤 삭제
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.setNeedsUpdateOfHomeIndicatorAutoHidden()
@@ -114,8 +108,8 @@ class LoginViewController: UIViewController {
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
         
-        tfID.initTextFieldText(placeHolder: "Email", delegate: self)
-        tfPassword.initTextFieldText(placeHolder: "pass", delegate: self)
+        tfID.initTextFieldText(placeHolder: "ID", delegate: self)
+        tfPassword.initTextFieldText(placeHolder: "Password", delegate: self)
 
         setLayout()
     }
@@ -125,37 +119,49 @@ class LoginViewController: UIViewController {
         view.addSubview(imgIcon)
         view.addSubview(stackView)
         view.addSubview(managementIDStackView)
-        
+       
+        setImgMainIcon()
+        setStackView()
+        setManagementIDStackView()
+        setIDTextfield()
+        setPasswordTextfield()
+        setButtonLayout()
+        setLoginStatusButtonLayout()
+    }
+    
+    func setImgMainIcon() {
         imgIcon.snp.makeConstraints {
             $0.height.equalTo(150)
             $0.centerX.equalTo(self.view)
             $0.bottom.equalTo(stackView.snp_topMargin)
         }
-        
+    }
+    
+    func setStackView() {
         stackView.snp.makeConstraints {
             $0.center.equalTo(self.view).offset(40)
             $0.leading.equalTo(self.view).offset(24)
             $0.trailing.equalTo(self.view).offset(-24)
         }
-        
+    }
+    
+    func setManagementIDStackView() {
         managementIDStackView.snp.makeConstraints {
             $0.top.equalTo(stackView.snp_bottomMargin).offset(10)
             $0.leading.trailing.equalTo(stackView)
         }
-        
+    }
+    
+    func setIDTextfield() {
         tfID.snp.makeConstraints {
             $0.height.equalTo(50)
         }
-        
+    }
+    
+    func setPasswordTextfield() {
         tfPassword.snp.makeConstraints {
             $0.height.equalTo(50)
         }
-        
-        vButton.addSubview(btnLogin)
-        setButtonLayout()
-        setLoginStatusButtonLayout()
-        
-        
     }
     
     func setLoginStatusButtonLayout() {
@@ -174,6 +180,7 @@ class LoginViewController: UIViewController {
     }
     
     func setButtonLayout() {
+        vButton.addSubview(btnLogin)
         btnLogin.setTitle("로그인", for: .normal)
         btnLogin.addTarget(self, action: #selector(loginButtonTouched), for: .touchUpInside)
         btnLogin.backgroundColor = UIColor.red
@@ -195,7 +202,13 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginButtonTouched() {
-                UserDefaultManager.shared.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false) : nil
+        if tfID.tf.text == "" {
+            tfID.isError = true
+        } else if tfPassword.tf.text == "" {
+            tfPassword.isError = true
+        } else {
+            UserDefaultManager.sharedInstance.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(UINavigationController(rootViewController:TabBarController()), animated: false) : nil
+        }
     }
     
     @objc func joinMembershipButtonTouched() {
@@ -203,6 +216,10 @@ class LoginViewController: UIViewController {
     }
 }
 extension LoginViewController: CustomTextfieldViewDelegate {
+    func customTextFieldValueChanged(_ textfield: UITextField) {
+        
+    }
+    
     func customTextFieldShouldReturn(_ textField: UITextField) -> Bool {
        if textField == tfID.tf {
             tfPassword.tf.becomeFirstResponder() // next 버튼 선택 시 -> tfPW 포커싱
@@ -210,10 +227,6 @@ extension LoginViewController: CustomTextfieldViewDelegate {
             tfPassword.tf.resignFirstResponder() // return 버튼 선택 시 -> 키보드 내려감
         }
         return true
-    }
-    
-    func customTextFieldValueChanged(_ textfield: UITextField) {
-        
     }
     
     func customTextFieldDidEndEditing(_ textField: UITextField) {
@@ -233,19 +246,4 @@ extension LoginViewController: CustomTextfieldViewDelegate {
     }
     
     
-}
-
-// SwiftUI를 활용한 미리보기
-struct LoginViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginViewControllerReprsentable().edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct LoginViewControllerReprsentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        return UINavigationController(rootViewController: LoginViewController())
-    }
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
-    typealias UIViewControllerType = UIViewController
 }
