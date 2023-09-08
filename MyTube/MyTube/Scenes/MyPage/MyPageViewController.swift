@@ -16,8 +16,18 @@ import UIKit
 import SnapKit
 
 class MyPageViewController: UIViewController {
-    
+    let nicknameLabel = UILabel()
+    let idLabel = UILabel()
+
     let logoutButton = UIButton(type: .system)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let nickname = UserDefaults.standard.string(forKey: "nickname"),
+           let id = UserDefaults.standard.string(forKey: "id") {
+            nicknameLabel.text = nickname
+            idLabel.text = "@" + id
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,8 +57,6 @@ class MyPageViewController: UIViewController {
              contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
              contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
          ])
-        
-
         
         // 메인 텍스트
         let mainLabel = UILabel()
@@ -96,8 +104,7 @@ class MyPageViewController: UIViewController {
         }
         
         // 닉네임 텍스트
-        let nicknameLabel = UILabel()
-        nicknameLabel.text = "Janus"
+        nicknameLabel.text = ""
         nicknameLabel.font = UIFont.systemFont(ofSize: 20)
         nicknameLabel.textColor = .black
         nicknameLabel.textAlignment = .left
@@ -112,8 +119,7 @@ class MyPageViewController: UIViewController {
         }
         
         // 아이디 텍스트
-        let idLabel = UILabel()
-        idLabel.text = "@janus5307"
+        idLabel.text = ""
         idLabel.font = UIFont.systemFont(ofSize: 18)
         idLabel.textColor = .gray
         idLabel.textAlignment = .left
@@ -126,6 +132,7 @@ class MyPageViewController: UIViewController {
             make.width.equalTo(200)
             make.height.equalTo(20)
         }
+
 
 
         // 화살표 아이콘
@@ -361,6 +368,8 @@ class MyPageViewController: UIViewController {
         
         
     }
+
+    
     // 로그아웃 버튼을 눌렀을 때 호출될 메서드
         @objc func logoutButtonTapped() {
             // LoginViewController를 생성합니다.
@@ -376,6 +385,7 @@ class MyPageViewController: UIViewController {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController(), animated: false)
         }
     
+    
     @objc func editButtonTapped() {
         let joinMembershipVC = JoinMembershipViewController()
         
@@ -386,6 +396,7 @@ class MyPageViewController: UIViewController {
             navigationController.modalPresentationStyle = .fullScreen
             self.present(navigationController, animated: true, completion: nil)
         }
+        
     }
 
     deinit {

@@ -325,6 +325,9 @@ class JoinMembershipViewController: UIViewController {
             tfBirth.isError = true
         } else {
             UserDefaultManager.sharedInstance.userList.append(UserInfoModel(id: tfID.tf.text ?? "", nickName: tfNickName.tf.text ?? "", password: tfPassword.tf.text ?? "", name: tfName.tf.text ?? "", birth: tfBirth.tf.text ?? ""))
+            
+            UserDefaults.standard.set(tfNickName.tf.text, forKey: "nickname")
+            UserDefaults.standard.set(tfID.tf.text, forKey: "id")
             self.navigationController?.popViewController(animated: true)
         }
     }
