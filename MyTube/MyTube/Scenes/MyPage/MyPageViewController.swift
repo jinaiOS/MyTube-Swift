@@ -319,7 +319,7 @@ class MyPageViewController: UIViewController {
         historyScrollView.addSubview(historyStackView)
 
         // 사각형 모양의 뷰를 6개 추가
-        for _ in 0..<6 {
+        for _ in 0..<8 {
             let historyItemView = UIView()
             historyItemView.backgroundColor = .gray // 원하는 색상으로 설정하세요
             historyItemView.translatesAutoresizingMaskIntoConstraints = false
