@@ -19,10 +19,13 @@ final class HomeViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
+        collectionView.refreshControl = refresh
         collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
         collectionView.register(SearchHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
         return collectionView
     }()
     
@@ -56,9 +59,16 @@ private extension HomeViewController {
             guard let self = self else { return }
             print("thumbnails: \(thumbnails)")
             DispatchQueue.main.async {
+                self.collectionView.refreshControl?.endRefreshing()
                 self.collectionView.reloadData()
             }
         }.store(in: &subscriptions)
+    }
+    
+    @objc func refreshCollection() {
+        collectionView.refreshControl?.beginRefreshing()
+        viewModel.refresh = true
+        viewModel.getThumbnailData()
     }
 }
 
