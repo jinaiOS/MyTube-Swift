@@ -99,6 +99,10 @@ class CustomTextfieldView: UIView {
         setBorderView()
         setTextField()
         setTitleButton()
+        
+        if !(tf.text?.isEmpty ?? true) {
+            placeHolderAnimation(isEditing: true)
+        }
     }
     
     /// 에러상태변환 체크
@@ -202,6 +206,10 @@ class CustomTextfieldView: UIView {
         tfDelegate = delegate
     }
     
+    func setDefaultAnimationText() {
+        placeHolderAnimation(isEditing: true)
+    }
+    
     func textfieldEditing(isEditing : Bool)  {
         if isEditing {
             vBorder.layer.borderWidth = 2
@@ -222,8 +230,8 @@ class CustomTextfieldView: UIView {
             tf.placeholder = ""
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) { [weak self] in
                 guard let `self` = self else {return}
-                self.buttonTopConstraint?.update(offset: -(self.frame.height / 2) + 20)
-                self.buttonBottomConstraint?.update(offset: -(self.frame.height / 2) - 10)
+                self.buttonTopConstraint?.update(offset: -10)
+                self.buttonBottomConstraint?.update(offset: -35)
                 self.layoutIfNeeded()
             } completion: { (finished) in
                 
@@ -249,7 +257,7 @@ class CustomTextfieldView: UIView {
 extension CustomTextfieldView : UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         tfDelegate?.customTextFieldDidBeginEditing(textField)
-                isError = false
+        isError = false
         textfieldEditing(isEditing: true)
         
         if textField.text?.isEmpty ?? true {

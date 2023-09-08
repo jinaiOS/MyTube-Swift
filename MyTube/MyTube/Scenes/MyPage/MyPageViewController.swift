@@ -22,8 +22,8 @@ class MyPageViewController: UIViewController {
     let logoutButton = UIButton(type: .system)
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let nickname = UserDefaults.standard.string(forKey: "nickname"),
-           let id = UserDefaults.standard.string(forKey: "id") {
+        if let nickname = UserDefaultManager.sharedInstance.userInfo?.nickName,
+           let id = UserDefaultManager.sharedInstance.userInfo?.id {
             nicknameLabel.text = nickname
             idLabel.text = "@" + id
         }
@@ -181,6 +181,9 @@ class MyPageViewController: UIViewController {
             circleImageView.tintColor = .gray // 이미지 뷰의 색상 설정
             circleImageView.contentMode = .scaleAspectFit
             circleImageView.clipsToBounds = true
+            Task {
+                circleImageView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
+            }
             circleImageView.layer.cornerRadius = 40
             circleImageView.translatesAutoresizingMaskIntoConstraints = false
             circleImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 너비 조절
@@ -239,10 +242,14 @@ class MyPageViewController: UIViewController {
         
         // 사각형 모양의 뷰를 6개 추가
         for _ in 0..<6 {
-            let rectangleView = UIView()
+            let rectangleView = UIImageView()
             rectangleView.backgroundColor = .gray // 원하는 색상으로 설정하세요
             rectangleView.translatesAutoresizingMaskIntoConstraints = false
             rectangleView.layer.cornerRadius = 6 // 모서리 반지름 설정
+            Task {
+                rectangleView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
+            }
+            
             rectangleStackView.addArrangedSubview(rectangleView)
             
             rectangleView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
@@ -297,9 +304,12 @@ class MyPageViewController: UIViewController {
         
         // 사각형 모양의 뷰를 6개 추가
         for _ in 0..<8 {
-            let historyItemView = UIView()
+            let historyItemView = UIImageView()
             historyItemView.backgroundColor = .gray // 원하는 색상으로 설정하세요
             historyItemView.translatesAutoresizingMaskIntoConstraints = false
+            Task {
+                historyItemView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
+            }
             historyItemView.layer.cornerRadius = 6 // 모서리 반지름 설정
             historyStackView.addArrangedSubview(historyItemView)
             
@@ -361,9 +371,8 @@ class MyPageViewController: UIViewController {
     
     @objc func editButtonTapped() {
         let joinMembershipVC = JoinMembershipViewController()
-        
+        joinMembershipVC.type = .Edit
         self.navigationController?.pushViewController(joinMembershipVC, animated: true)
-        
     }
     
     deinit {

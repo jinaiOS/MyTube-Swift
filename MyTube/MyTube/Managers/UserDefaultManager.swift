@@ -60,95 +60,24 @@ class UserDefaultManager {
         return false
     }
     
+    func checkIDDoubleCheck(id: String) -> Bool {
+        for i in userList {
+            if i.id == id {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func editMembership(id: String, nickName: String, pw: String, name: String, birth: String) {
+        for i in 0..<userList.count {
+            if userList[i].id == userInfo?.id {
+                userList[i] = UserInfoModel(id: id, nickName: nickName, password: pw, name: name, birth: birth)
+            }
+        }
+    }
+    
     func saveCurrentVideo(videoId: String) {
         UserDefaults.standard.set(videoId, forKey: "currentVideoId")
     }
 }
-
-
-//class UserDefaultManager {
-//    static let shared = UserDefaultManager()
-//
-//    private let userDefaults = UserDefaults.standard
-//    private let contactKey = "Root"
-//    private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//    private var archiveURL: URL
-//    var userInfo: UserInfoModel?
-//
-//    init() {
-//        archiveURL = Bundle.main.url(forResource: "User", withExtension: "plist")!
-//    }
-//
-//    // MARK: userDefaults
-//
-//    func fetchContacts() -> [UserInfoModel] {
-//        guard let data = userDefaults.object(forKey: contactKey) as? Data else { return [] }
-//        guard let contacts = try? JSONDecoder().decode([UserInfoModel].self, from: data) else { return [] }
-//        return contacts
-//    }
-//
-//    func save(contact: UserInfoModel) {
-//        var contacts = fetchContacts()
-//        contacts.append(contact)
-//        guard let data = try? JSONEncoder().encode(contacts) else { return }
-//        userDefaults.setValue(data, forKey: contactKey)
-//    }
-//
-//    func deleteContact(at index: Int) {
-//        var contacts = fetchContacts()
-//        contacts.remove(at: index)
-//        guard let data = try? JSONEncoder().encode(contacts) else { return }
-//        userDefaults.setValue(data, forKey: contactKey)
-//    }
-//
-//    // MARK: plist
-//
-//    func fetchFromFile() -> [UserInfoModel] {
-//        guard let data = try? Data(contentsOf: archiveURL) else { return [] }
-//        guard let contacts = try? PropertyListDecoder().decode([UserInfoModel].self, from: data) else { return [] }
-//        return contacts
-//
-//    }
-//
-//    func requestLogin(id: String, pw: String) -> Bool {
-//        var contacts = fetchFromFile()
-//
-//        for i in contacts {
-//            if i.id == id && i.password == pw {
-//                print("login complete")
-//                userInfo = i
-//                return true
-//            }
-//        }
-//        print("login fail")
-//        return false
-//    }
-//
-//    func saveToFile(with contact: UserInfoModel, index: Int? = nil) {
-//        var contacts = fetchFromFile()
-//        if let index = index {
-//            contacts[index] = contact
-//        } else {
-//            contacts.append(contact)
-//        }
-//
-//        guard let data = try? PropertyListEncoder().encode(contacts) else {
-//            return
-//        }
-//
-//        try? data.write(to: archiveURL, options: .atomic)
-//        print(fetchFromFile())
-//    }
-//
-//    func deleteFromFile(at index: Int) {
-//        var contacts = fetchFromFile()
-//        contacts.remove(at: index)
-//
-//        guard let data = try? PropertyListEncoder().encode(contacts) else {
-//            return
-//        }
-//
-//        try? data.write(to: archiveURL, options: .noFileProtection)
-//        print(fetchFromFile())
-//    }
-//}
