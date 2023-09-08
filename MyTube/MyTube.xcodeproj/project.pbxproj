@@ -92,11 +92,8 @@
 		5632E6902AA6097200728F87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5632E6AC2AA7280F00728F87 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		5632E6B02AA72A7400728F87 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
-
 		B34D8B892AA9BEBB000BC1DA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-
 		565C29152AA94DF4008344D9 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
-
 		BD2C37D62AA7019000B4CA25 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		BD2C37DA2AA70DC900B4CA25 /* CommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewController.swift; sourceTree = "<group>"; };
 		BD72935A2AA85C82003F4B6F /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
@@ -230,9 +227,6 @@
 			children = (
 				5632E64C2AA577FD00728F87 /* AppDelegate.swift */,
 				5632E64E2AA577FD00728F87 /* SceneDelegate.swift */,
-				5632E68C2AA6094F00728F87 /* CustomTextfieldView.swift */,
-				5632E68E2AA6096000728F87 /* JoinMembershipViewController.swift */,
-				5632E6902AA6097200728F87 /* LoginViewController.swift */,
 				B34D8B892AA9BEBB000BC1DA /* Constants.swift */,
 				565C29182AA94ECC008344D9 /* CustomView */,
 				33610B9F2AA6520E004114D0 /* Extensions */,
