@@ -122,8 +122,26 @@ class JoinMembershipViewController: UIViewController {
         registerDelegate()
         if type == .Join {
             navigationItem.title = "회원가입"
+            tfID.tf.text = ""
+            tfNickName.tf.text = ""
+            tfPassword.tf.text = ""
+            tfRePassword.tf.text = ""
+            tfName.tf.text = ""
+            tfBirth.tf.text = ""
         } else {
             navigationItem.title = "회원정보 수정"
+            tfID.tf.text = UserDefaultManager.sharedInstance.userInfo?.id
+            tfID.setDefaultAnimationText()
+            tfNickName.tf.text = UserDefaultManager.sharedInstance.userInfo?.nickName
+            tfNickName.setDefaultAnimationText()
+            tfPassword.tf.text = UserDefaultManager.sharedInstance.userInfo?.password
+            tfPassword.setDefaultAnimationText()
+            tfRePassword.tf.text = UserDefaultManager.sharedInstance.userInfo?.password
+            tfRePassword.setDefaultAnimationText()
+            tfName.tf.text = UserDefaultManager.sharedInstance.userInfo?.name
+            tfName.setDefaultAnimationText()
+            tfBirth.tf.text = UserDefaultManager.sharedInstance.userInfo?.birth
+            tfBirth.setDefaultAnimationText()
         }
         navigationItem.leftBarButtonItem = backButton
         
@@ -311,7 +329,7 @@ class JoinMembershipViewController: UIViewController {
     }
     
     @objc func joinButtonTouched() {
-        if tfID.tf.text == "" {
+        if tfID.tf.text == "" || UserDefaultManager.sharedInstance.checkIDDoubleCheck(id: tfID.tf.text ?? "") {
             tfID.isError = true
         } else if tfNickName.tf.text == "" {
             tfNickName.isError = true
@@ -324,10 +342,11 @@ class JoinMembershipViewController: UIViewController {
         } else if tfBirth.tf.text == "" {
             tfBirth.isError = true
         } else {
-            UserDefaultManager.sharedInstance.userList.append(UserInfoModel(id: tfID.tf.text ?? "", nickName: tfNickName.tf.text ?? "", password: tfPassword.tf.text ?? "", name: tfName.tf.text ?? "", birth: tfBirth.tf.text ?? ""))
-            
-            UserDefaults.standard.set(tfNickName.tf.text, forKey: "nickname")
-            UserDefaults.standard.set(tfID.tf.text, forKey: "id")
+            if type == .Join {
+                UserDefaultManager.sharedInstance.userList.append(UserInfoModel(id: tfID.tf.text ?? "", nickName: tfNickName.tf.text ?? "", password: tfPassword.tf.text ?? "", name: tfName.tf.text ?? "", birth: tfBirth.tf.text ?? ""))
+            } else {
+                UserDefaultManager.sharedInstance.editMembership(id: tfID.tf.text ?? "", nickName: tfNickName.tf.text ?? "", pw: tfPassword.tf.text ?? "", name: tfName.tf.text ?? "", birth: tfBirth.tf.text ?? "")
+            }
             self.navigationController?.popViewController(animated: true)
         }
     }
