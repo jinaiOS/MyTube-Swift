@@ -207,7 +207,7 @@ class LoginViewController: UIViewController {
         } else if tfPassword.tf.text == "" {
             tfPassword.isError = true
         } else {
-            UserDefaultManager.sharedInstance.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false) : nil
+            UserDefaultManager.sharedInstance.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(UINavigationController(rootViewController:TabBarController()), animated: false) : nil
         }
     }
     

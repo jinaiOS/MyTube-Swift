@@ -31,8 +31,6 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.title = "YouTube"
         view.backgroundColor = .systemBackground
         setLayout()
         bindViewModel()

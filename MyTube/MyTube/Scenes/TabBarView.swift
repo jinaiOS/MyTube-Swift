@@ -8,10 +8,16 @@
 import UIKit
 import SnapKit
 
+protocol TabBarViewDelegate: AnyObject {
+    func did(selectindex: Int)
+}
+
 final class TabBarView: UIView {
     lazy var houseBtn: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "house"), for: .normal)
+        button.tag = 0
+        button.addTarget(self, action: #selector(changeTab(_:)), for: .touchUpInside)
         button.tintColor = .systemRed
         return button
     }()
@@ -19,6 +25,8 @@ final class TabBarView: UIView {
     lazy var personBtn: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "person.fill"), for: .normal)
+        button.tag = 1
+        button.addTarget(self, action: #selector(changeTab(_:)), for: .touchUpInside)
         button.tintColor = .systemGray
         return button
     }()
@@ -43,6 +51,8 @@ final class TabBarView: UIView {
         return stack
     }()
     
+    weak var delegate: TabBarViewDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -55,6 +65,10 @@ final class TabBarView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    @objc func changeTab(_ sender: UIButton) {
+        delegate?.did(selectindex: sender.tag)
     }
     
     required init?(coder: NSCoder) {
