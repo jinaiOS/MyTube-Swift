@@ -356,7 +356,7 @@ class DetailPageController: UIViewController {
         ])
     }
     
-    func configure(url: String, data: Thumbnails.Snippet) {
+    func configure(url: String, data: Thumbnails.Item) {
         self.url = url
         self.data = data
     }
@@ -441,17 +441,3 @@ struct VCRepresentable: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
 }
 
-// SwiftUI를 활용한 미리보기
-struct DetailPageController_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailPageControllerReprsentable().edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct DetailPageControllerReprsentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        return UINavigationController(rootViewController: DetailPageController())
-    }
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
-    typealias UIViewControllerType = UIViewController
-}
