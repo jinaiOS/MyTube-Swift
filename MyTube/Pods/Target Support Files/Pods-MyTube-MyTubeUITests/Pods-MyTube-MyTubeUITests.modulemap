@@ -1,0 +1,6 @@
+framework module Pods_MyTube_MyTubeUITests {
+  umbrella header "Pods-MyTube-MyTubeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
