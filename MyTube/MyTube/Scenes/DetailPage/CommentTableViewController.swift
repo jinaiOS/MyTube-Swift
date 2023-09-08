@@ -12,6 +12,8 @@ import SwiftUI
 class CommentTableViewController: UIViewController {
     //MARK: - 전역 변수
     private let youtubeManager = YoutubeManger.shared
+    var data: Thumbnails.Item?
+    var commentData: [Comments] = []
     
     //MARK: - IBOutlet
     let commentTableView: UITableView = {
@@ -32,6 +34,21 @@ class CommentTableViewController: UIViewController {
         commentTableView.delegate = self
         
         commentTableView.frame = view.bounds
+        fetchCommentData()
+    }
+    
+    func fetchCommentData() {
+        guard let videoId = data?.id.videoId else { print("데이터가 없습니다"); return }
+        youtubeManager.getComments(from: videoId) { result in
+            switch result {
+            case .success(let comments):
+                print(comments)
+                self.commentData.append(comments)
+                self.commentTableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
@@ -43,12 +60,15 @@ extension CommentTableViewController: UITableViewDelegate {
 
 extension CommentTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return commentData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+        let comment = commentData[indexPath.row]
         cell.contentView.backgroundColor = .white
+        // MARK: - 댓글 연결 실패
+//        cell.commentLabel.text = comment.items.
         return cell
     }
 }

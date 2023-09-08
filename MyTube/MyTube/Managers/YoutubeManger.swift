@@ -33,8 +33,8 @@ final class YoutubeManger {
             return nil
         }
     }
-    
-    func getComments(from videoId: String) { //async -> Comments? {
+
+    func getComments(from videoId: String, completion: @escaping (Result<Comments, Error>) -> Void) {
         let params = [
             "textFormat": "plainText",
             "part": "snippet",
@@ -48,27 +48,17 @@ final class YoutubeManger {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
-                     decoder.dateDecodingStrategy = .iso8601
+                    decoder.dateDecodingStrategy = .iso8601
                     let jsonData = try decoder.decode(Comments.self, from: data!)
-                    print(jsonData)
-                } catch let DecodingError.dataCorrupted(context) {
-                    print(context)
-                } catch let DecodingError.keyNotFound(key, context) {
-                    print("Key '\(key)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.valueNotFound(value, context) {
-                    print("Value '\(value)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.typeMismatch(type, context)  {
-                    print("Type '\(type)' mismatch:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
+                    completion(.success(jsonData))
                 } catch {
-                    print("error: ", error)
+                    completion(.failure(error))
                 }
 
             case .failure(let error):
-                print(error.localizedDescription)
+                completion(.failure(error))
             }
         }
     }
+
 }

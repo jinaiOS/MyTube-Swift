@@ -272,8 +272,18 @@ class DetailPageController: UIViewController {
         
         view.backgroundColor = .systemBackground
         if let data = data {
-            YoutubeManger.shared.getComments(from: data.id.videoId)
+            sendData(data: data)
         }
+//        if let data = data {
+//            YoutubeManger.shared.getComments(from: data.id.videoId) { result in
+//                switch result {
+//                case .success(let comments):
+//                    print(comments)
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//        }
         
         setupUI()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
@@ -372,11 +382,6 @@ class DetailPageController: UIViewController {
         ])
     }
     
-    func configure(url: String, data: Thumbnails.Item) {
-        self.url = url
-        self.data = data
-    }
-    
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
         if let sheet = self.commentTableView.sheetPresentationController {
@@ -398,8 +403,8 @@ class DetailPageController: UIViewController {
         }
     }
     
-    func sendData(data: Thumbnails.Item) -> Thumbnails.Item {
-        return data
+    func sendData(data: Thumbnails.Item) {
+        commentTableView.data = data
     }
     
     deinit {
