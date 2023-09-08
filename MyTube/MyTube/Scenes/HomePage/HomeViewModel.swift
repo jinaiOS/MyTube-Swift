@@ -12,6 +12,9 @@ final class HomeViewModel: ObservableObject {
     private let manager = YoutubeManger.shared
     private var requestPage: Int = 0
     let display: Int = 20
+    var refresh: Bool = false
+    var searchText: String? = nil
+    
     
     var getRequestPage: Int {
         return requestPage
@@ -19,8 +22,8 @@ final class HomeViewModel: ObservableObject {
     
     @Published var ThumbnailList: [Thumbnails.Item] = []
     
-    func getThumbnailData(searchText: String? = nil) {
-        if searchText != nil {
+    func getThumbnailData() {
+        if refresh == true {
             reset()
         }
         Task {
@@ -33,5 +36,6 @@ final class HomeViewModel: ObservableObject {
     private func reset() {
         requestPage = 0
         ThumbnailList.removeAll()
+        refresh.toggle()
     }
 }
