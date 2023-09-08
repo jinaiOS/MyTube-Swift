@@ -95,6 +95,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let snippet = viewModel.ThumbnailList[indexPath.item].snippet
         let data = viewModel.ThumbnailList[indexPath.item]
+        
         guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
         let url = "https://youtu.be/" + videoID
         let detailVC = DetailPageController()

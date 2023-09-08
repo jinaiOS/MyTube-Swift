@@ -1,0 +1,21 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'MyTube' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for MyTube
+pod 'GoogleAPIClientForREST'
+pod 'youtube-ios-player-helper'
+
+  target 'MyTubeTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'MyTubeUITests' do
+    # Pods for testing
+  end
+
+end
