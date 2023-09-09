@@ -19,6 +19,8 @@ class DetailPageController: UIViewController {
     private var url: String?
     var data: Thumbnails.Item?
     var subscription = Set<AnyCancellable>()
+    var likeIsTapped = false
+    var dislikeIsTapped = false
     
     //MARK: - 영상 + 프로필 영역
     lazy var videoPlayerView: YTPlayerView = {
@@ -130,6 +132,7 @@ class DetailPageController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -137,10 +140,11 @@ class DetailPageController: UIViewController {
         let button = UIButton()
         button.setTitle("👎🏻", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .red
+        button.backgroundColor = .blue
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(dislikeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -153,6 +157,7 @@ class DetailPageController: UIViewController {
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(doShare), for: .touchUpInside)
         return button
     }()
     
@@ -407,6 +412,39 @@ class DetailPageController: UIViewController {
                 self.videoCollectionView.reloadData()
             }
         }.store(in: &subscription)
+    }
+    
+    @objc func likeButtonTapped() {
+        likeIsTapped.toggle()
+        
+        if likeIsTapped {
+            likeButton.backgroundColor = .red
+        } else {
+            likeButton.backgroundColor = .blue
+        }
+        
+    }
+    
+    @objc func dislikeButtonTapped() {
+        dislikeIsTapped.toggle()
+        
+        if dislikeIsTapped {
+            dislikeButton.backgroundColor = .red
+        } else {
+            dislikeButton.backgroundColor = .blue
+        }
+    }
+    
+    @objc func doShare() {
+        let shareText: String = "share text test!"
+        var shareObject = [Any]()
+        
+        shareObject.append(shareText)
+        
+        let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+                
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     deinit {

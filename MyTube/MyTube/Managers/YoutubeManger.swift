@@ -18,7 +18,7 @@ final class YoutubeManger {
             "type": "video",
             "page": "\(page)",
             "maxResults": "20",
-            "key": TEST_KEY
+            "key": TEST3_KEY
         ]
         
         let dataTask = AF.request(ThumbNailUrl, method: .get, parameters: params)
@@ -40,7 +40,7 @@ final class YoutubeManger {
             "part": "snippet",
             "videoId": "\(videoId)",
             "maxResults": "10",
-            "key": TEST2_KEY
+            "key": TEST3_KEY
         ]
         
         AF.request(CommentURL, method: .get, parameters: params).response { response in
