@@ -8,7 +8,7 @@
 import Foundation
 
 struct Comments: Codable {
-    let item: [Item]?
+    let item: [Item]
     
     // MARK: - Item
     struct Item: Codable {

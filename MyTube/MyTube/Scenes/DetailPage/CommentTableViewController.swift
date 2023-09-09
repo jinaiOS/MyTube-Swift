@@ -42,7 +42,6 @@ class CommentTableViewController: UIViewController {
             switch result {
             case .success(let comment):
                 print("댓글 출력 확인\(comment)")
-                guard let comment = comment else { return }
                 self.commentData += comment.item
             case .failure(let error):
                 print("오류 출력 확인\(error)")
