@@ -18,7 +18,7 @@ final class YoutubeManger {
             "type": "video",
             "page": "\(page)",
             "maxResults": "20",
-            "key": TEST3_KEY
+            "key": HANS_KEY
         ]
         
         if let searchText = searchText {
@@ -76,7 +76,6 @@ final class YoutubeManger {
             
         switch await dataTask.result {
         case .success(let result):
-            print("====> result: \(result)")
             return result
             
         case .failure(let error):

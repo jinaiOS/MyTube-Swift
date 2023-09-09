@@ -380,15 +380,6 @@ class DetailPageController: UIViewController {
             videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
         ])
     }
-    
-    func setVideoCollectionView() {
-        NSLayoutConstraint.activate([
-            videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
-            videoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            videoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
-            videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
-        ])
-    }
   
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")

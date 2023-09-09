@@ -93,10 +93,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let snippet = viewModel.ThumbnailList[indexPath.item].snippet
         let data = viewModel.ThumbnailList[indexPath.item]
-        
-        guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
+        let videoID = data.id.videoId
         let url = "https://youtu.be/" + videoID
         
         let detailVC = DetailPageController()
@@ -133,22 +131,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         view.endEditing(true)
     }
-}
-
-// SwiftUI를 활용한 미리보기
-struct HomeViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeVCReprsentable().edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct HomeVCReprsentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let homeViewController = HomeViewController()
-        return UINavigationController(rootViewController: homeViewController)
-    }
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
-    typealias UIViewControllerType = UIViewController
 }
 
 // SwiftUI를 활용한 미리보기

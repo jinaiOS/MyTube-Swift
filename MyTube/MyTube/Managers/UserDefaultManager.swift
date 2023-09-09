@@ -80,8 +80,4 @@ class UserDefaultManager {
     func saveCurrentVideo(videoId: String) {
         UserDefaults.standard.set(videoId, forKey: "currentVideoId")
     }
-    
-    func saveCurrentVideo(videoId: String) {
-        userDefaults.set(videoId, forKey: "currentVideoId")
-    }
 }
