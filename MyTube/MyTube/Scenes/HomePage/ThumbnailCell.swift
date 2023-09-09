@@ -15,18 +15,21 @@ final class ThumbnailCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "photo")
-        view.contentMode = .scaleToFill
-        view.layer.cornerRadius = 10
+        view.contentMode = .scaleAspectFill
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
         return view
     }()
     
     private lazy var profileThumbnail: UIImageView = {
+        let imageSize: CGFloat = 34
         let view = UIImageView()
         view.image = UIImage(systemName: "person.circle")
-        view.contentMode = .scaleToFill
-        
+        view.contentMode = .scaleAspectFill
+        view.layer.cornerRadius = imageSize / 2
+        view.clipsToBounds = true
         view.snp.makeConstraints {
-            $0.width.height.equalTo(50)
+            $0.width.height.equalTo(imageSize)
         }
         return view
     }()
