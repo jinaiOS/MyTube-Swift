@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import SwiftUI
 
 final class ThumbnailCell: UICollectionViewCell {
     static let identifier = "ThumbnailCell"
@@ -18,16 +20,15 @@ final class ThumbnailCell: UICollectionViewCell {
         return view
     }()
     
-    private lazy var channelTitle: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 15, weight: .semibold)
-        label.textColor = .label
-        label.textAlignment = .center
-        label.numberOfLines = 1
-        label.snp.makeConstraints {
-            $0.width.height.equalTo(34)
+    private lazy var profileThumbnail: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "person.circle")
+        view.contentMode = .scaleToFill
+        
+        view.snp.makeConstraints {
+            $0.width.height.equalTo(50)
         }
-        return label
+        return view
     }()
 
     private lazy var titleLabel: UILabel = {
@@ -65,7 +66,7 @@ final class ThumbnailCell: UICollectionViewCell {
         stackView.spacing = 8
         stackView.alignment = .fill
         stackView.distribution = .fill
-        [channelTitle, titleStackView].forEach {
+        [profileThumbnail, titleStackView].forEach {
             stackView.addArrangedSubview($0)
         }
         return stackView
@@ -99,11 +100,17 @@ final class ThumbnailCell: UICollectionViewCell {
     
     func configure(data: Thumbnails.Item) {
         let url = data.snippet.thumbnails.high.url
+        let channelID = data.snippet.channelId
         Task {
             let image = await ImageCacheManager.shared.loadImage(url: url)
             imageView.image = image
         }
-        channelTitle.text = data.snippet.channelTitle
+        Task {
+            guard let profile = await YoutubeManger.shared.getProfileThumbnail(channelID: channelID),
+                  let url = profile.items?.first?.snippet.thumbnails.high.url else { return }
+            let image = await ImageCacheManager.shared.loadImage(url: url)
+            profileThumbnail.image = image
+        }
         titleLabel.text = data.snippet.title
         subTitleLabel.text = data.snippet.description
     }
