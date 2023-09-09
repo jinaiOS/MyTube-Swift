@@ -89,7 +89,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
         let url = "https://youtu.be/" + videoID
-        print("snippet: \(url)")
         
         let detailVC = DetailPageController()
         detailVC.configureData(url: url, data: data)

@@ -15,7 +15,6 @@ class DetailPageController: UIViewController {
     //MARK: - 전역 변수
     private let commentTableView = CommentTableViewController()
     private let homeModel = HomeViewModel()
-    private let commentCell = CommentCell()
     private let inset: CGFloat = 24
     private var url: String?
     var data: Thumbnails.Item?
@@ -270,18 +269,14 @@ class DetailPageController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        view.backgroundColor = .systemBackground
-        commentCell.fetchData(data: data)
-        
+        // 하단 영상 썸네일 호출
         bindViewModel()
         homeModel.getThumbnailData()
         
         setupUI()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        commentStack.addGestureRecognizer(tapGesture)
-        
-        
     }
+    
+    //MARK: - setup 함수
     
     func setupUI() {
         setVideo()
@@ -347,6 +342,9 @@ class DetailPageController: UIViewController {
     
     func setCommentView() {
         view.addSubview(commentViewStack)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        commentStack.addGestureRecognizer(tapGesture)
+        
         [commentView, statStack, commentStack].forEach{commentViewStack.addSubview($0)}
         
         NSLayoutConstraint.activate([
@@ -367,8 +365,6 @@ class DetailPageController: UIViewController {
     }
     
     func setVideoCollectionView() {
-        
-        
         NSLayoutConstraint.activate([
             videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
             videoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -379,30 +375,30 @@ class DetailPageController: UIViewController {
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
-        if let sheet = self.commentTableView.sheetPresentationController {
+        if let sheet = self.commentTableView.sheetPresentationController, let data = data {
             sheet.detents = [.medium()]
+            commentTableView.fetchData(data: data)
         }
         self.present(self.commentTableView, animated: true, completion: nil)
     }
     
+    //MARK: - 데이터 호출 함수
+    // 탭한 유튜브 영상 데이터 가져오기 위한 함수
     func configureData(url: String, data: Thumbnails.Item) {
         self.url = url
         self.data = data
     }
     
+    // 탭한 영상 저장하도록 정리
     @objc func addVideoToList() {
         UserDefaults.standard.string(forKey: "currentVideoId")
         if let data = data {
             print("비디오 아이디는 \(data.id.videoId)")
             print("채널 아이디는 \(data.snippet.channelId)")
-            sendData(data: data)
         }
     }
     
-    func sendData(data: Thumbnails.Item) {
-//        commentTableView.data = data
-    }
-    
+    //MARK: - collectionView 데이터 채우기
     func bindViewModel() {
         homeModel.$ThumbnailList.sink { [weak self] thumbnails in
             guard let self = self else { return }
@@ -426,7 +422,7 @@ extension DetailPageController: UICollectionViewDelegate {
 
 extension DetailPageController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: true)
+        //        present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

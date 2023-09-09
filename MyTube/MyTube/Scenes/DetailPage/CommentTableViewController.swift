@@ -12,6 +12,8 @@ import SwiftUI
 class CommentTableViewController: UIViewController {
     //MARK: - 전역 변수
     private let youtubeManager = YoutubeManger.shared
+    var data: Thumbnails.Item?
+    var commentData: [Comments] = []
     
     //MARK: - IBOutlet
     let commentTableView: UITableView = {
@@ -26,14 +28,31 @@ class CommentTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
+        view.addSubview(commentTableView)
         commentTableView.dataSource = self
         commentTableView.delegate = self
-        view.addSubview(commentTableView)
         commentTableView.frame = view.bounds
         
-//        print("전역 변수로 저장됨\(commentData)")
+        loadCommentData()
     }
+    
+    func loadCommentData() {
+        guard let videoId = data?.id.videoId else { print("데이터가 없습니다"); return }
+        youtubeManager.getComments(from: videoId) { result in
+            switch result {
+            case .success(let comment):
+                print("댓글 출력 확인\(comment)")
+                self.commentData.append(comment)
+            case .failure(let error):
+                print("오류 출력 확인\(error)")
+            }
+        }
+    }
+    
+    func fetchData(data: Thumbnails.Item) {
+        self.data = data
+    }
+    
 }
 
 extension CommentTableViewController: UITableViewDelegate {
@@ -44,18 +63,12 @@ extension CommentTableViewController: UITableViewDelegate {
 
 extension CommentTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return commentData.count
-        return 1
+        return commentData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
         cell.contentView.backgroundColor = .white
-        
-        
-        
-        // MARK: - 댓글 연결 실패
-        
         return cell
     }
 }

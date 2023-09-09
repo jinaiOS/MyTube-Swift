@@ -33,7 +33,7 @@ final class YoutubeManger {
             return nil
         }
     }
-
+    
     func getComments(from videoId: String, completion: @escaping (Result<Comments, Error>) -> Void) {
         let params = [
             "textFormat": "plainText",
@@ -54,11 +54,10 @@ final class YoutubeManger {
                 } catch {
                     completion(.failure(error))
                 }
-
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
-
+    
 }

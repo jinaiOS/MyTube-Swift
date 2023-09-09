@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Comments.swift
 //  MyTube
 //
 //  Created by Jack Lee on 2023/09/07.
@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Welcome
 struct Comments: Codable {
-    let items: [Item]
+    let items: [Item]?
 }
 
 // MARK: - Item
