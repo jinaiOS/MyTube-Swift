@@ -24,6 +24,7 @@ class DetailPageController: UIViewController {
     var subscription = Set<AnyCancellable>()
     var likeIsTapped = false
     var dislikeIsTapped = false
+    var subscribeIsTapped = false
     
     //MARK: - 영상 + 프로필 영역
     lazy var videoPlayerView: YTPlayerView = {
@@ -110,7 +111,7 @@ class DetailPageController: UIViewController {
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(addVideoToList), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addSubscribe), for: .touchUpInside)
         return button
     }()
     
@@ -407,6 +408,31 @@ class DetailPageController: UIViewController {
     }
     
     //MARK: - collectionView 데이터 채우기
+    @objc func addSubscribe() {
+        subscribeIsTapped.toggle()
+        
+        if subscribeIsTapped {
+            followButton.setTitle("구독중", for: .normal)
+            if let data = data {
+                print("구독한 비디오 아이디는 \(data.snippet.channelId)")
+                UserDefaultManager.sharedInstance.saveSubscribe(channelID: data.snippet.channelId)
+                sendData(data: data)
+            }
+        } else {
+            followButton.setTitle("구독", for: .normal)
+            if let data = data {
+                print("구독한 비디오 아이디는 \(data.snippet.channelId)")
+                UserDefaultManager.sharedInstance.deleteSubscribe(channelID: data.snippet.channelId)
+                sendData(data: data)
+            }
+        }
+       
+    }
+    
+    func sendData(data: Thumbnails.Item) {
+        commentTableView.data = data
+    }
+    
     func bindViewModel() {
         homeModel.$ThumbnailList.sink { [weak self] thumbnails in
             guard let self = self else { return }
@@ -419,13 +445,19 @@ class DetailPageController: UIViewController {
     
     @objc func likeButtonTapped() {
         likeIsTapped.toggle()
-        
         if likeIsTapped {
             likeButton.backgroundColor = .red
+            if let data = data {
+                print("좋아요를 누른 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.saveLikeVido(videoId: data.id.videoId)
+            }
         } else {
             likeButton.backgroundColor = .blue
+            if let data = data {
+                print("좋아요를 누른 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.deleteLikeVido(videoId: data.id.videoId)
+            }
         }
-        
     }
     
     @objc func dislikeButtonTapped() {
@@ -433,8 +465,16 @@ class DetailPageController: UIViewController {
         
         if dislikeIsTapped {
             dislikeButton.backgroundColor = .red
+            if let data = data {
+                print("싫어요를 누른 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.saveDisLikeVido(videoId: data.id.videoId)
+            }
         } else {
             dislikeButton.backgroundColor = .blue
+            if let data = data {
+                print("싫어요를 누른 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.deleteDisLikeVido(videoId: data.id.videoId)
+            }
         }
     }
     

@@ -55,7 +55,7 @@ private extension HomeViewController {
     func bindViewModel() {
         viewModel.$ThumbnailList.sink { [weak self] thumbnails in
             guard let self = self else { return }
-//            print("thumbnails: \(thumbnails)")
+            //            print("thumbnails: \(thumbnails)")
             DispatchQueue.main.async {
                 self.collectionView.refreshControl?.endRefreshing()
                 self.collectionView.reloadData()
@@ -74,7 +74,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.ThumbnailList.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier,
                                                             for: indexPath) as? ThumbnailCell else { return UICollectionViewCell() }
@@ -82,7 +82,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.configure(data: item)
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let inset: CGFloat = 24
         return CGSize(width: view.bounds.width - inset * 2, height: 240)
@@ -99,6 +99,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         let detailVC = DetailPageController()
         detailVC.configureData(url: url, data: data)
+        UserDefaultManager.sharedInstance.saveCurrentVideo(videoId: data.id.videoId)
         navigationController?.pushViewController(detailVC, animated: true)
         
         Task {
