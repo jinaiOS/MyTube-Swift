@@ -13,7 +13,7 @@ class CommentTableViewController: UIViewController {
     //MARK: - 전역 변수
     private let youtubeManager = YoutubeManger.shared
     var data: Thumbnails.Item?
-    var commentData: [Comments] = []
+    var commentData: [Comments.Item] = []
     
     //MARK: - IBOutlet
     let commentTableView: UITableView = {
@@ -42,7 +42,8 @@ class CommentTableViewController: UIViewController {
             switch result {
             case .success(let comment):
                 print("댓글 출력 확인\(comment)")
-                self.commentData.append(comment)
+                guard let comment = comment else { return }
+                self.commentData += comment.item
             case .failure(let error):
                 print("오류 출력 확인\(error)")
             }
