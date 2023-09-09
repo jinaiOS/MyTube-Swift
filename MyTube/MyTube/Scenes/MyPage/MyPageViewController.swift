@@ -310,6 +310,10 @@ class MyPageViewController: UIViewController {
             Task {
                 historyItemView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
             }
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(historyItemTapped))
+            historyItemView.isUserInteractionEnabled = true // 탭을 인식하도록 설정
+            historyItemView.addGestureRecognizer(tapGesture)
+            
             historyItemView.layer.cornerRadius = 6 // 모서리 반지름 설정
             historyStackView.addArrangedSubview(historyItemView)
             
@@ -367,6 +371,12 @@ class MyPageViewController: UIViewController {
     // 로그아웃 버튼을 눌렀을 때 호출될 메서드
     @objc func logoutButtonTapped() {
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController(), animated: false)
+    }
+    
+    @objc func historyItemTapped(sender: UITapGestureRecognizer) {
+        let detailPageController = DetailPageController()
+
+        navigationController?.pushViewController(detailPageController, animated: true)
     }
     
     @objc func editButtonTapped() {
