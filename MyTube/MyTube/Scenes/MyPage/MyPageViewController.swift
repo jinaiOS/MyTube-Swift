@@ -14,6 +14,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class MyPageViewController: UIViewController {
 
@@ -255,4 +256,19 @@ class MyPageViewController: UIViewController {
     deinit {
         print("deinit - MyPageVC")
     }
+}
+
+// SwiftUI를 활용한 미리보기
+struct MyPageViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        MyPageViewControllerReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct MyPageViewControllerReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UINavigationController(rootViewController: MyPageViewController())
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }

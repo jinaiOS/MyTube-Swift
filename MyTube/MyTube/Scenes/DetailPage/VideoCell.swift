@@ -13,6 +13,8 @@ class VideoCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "photo")
+        view.heightAnchor.constraint(equalToConstant: 190).isActive = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -20,19 +22,26 @@ class VideoCell: UICollectionViewCell {
         let view = UIImageView()
         view.image = UIImage(systemName: "person.fill")
         view.layer.cornerRadius = 10
+        view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
+        view.widthAnchor.constraint(equalToConstant: 34).isActive = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.text = "가을맞이는 핑계고"
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var profileLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 10, weight: .semibold)
+        label.text = "뜬뜬"
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -42,6 +51,7 @@ class VideoCell: UICollectionViewCell {
         stackView.alignment = .fill
         stackView.distribution = .fill
         [titleLabel, profileLabel].forEach { stackView.addArrangedSubview($0)}
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -52,6 +62,7 @@ class VideoCell: UICollectionViewCell {
         stackView.distribution = .fill
         stackView.spacing = 8
         [profileView, titleStackView].forEach { stackView.addArrangedSubview($0)}
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -59,20 +70,34 @@ class VideoCell: UICollectionViewCell {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 9
-        [profileStackView, profileView].forEach{ stackView.addArrangedSubview($0)}
+        [imageView, profileStackView].forEach{ stackView.addArrangedSubview($0)}
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
     private func setLayout() {
         contentView.addSubview(collectionStackView)
-        collectionStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        NSLayoutConstraint.activate([
+            collectionStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            collectionStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
     }
+    
+//    func configure(data: Thumbnails.Item) {
+//        let url = data.snippet.thumbnails.high.url
+//        Task {
+//            let image = await ImageCacheManager.shared.loadImage(url: url)
+//            imageView.image = image
+//        }
+//        titleLabel.text = data.snippet.title
+//        profileLabel.text = data.snippet.channelTitle
+//    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .blue
+        backgroundColor = .white
         setLayout()
     }
     

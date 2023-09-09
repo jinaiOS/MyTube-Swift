@@ -9,6 +9,9 @@ import UIKit
 
 class CommentCell: UITableViewCell {
     static let identifier = "CommentCell"
+    var data: Thumbnails.Item?
+    var commentData: [Comments] = []
+    var youtubeManager = YoutubeManger.shared
     
     // 댓글 프로필 이미지
     let profileImage: UIImageView = {
@@ -31,6 +34,9 @@ class CommentCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        
+        fetchData(data: data)
+        fetchCommentData()
     }
     
     required init?(coder: NSCoder) {
@@ -52,5 +58,22 @@ class CommentCell: UITableViewCell {
             commentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             commentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 8),
         ])
+    }
+    
+    func fetchData(data: Thumbnails.Item?) {
+        self.data = data
+    }
+    
+    func fetchCommentData() {
+        guard let videoId = data?.id.videoId else { print("데이터가 없습니다"); return }
+        youtubeManager.getComments(from: videoId) { result in
+            switch result {
+            case .success(let comment):
+                print("댓글 출력 확인\(comment)")
+                self.commentData.append(comment)
+            case .failure(let error):
+                print("오류 출력 확인\(error)")
+            }
+        }
     }
 }
