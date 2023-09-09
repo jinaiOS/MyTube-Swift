@@ -55,7 +55,7 @@ private extension HomeViewController {
     func bindViewModel() {
         viewModel.$ThumbnailList.sink { [weak self] thumbnails in
             guard let self = self else { return }
-            print("thumbnails: \(thumbnails)")
+//            print("thumbnails: \(thumbnails)")
             DispatchQueue.main.async {
                 self.collectionView.refreshControl?.endRefreshing()
                 self.collectionView.reloadData()
@@ -93,15 +93,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let snippet = viewModel.ThumbnailList[indexPath.item].snippet
         let data = viewModel.ThumbnailList[indexPath.item]
+        let url = "https://youtu.be/" + data.id.videoId
         
-        guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
-        let url = "https://youtu.be/" + videoID
         let detailVC = DetailPageController()
         detailVC.configureData(url: url, data: data)
         navigationController?.pushViewController(detailVC, animated: true)
         
+        Task {
+            let channelID = data.snippet.channelId
+            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID)
+            print("====> \(channelInfo)")
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

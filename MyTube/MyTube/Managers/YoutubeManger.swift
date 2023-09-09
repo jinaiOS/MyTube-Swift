@@ -64,5 +64,45 @@ final class YoutubeManger {
             }
         }
     }
-
+    
+    func getProfileThumbnail(channelID: String) async -> ProfileThumbnail? {
+        let params = [
+            "part": "snippet,contentDetails,statistics",
+            "id": channelID,
+            "fields": "items/snippet/thumbnails",
+            "key": HANS_KEY
+        ]
+        let dataTask = AF.request(ChannelURL, method: .get, parameters: params)
+            .serializingDecodable(ProfileThumbnail.self)
+            
+        switch await dataTask.result {
+        case .success(let result):
+            print("====> result: \(result)")
+            return result
+            
+        case .failure(let error):
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func getChannelInfo(channelID: String) async -> Channel? {
+        let params = [
+            "part": "snippet,contentDetails,statistics",
+            "id": channelID,
+            "key": HANS_KEY
+        ]
+        
+        let dataTask = AF.request(ChannelURL, method: .get, parameters: params)
+            .serializingDecodable(Channel.self)
+            
+        switch await dataTask.result {
+        case .success(let result):
+            return result
+            
+        case .failure(let error):
+            print(error.localizedDescription)
+            return nil
+        }
+    }
 }

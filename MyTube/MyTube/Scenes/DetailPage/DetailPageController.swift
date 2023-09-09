@@ -262,7 +262,7 @@ class DetailPageController: UIViewController {
         collectionView.dataSource = self
         collectionView.isScrollEnabled = true
         collectionView.showsVerticalScrollIndicator = true
-        collectionView.register(VideoCell.self, forCellWithReuseIdentifier: VideoCell.identifier)
+        collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -291,6 +291,8 @@ class DetailPageController: UIViewController {
         setupUI()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         commentStack.addGestureRecognizer(tapGesture)
+        bindViewModel()
+        homeModel.getThumbnailData()
     }
     
     func setupUI() {
@@ -410,6 +412,16 @@ class DetailPageController: UIViewController {
         commentTableView.data = data
     }
     
+    func bindViewModel() {
+        homeModel.$ThumbnailList.sink { [weak self] thumbnails in
+            guard let self = self else { return }
+            print("thumbnails: \(thumbnails)")
+            DispatchQueue.main.async {
+                self.videoCollectionView.reloadData()
+            }
+        }.store(in: &subscription)
+    }
+    
     deinit {
         print("deinit - 디테일 페이지")
     }
@@ -427,11 +439,14 @@ extension DetailPageController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return homeModel.ThumbnailList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.identifier, for: indexPath) as! VideoCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier,
+                                                            for: indexPath) as? ThumbnailCell else { return UICollectionViewCell() }
+        let item = homeModel.ThumbnailList[indexPath.item]
+        cell.configure(data: item)
         return cell
     }
     
