@@ -17,66 +17,55 @@ import SnapKit
 import SwiftUI
 
 class MyPageViewController: UIViewController {
-
+    let nicknameLabel = UILabel()
+    let idLabel = UILabel()
+    
+    let logoutButton = UIButton(type: .system)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let nickname = UserDefaultManager.sharedInstance.userInfo?.nickName,
+           let id = UserDefaultManager.sharedInstance.userInfo?.id {
+            nicknameLabel.text = nickname
+            idLabel.text = "@" + id
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        // 스크롤 가능한 뷰를 생성
-         let scrollView = UIScrollView()
-         scrollView.translatesAutoresizingMaskIntoConstraints = false
-         view.addSubview(scrollView)
-
-         NSLayoutConstraint.activate([
-             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-         ])
-
-         // 컨텐츠 뷰 생성
-         let contentView = UIView()
-         contentView.translatesAutoresizingMaskIntoConstraints = false
-         scrollView.addSubview(contentView)
-
-         NSLayoutConstraint.activate([
-             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-         ])
+        lazy var scrollView : UIScrollView = {
+            let scrollView = UIScrollView()
+            view.addSubview(scrollView)
+            scrollView.snp.makeConstraints {
+                $0.edges.equalTo(view.safeAreaLayoutGuide)
+            }
+            return scrollView
+        }()
         
-        // 메인 텍스트
-        let mainLabel = UILabel()
-        mainLabel.text = "MY"
-        mainLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        mainLabel.textColor = .black
-        mainLabel.textAlignment = .center
-        mainLabel.translatesAutoresizingMaskIntoConstraints = false // 이 부분을 추가
-        contentView.addSubview(mainLabel)
-
-        mainLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
-            make.height.equalTo(20)
-        }
+        lazy var stackView : UIStackView = {
+            let stackView = UIStackView()
+            scrollView.addSubview(stackView)
+            stackView.snp.makeConstraints {
+                $0.top.leading.bottom.trailing.equalTo(scrollView)
+                $0.centerX.equalTo(scrollView)
+                //                stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+            }
+            
+            return stackView
+        }()
         
-        // 로그아웃 아이콘
-        let logoutButton = UIButton(type: .system)
-        let logoutIcon = UIImage(systemName: "rectangle.portrait.and.arrow.right")
-        logoutButton.setImage(logoutIcon, for: .normal)
-        logoutButton.tintColor = .black
-        logoutButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(logoutButton)
+        stackView.spacing = 20
+        stackView.axis = .vertical
         
-        logoutButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(36)
-            make.trailing.equalToSuperview().offset(-24)
-            make.width.equalTo(30)
-            make.height.equalTo(30)
-        }
+        lazy var vProfile : UIView = {
+            let vProfile = UIView()
+            stackView.addArrangedSubview(vProfile)
+            vProfile.snp.makeConstraints {
+                $0.height.equalTo(88)
+            }
+            return vProfile
+        }()
         
         // 프로필 사진 아이콘
         let profileIcon = UIImageView(image: UIImage(named: "image1"))
@@ -84,11 +73,11 @@ class MyPageViewController: UIViewController {
         profileIcon.clipsToBounds = true
         profileIcon.layer.cornerRadius = 25
         profileIcon.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(profileIcon)
-
+        vProfile.addSubview(profileIcon)
+        
         profileIcon.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
-            make.top.equalTo(mainLabel.snp.bottom).offset(24)
+            make.leading.equalTo(vProfile).offset(24)
+            make.top.equalTo(vProfile).offset(24)
             make.width.equalTo(50)
             make.height.equalTo(50)
         }
@@ -100,11 +89,11 @@ class MyPageViewController: UIViewController {
         nicknameLabel.textColor = .black
         nicknameLabel.textAlignment = .left
         nicknameLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(nicknameLabel)
+        vProfile.addSubview(nicknameLabel)
         
         nicknameLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileIcon.snp.trailing).offset(8)
-            make.top.equalTo(mainLabel.snp.bottom).offset(28)
+            make.top.equalTo(vProfile).offset(28)
             make.width.equalTo(100)
             make.height.equalTo(20)
         }
@@ -116,7 +105,7 @@ class MyPageViewController: UIViewController {
         idLabel.textColor = .gray
         idLabel.textAlignment = .left
         idLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(idLabel)
+        vProfile.addSubview(idLabel)
         
         idLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileIcon.snp.trailing).offset(8)
@@ -124,7 +113,8 @@ class MyPageViewController: UIViewController {
             make.width.equalTo(200)
             make.height.equalTo(20)
         }
-
+        
+        
         
         // 화살표 아이콘
         let editButton = UIButton(type: .system)
@@ -132,27 +122,28 @@ class MyPageViewController: UIViewController {
         editButton.setImage(editIcon, for: .normal)
         editButton.tintColor = .black // 아이콘 색상 설정
         editButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(editButton)
+        vProfile.addSubview(editButton)
         
         editButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-24)
-            make.top.equalTo(mainLabel.snp.bottom).offset(34)
+            make.trailing.equalTo(vProfile).offset(-24)
+            make.top.equalTo(vProfile).offset(34)
             make.width.equalTo(30)
-            make.height.equalTo(30)
+            //            make.height.equalTo(30)
         }
+        
+        // editButton에 탭 이벤트를 추가합니다.
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
         // 라인
         let lineView = UIView()
         lineView.backgroundColor = .systemGray5
         lineView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(lineView)
-
+        stackView.addArrangedSubview(lineView)
+        
         lineView.snp.makeConstraints { make in
-            make.top.equalTo(editButton.snp.bottom).offset(32)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
             make.height.equalTo(2)
         }
+        
         
         
         // 구독한 채널 텍스트
@@ -162,7 +153,7 @@ class MyPageViewController: UIViewController {
         subscribeLabel.textColor = .black
         subscribeLabel.textAlignment = .left
         subscribeLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(subscribeLabel)
+        stackView.addArrangedSubview(subscribeLabel)
         
         subscribeLabel.snp.makeConstraints { make in
             make.top.equalTo(lineView.snp.bottom).offset(32)
@@ -170,22 +161,56 @@ class MyPageViewController: UIViewController {
             make.width.equalTo(200)
             make.height.equalTo(20)
         }
-
+        
         
         // 구독한 채널
-        let subCircleIcon = UIImageView(image: UIImage(named: "image1"))
-        subCircleIcon.contentMode = .scaleAspectFill
-        subCircleIcon.clipsToBounds = true
-        subCircleIcon.layer.cornerRadius = 40
-        subCircleIcon.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(subCircleIcon)
+        let circleScrollView = UIScrollView()
+        circleScrollView.showsHorizontalScrollIndicator = true // 수평 스크롤 바 숨김
+        circleScrollView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(circleScrollView)
         
-        subCircleIcon.snp.makeConstraints { make in
-            make.top.equalTo(subscribeLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(24)
-            make.width.equalTo(80)
-            make.height.equalTo(80)
+        let circleStackView = UIStackView()
+        circleStackView.axis = .horizontal
+        circleStackView.spacing = 14 // 원 사이의 간격 조절
+        circleStackView.translatesAutoresizingMaskIntoConstraints = false
+        circleScrollView.addSubview(circleStackView)
+        circleScrollView.showsHorizontalScrollIndicator = false
+        
+        // 원 모양 이미지 뷰 생성 및 스택 뷰에 추가
+        for _ in 0..<6 {
+            let circleImageView = UIImageView(image: UIImage(systemName: "circle.fill"))
+            circleImageView.tintColor = .gray // 이미지 뷰의 색상 설정
+            circleImageView.contentMode = .scaleAspectFit
+            circleImageView.clipsToBounds = true
+            Task {
+                circleImageView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
+            }
+            circleImageView.layer.cornerRadius = 40
+            circleImageView.translatesAutoresizingMaskIntoConstraints = false
+            circleImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 너비 조절
+            circleImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 높이 조절
+            
+            // 원 모양 이미지 뷰를 스택 뷰에 추가
+            circleStackView.addArrangedSubview(circleImageView)
         }
+        
+        // 원 모양 이미지 뷰 스택 뷰의 레이아웃 설정
+        circleStackView.snp.makeConstraints { make in
+            make.top.equalTo(circleScrollView.snp.top)
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().offset(-24)
+            make.bottom.equalTo(circleScrollView.snp.bottom)
+        }
+        
+        // 스크롤 뷰의 레이아웃 설정
+        circleScrollView.snp.makeConstraints { make in
+            make.top.equalTo(subscribeLabel.snp.bottom).offset(16)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(90) // 스크롤 뷰의 높이 조절
+        }
+        
+        
         
         // 좋아요 영상 텍스트
         let likeLabel = UILabel()
@@ -194,29 +219,59 @@ class MyPageViewController: UIViewController {
         likeLabel.textColor = .black
         likeLabel.textAlignment = .left
         likeLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(likeLabel)
+        stackView.addArrangedSubview(likeLabel)
         
         likeLabel.snp.makeConstraints { make in
-            make.top.equalTo(subCircleIcon.snp.bottom).offset(32)
+            make.top.equalTo(circleStackView.snp.bottom).offset(32)
             make.leading.equalToSuperview().offset(24)
             make.width.equalTo(200)
             make.height.equalTo(20)
         }
         
         // 좋아요 영상
-        let rectangleView = UIView()
-        rectangleView.backgroundColor = .gray // 원하는 색상으로 설정하세요
-        rectangleView.translatesAutoresizingMaskIntoConstraints = false
-        rectangleView.layer.cornerRadius = 6 // 모서리 반지름 설정
-        contentView.addSubview(rectangleView)
+        let rectangleScrollView = UIScrollView()
+        rectangleScrollView.showsHorizontalScrollIndicator = false // 가로 스크롤 바 숨김
+        rectangleScrollView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(rectangleScrollView)
         
-        rectangleView.snp.makeConstraints { make in
-            make.top.equalTo(likeLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(24)
-            make.width.equalTo(140)
-            make.height.equalTo(100)
+        // 사각형 모양의 뷰들을 담을 스택 뷰
+        let rectangleStackView = UIStackView()
+        rectangleStackView.axis = .horizontal
+        rectangleStackView.spacing = 14 // 사각형 뷰들 사이의 간격 조절
+        rectangleStackView.translatesAutoresizingMaskIntoConstraints = false
+        rectangleScrollView.addSubview(rectangleStackView)
+        
+        // 사각형 모양의 뷰를 6개 추가
+        for _ in 0..<6 {
+            let rectangleView = UIImageView()
+            rectangleView.backgroundColor = .gray // 원하는 색상으로 설정하세요
+            rectangleView.translatesAutoresizingMaskIntoConstraints = false
+            rectangleView.layer.cornerRadius = 6 // 모서리 반지름 설정
+            Task {
+                rectangleView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
+            }
+            
+            rectangleStackView.addArrangedSubview(rectangleView)
+            
+            rectangleView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
+            rectangleView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
         }
-
+        
+        // 스크롤 뷰와 스택 뷰의 레이아웃 설정
+        rectangleScrollView.snp.makeConstraints { make in
+            make.top.equalTo(likeLabel.snp.bottom).offset(16)
+            make.leading.equalToSuperview().offset(0)
+            make.trailing.equalToSuperview().offset(0)
+            make.height.equalTo(100) // 스크롤 뷰의 높이 조절
+        }
+        
+        rectangleStackView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().offset(-24)
+            make.height.equalTo(100) // 스택 뷰의 높이 조절
+        }
+        
+        
         
         // 시청 기록 텍스트
         let historyLabel = UILabel()
@@ -225,34 +280,102 @@ class MyPageViewController: UIViewController {
         historyLabel.textColor = .black
         historyLabel.textAlignment = .left
         historyLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(historyLabel)
+        stackView.addArrangedSubview(historyLabel)
         
         historyLabel.snp.makeConstraints { make in
-            make.top.equalTo(rectangleView.snp.bottom).offset(32)
+            make.top.equalTo(rectangleScrollView.snp.bottom).offset(32)
             make.leading.equalToSuperview().offset(24)
             make.width.equalTo(200)
             make.height.equalTo(20)
         }
         
         // 시청 기록
-        let historyView = UIView()
-        historyView.backgroundColor = .gray // 원하는 색상으로 설정하세요
-        historyView.translatesAutoresizingMaskIntoConstraints = false
-        historyView.layer.cornerRadius = 6 // 모서리 반지름 설정
-        contentView.addSubview(historyView)
+        // 스크롤 가능한 컨테이너 뷰
+        let historyScrollView = UIScrollView()
+        historyScrollView.showsHorizontalScrollIndicator = false // 가로 스크롤 바 숨김
+        historyScrollView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(historyScrollView)
         
-        historyView.snp.makeConstraints { make in
+        // 사각형 모양의 뷰들을 담을 스택 뷰
+        let historyStackView = UIStackView()
+        historyStackView.axis = .horizontal
+        historyStackView.spacing = 14 // 사각형 뷰들 사이의 간격 조절
+        historyStackView.translatesAutoresizingMaskIntoConstraints = false
+        historyScrollView.addSubview(historyStackView)
+        
+        // 사각형 모양의 뷰를 6개 추가
+        for _ in 0..<8 {
+            let historyItemView = UIImageView()
+            historyItemView.backgroundColor = .gray // 원하는 색상으로 설정하세요
+            historyItemView.translatesAutoresizingMaskIntoConstraints = false
+            Task {
+                historyItemView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
+            }
+            historyItemView.layer.cornerRadius = 6 // 모서리 반지름 설정
+            historyStackView.addArrangedSubview(historyItemView)
+            
+            historyItemView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
+            historyItemView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
+        }
+        
+        // 스크롤 뷰와 스택 뷰의 레이아웃 설정
+        historyScrollView.snp.makeConstraints { make in
             make.top.equalTo(historyLabel.snp.bottom).offset(16)
+            make.leading.equalToSuperview().offset(0)
+            make.trailing.equalToSuperview().offset(0)
+            make.height.equalTo(100) // 스크롤 뷰의 높이 조절
+        }
+        
+        historyStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
-            make.width.equalTo(140)
-            make.height.equalTo(100)
+            make.trailing.equalToSuperview().offset(-24)
+            make.height.equalTo(100) // 스택 뷰의 높이 조절
         }
         
         NSLayoutConstraint.activate([
-            historyView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            historyScrollView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -120)
         ])
         
+        let transparentRectangle = UIView()
+        transparentRectangle.backgroundColor = .clear // 투명한 배경색
+        transparentRectangle.translatesAutoresizingMaskIntoConstraints = false
+        transparentRectangle.layer.cornerRadius = 6 // 모서리 반지름 설정
+        transparentRectangle.layer.borderWidth = 0 // 테두리 두께 설정
+        transparentRectangle.layer.borderColor = UIColor.black.cgColor // 테두리 색상 설정
+        historyScrollView.addSubview(transparentRectangle)
+        
+        transparentRectangle.snp.makeConstraints { make in
+            make.top.equalTo(historyScrollView.snp.bottom).offset(24)
+            make.width.equalTo(200)
+            make.height.equalTo(600)
+        }
+        
+        NSLayoutConstraint.activate([
+            historyScrollView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -16)
+        ])
+        
+        
+        let emptyView = UIView()
+        emptyView.backgroundColor = .clear // 투명한 배경색
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(emptyView)
+        emptyView.snp.makeConstraints {
+            $0.height.equalTo(100)
+        }
+        
+        
     }
+    // 로그아웃 버튼을 눌렀을 때 호출될 메서드
+    @objc func logoutButtonTapped() {
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController(), animated: false)
+    }
+    
+    @objc func editButtonTapped() {
+        let joinMembershipVC = JoinMembershipViewController()
+        joinMembershipVC.type = .Edit
+        self.navigationController?.pushViewController(joinMembershipVC, animated: true)
+    }
+    
     deinit {
         print("deinit - MyPageVC")
     }

@@ -12,14 +12,18 @@ final class YoutubeManger {
     static let shared = YoutubeManger()
     private init() { }
     
-    func getThumbnails(page: Int) async -> Thumbnails? {
-        let params = [
+    func getThumbnails(page: Int, searchText: String?) async -> Thumbnails? {
+        var params = [
             "part": "snippet",
             "type": "video",
             "page": "\(page)",
             "maxResults": "20",
             "key": TEST3_KEY
         ]
+        
+        if let searchText = searchText {
+            params["q"] = searchText
+        }
         
         let dataTask = AF.request(ThumbNailUrl, method: .get, parameters: params)
             .serializingDecodable(Thumbnails.self)
@@ -33,14 +37,14 @@ final class YoutubeManger {
             return nil
         }
     }
-    
+  
     func getComments(from videoId: String, completion: @escaping (Result<Comments, Error>) -> Void) {
         let params = [
             "textFormat": "plainText",
             "part": "snippet",
             "videoId": "\(videoId)",
             "maxResults": "10",
-            "key": TEST3_KEY
+            "key": TEST2_KEY
         ]
         
         AF.request(CommentURL, method: .get, parameters: params).response { response in
@@ -60,4 +64,44 @@ final class YoutubeManger {
         }
     }
     
+    func getProfileThumbnail(channelID: String) async -> ProfileThumbnail? {
+        let params = [
+            "part": "snippet,contentDetails,statistics",
+            "id": channelID,
+            "fields": "items/snippet/thumbnails",
+            "key": HANS_KEY
+        ]
+        let dataTask = AF.request(ChannelURL, method: .get, parameters: params)
+            .serializingDecodable(ProfileThumbnail.self)
+            
+        switch await dataTask.result {
+        case .success(let result):
+            print("====> result: \(result)")
+            return result
+            
+        case .failure(let error):
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func getChannelInfo(channelID: String) async -> Channel? {
+        let params = [
+            "part": "snippet,contentDetails,statistics",
+            "id": channelID,
+            "key": HANS_KEY
+        ]
+        
+        let dataTask = AF.request(ChannelURL, method: .get, parameters: params)
+            .serializingDecodable(Channel.self)
+            
+        switch await dataTask.result {
+        case .success(let result):
+            return result
+            
+        case .failure(let error):
+            print(error.localizedDescription)
+            return nil
+        }
+    }
 }

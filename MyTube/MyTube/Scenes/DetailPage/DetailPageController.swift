@@ -13,6 +13,9 @@ import youtube_ios_player_helper
 class DetailPageController: UIViewController {
     
     //MARK: - 전역 변수
+    
+    
+    
     private let commentTableView = CommentTableViewController()
     private let homeModel = HomeViewModel()
     private let inset: CGFloat = 24
@@ -273,8 +276,8 @@ class DetailPageController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
-        // 하단 영상 썸네일 호출
+
+      // 하단 영상 썸네일 호출
         bindViewModel()
         homeModel.getThumbnailData()
         
@@ -368,7 +371,7 @@ class DetailPageController: UIViewController {
         view.addSubview(videoCollectionView)
         setVideoCollectionView()
     }
-    
+  
     func setVideoCollectionView() {
         NSLayoutConstraint.activate([
             videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
@@ -378,6 +381,15 @@ class DetailPageController: UIViewController {
         ])
     }
     
+    func setVideoCollectionView() {
+        NSLayoutConstraint.activate([
+            videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
+            videoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            videoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
+            videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
+        ])
+    }
+  
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
         if let sheet = self.commentTableView.sheetPresentationController, let data = data {
@@ -446,8 +458,8 @@ class DetailPageController: UIViewController {
                 
         self.present(activityViewController, animated: true, completion: nil)
     }
-    
-    deinit {
+
+  deinit {
         print("deinit - 디테일 페이지")
     }
 }
@@ -460,7 +472,6 @@ extension DetailPageController: UICollectionViewDelegate {
 
 extension DetailPageController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //        present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

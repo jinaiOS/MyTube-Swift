@@ -7,18 +7,10 @@
 
 import Foundation
 
-struct UserInfoModel: Codable {
-    let id: String
-    let nickName: String
-    let password: String
-    let name: String
-    let birth: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "아이디"
-        case nickName = "닉네임"
-        case password = "비밀번호"
-        case name = "이름"
-        case birth = "생일"
-    }
+struct UserInfoModel {
+    var id: String
+    var nickName: String
+    var password: String
+    var name: String
+    var birth: String
 }

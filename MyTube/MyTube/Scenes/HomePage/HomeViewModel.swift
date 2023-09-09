@@ -12,6 +12,9 @@ final class HomeViewModel: ObservableObject {
     private let manager = YoutubeManger.shared
     private var requestPage: Int = 0
     let display: Int = 20
+    var refresh: Bool = false
+    var searchText: String? = nil
+    
     
     var getRequestPage: Int {
         return requestPage
@@ -20,10 +23,19 @@ final class HomeViewModel: ObservableObject {
     @Published var ThumbnailList: [Thumbnails.Item] = []
     
     func getThumbnailData() {
+        if refresh == true {
+            reset()
+        }
         Task {
-            guard let result = await manager.getThumbnails(page: requestPage) else { return }
+            guard let result = await manager.getThumbnails(page: requestPage, searchText: searchText) else { return }
             ThumbnailList += result.items
             requestPage += 1
         }
+    }
+    
+    private func reset() {
+        requestPage = 0
+        ThumbnailList.removeAll()
+        refresh.toggle()
     }
 }

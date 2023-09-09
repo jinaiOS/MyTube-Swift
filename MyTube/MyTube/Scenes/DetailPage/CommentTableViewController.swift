@@ -31,8 +31,7 @@ class CommentTableViewController: UIViewController {
         view.addSubview(commentTableView)
         commentTableView.dataSource = self
         commentTableView.delegate = self
-        commentTableView.frame = view.bounds
-        
+        commentTableView.frame = view.bounds        
         loadCommentData()
     }
     
@@ -68,7 +67,10 @@ extension CommentTableViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+        let comment = commentData[indexPath.row]
         cell.contentView.backgroundColor = .white
+        // MARK: - 댓글 연결 실패
+//        cell.commentLabel.text = comment.items.
         return cell
     }
 }
