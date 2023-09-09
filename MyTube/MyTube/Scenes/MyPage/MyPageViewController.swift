@@ -178,20 +178,20 @@ class MyPageViewController: UIViewController {
         // 원 모양 이미지 뷰 생성 및 스택 뷰에 추가
         for _ in 0..<6 {
             let circleImageView = UIImageView(image: UIImage(systemName: "circle.fill"))
-            circleImageView.tintColor = .gray // 이미지 뷰의 색상 설정
-            circleImageView.contentMode = .scaleAspectFit
+            circleImageView.tintColor = .gray
+            circleImageView.contentMode = .scaleAspectFill
             circleImageView.clipsToBounds = true
             Task {
                 circleImageView.image = await ImageCacheManager.shared.loadImage(url: "https://i.ytimg.com/vi/kYZEZKlXOMI/mqdefault.jpg")
             }
-            circleImageView.layer.cornerRadius = 40
+            circleImageView.layer.cornerRadius = 37.5
             circleImageView.translatesAutoresizingMaskIntoConstraints = false
-            circleImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 너비 조절
-            circleImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 높이 조절
+            circleImageView.widthAnchor.constraint(equalToConstant: 80 ).isActive = true
+            circleImageView.heightAnchor.constraint(equalToConstant: 80 ).isActive = true
             
-            // 원 모양 이미지 뷰를 스택 뷰에 추가
             circleStackView.addArrangedSubview(circleImageView)
         }
+
         
         // 원 모양 이미지 뷰 스택 뷰의 레이아웃 설정
         circleStackView.snp.makeConstraints { make in
@@ -348,7 +348,7 @@ class MyPageViewController: UIViewController {
         historyScrollView.addSubview(transparentRectangle)
         
         transparentRectangle.snp.makeConstraints { make in
-            make.top.equalTo(historyScrollView.snp.bottom).offset(24)
+            make.top.equalTo(historyStackView.snp.bottom).offset(24)
             make.width.equalTo(200)
             make.height.equalTo(600)
         }
