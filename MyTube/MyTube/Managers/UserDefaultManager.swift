@@ -19,6 +19,11 @@ class UserDefaultManager {
         }
     }
     
+    var seeArray : [String] = []
+    var subscribeArray : [String] = []
+    var likeArray : [String] = []
+    var disLikeArray : [String] = []
+
     func saveUserInfo() {
         let data = self.userList.map {
             [
@@ -78,6 +83,95 @@ class UserDefaultManager {
     }
     
     func saveCurrentVideo(videoId: String) {
-        UserDefaults.standard.set(videoId, forKey: "currentVideoId")
+        seeArray.append(videoId)
+        for i in seeArray {
+            if i == "" {
+                seeArray.remove(at: 0)
+            }
+        }
+        seeArray = removeDuplicate(seeArray)
+       UserDefaults.standard.set(seeArray, forKey: "currentVideoId")
+    }
+    
+    func saveSubscribe(channelID: String) {
+        subscribeArray.append(channelID)
+        for i in subscribeArray {
+            if i == "" {
+                subscribeArray.remove(at: 0)
+            }
+        }
+        subscribeArray = removeDuplicate(subscribeArray)
+       UserDefaults.standard.set(subscribeArray, forKey: "subscribeChannelID")
+    }
+    
+    func deleteSubscribe(channelID: String) {
+        subscribeArray = subscribeArray.filter  { (element) -> Bool in
+           return element != channelID
+       }
+        for i in subscribeArray {
+            if i == "" {
+                subscribeArray.remove(at: 0)
+            }
+        }
+        subscribeArray = removeDuplicate(subscribeArray)
+       UserDefaults.standard.set(subscribeArray, forKey: "subscribeChannelID")
+    }
+    
+    func saveLikeVido(videoId: String) {
+        likeArray.append(videoId)
+        for i in likeArray {
+            if i == "" {
+                likeArray.remove(at: 0)
+            }
+        }
+        likeArray = removeDuplicate(likeArray)
+       UserDefaults.standard.set(likeArray, forKey: "likeVideoID")
+    }
+    
+    func deleteLikeVido(videoId: String) {
+        likeArray = likeArray.filter  { (element) -> Bool in
+            return element != videoId
+        }
+        for i in likeArray {
+            if i == "" {
+                likeArray.remove(at: 0)
+            }
+        }
+        likeArray = removeDuplicate(likeArray)
+       UserDefaults.standard.set(likeArray, forKey: "likeVideoID")
+    }
+    
+    func saveDisLikeVido(videoId: String) {
+        disLikeArray.append(videoId)
+        for i in disLikeArray {
+            if i == "" {
+                disLikeArray.remove(at: 0)
+            }
+        }
+        disLikeArray = removeDuplicate(disLikeArray)
+       UserDefaults.standard.set(disLikeArray, forKey: "likeVideoID")
+    }
+    
+    func deleteDisLikeVido(videoId: String) {
+        disLikeArray = disLikeArray.filter  { (element) -> Bool in
+            return element != videoId
+        }
+        for i in disLikeArray {
+            if i == "" {
+                disLikeArray.remove(at: 0)
+            }
+        }
+        disLikeArray = removeDuplicate(disLikeArray)
+       UserDefaults.standard.set(disLikeArray, forKey: "likeVideoID")
+    }
+    
+    func removeDuplicate (_ array: [String]) -> [String] {
+        var removedArray = [String]()
+        for i in array {
+            if removedArray.contains(i) == false {
+                removedArray.append(i)
+            }
+        }
+        return removedArray
     }
 }
