@@ -9,6 +9,9 @@ import UIKit
 
 class CommentCell: UITableViewCell {
     static let identifier = "CommentCell"
+    var data: Thumbnails.Item?
+    var commentData: [Comments] = []
+    var youtubeManager = YoutubeManger.shared
     
     // 댓글 프로필 이미지
     let profileImage: UIImageView = {
@@ -31,6 +34,7 @@ class CommentCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -47,7 +51,6 @@ class CommentCell: UITableViewCell {
         NSLayoutConstraint.activate([
             profileImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             profileImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
             commentLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 5),
             commentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             commentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 8),

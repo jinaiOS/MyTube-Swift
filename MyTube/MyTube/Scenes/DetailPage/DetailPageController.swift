@@ -22,6 +22,8 @@ class DetailPageController: UIViewController {
     private var url: String?
     var data: Thumbnails.Item?
     var subscription = Set<AnyCancellable>()
+    var likeIsTapped = false
+    var dislikeIsTapped = false
     
     //MARK: - 영상 + 프로필 영역
     lazy var videoPlayerView: YTPlayerView = {
@@ -133,6 +135,7 @@ class DetailPageController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -140,10 +143,11 @@ class DetailPageController: UIViewController {
         let button = UIButton()
         button.setTitle("👎🏻", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .red
+        button.backgroundColor = .blue
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(dislikeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -156,6 +160,7 @@ class DetailPageController: UIViewController {
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(doShare), for: .touchUpInside)
         return button
     }()
     
@@ -271,29 +276,15 @@ class DetailPageController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupUI()
-        
-        view.backgroundColor = .systemBackground
-        if let data = data {
-            sendData(data: data)
-        }
-//        if let data = data {
-//            YoutubeManger.shared.getComments(from: data.id.videoId) { result in
-//                switch result {
-//                case .success(let comments):
-//                    print(comments)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//        }
-        
-        setupUI()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        commentStack.addGestureRecognizer(tapGesture)
+
+      // 하단 영상 썸네일 호출
         bindViewModel()
         homeModel.getThumbnailData()
+        
+        setupUI()
     }
+    
+    //MARK: - setup 함수
     
     func setupUI() {
         setVideo()
@@ -359,6 +350,9 @@ class DetailPageController: UIViewController {
     
     func setCommentView() {
         view.addSubview(commentViewStack)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        commentStack.addGestureRecognizer(tapGesture)
+        
         [commentView, statStack, commentStack].forEach{commentViewStack.addSubview($0)}
         
         NSLayoutConstraint.activate([
@@ -377,6 +371,15 @@ class DetailPageController: UIViewController {
         view.addSubview(videoCollectionView)
         setVideoCollectionView()
     }
+  
+    func setVideoCollectionView() {
+        NSLayoutConstraint.activate([
+            videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
+            videoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            videoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
+            videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
+        ])
+    }
     
     func setVideoCollectionView() {
         NSLayoutConstraint.activate([
@@ -389,29 +392,30 @@ class DetailPageController: UIViewController {
   
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
-        if let sheet = self.commentTableView.sheetPresentationController {
+        if let sheet = self.commentTableView.sheetPresentationController, let data = data {
             sheet.detents = [.medium()]
+            commentTableView.fetchData(data: data)
         }
         self.present(self.commentTableView, animated: true, completion: nil)
     }
     
+    //MARK: - 데이터 호출 함수
+    // 탭한 유튜브 영상 데이터 가져오기 위한 함수
     func configureData(url: String, data: Thumbnails.Item) {
         self.url = url
         self.data = data
     }
     
+    // 탭한 영상 저장하도록 정리
     @objc func addVideoToList() {
         UserDefaults.standard.string(forKey: "currentVideoId")
         if let data = data {
             print("비디오 아이디는 \(data.id.videoId)")
-            sendData(data: data)
+            print("채널 아이디는 \(data.snippet.channelId)")
         }
     }
     
-    func sendData(data: Thumbnails.Item) {
-        commentTableView.data = data
-    }
-    
+    //MARK: - collectionView 데이터 채우기
     func bindViewModel() {
         homeModel.$ThumbnailList.sink { [weak self] thumbnails in
             guard let self = self else { return }
@@ -422,7 +426,40 @@ class DetailPageController: UIViewController {
         }.store(in: &subscription)
     }
     
-    deinit {
+    @objc func likeButtonTapped() {
+        likeIsTapped.toggle()
+        
+        if likeIsTapped {
+            likeButton.backgroundColor = .red
+        } else {
+            likeButton.backgroundColor = .blue
+        }
+        
+    }
+    
+    @objc func dislikeButtonTapped() {
+        dislikeIsTapped.toggle()
+        
+        if dislikeIsTapped {
+            dislikeButton.backgroundColor = .red
+        } else {
+            dislikeButton.backgroundColor = .blue
+        }
+    }
+    
+    @objc func doShare() {
+        let shareText: String = "share text test!"
+        var shareObject = [Any]()
+        
+        shareObject.append(shareText)
+        
+        let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+                
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+
+  deinit {
         print("deinit - 디테일 페이지")
     }
 }
@@ -435,7 +472,6 @@ extension DetailPageController: UICollectionViewDelegate {
 
 extension DetailPageController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -443,8 +479,7 @@ extension DetailPageController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier,
-                                                            for: indexPath) as? ThumbnailCell else { return UICollectionViewCell() }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier, for: indexPath) as! ThumbnailCell
         let item = homeModel.ThumbnailList[indexPath.item]
         cell.configure(data: item)
         return cell

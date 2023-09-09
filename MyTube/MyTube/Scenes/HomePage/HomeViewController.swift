@@ -93,8 +93,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let snippet = viewModel.ThumbnailList[indexPath.item].snippet
         let data = viewModel.ThumbnailList[indexPath.item]
-        let url = "https://youtu.be/" + data.id.videoId
+        
+        guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
+        let url = "https://youtu.be/" + videoID
         
         let detailVC = DetailPageController()
         detailVC.configureData(url: url, data: data)
@@ -117,6 +120,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return CGSize(width: view.bounds.width, height: 50)
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let currentRow = indexPath.row
         if (currentRow % viewModel.display) == viewModel.display - 5
@@ -128,6 +133,22 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         view.endEditing(true)
     }
+}
+
+// SwiftUI를 활용한 미리보기
+struct HomeViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeVCReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct HomeVCReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        let homeViewController = HomeViewController()
+        return UINavigationController(rootViewController: homeViewController)
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }
 
 // SwiftUI를 활용한 미리보기

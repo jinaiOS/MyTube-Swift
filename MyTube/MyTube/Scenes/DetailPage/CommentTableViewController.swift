@@ -13,7 +13,7 @@ class CommentTableViewController: UIViewController {
     //MARK: - 전역 변수
     private let youtubeManager = YoutubeManger.shared
     var data: Thumbnails.Item?
-    var commentData: [Comments] = []
+    var commentData: [Comments.Item] = []
     
     //MARK: - IBOutlet
     let commentTableView: UITableView = {
@@ -28,28 +28,30 @@ class CommentTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
         view.addSubview(commentTableView)
         commentTableView.dataSource = self
         commentTableView.delegate = self
-        
-        commentTableView.frame = view.bounds
-        fetchCommentData()
+        commentTableView.frame = view.bounds        
+        loadCommentData()
     }
     
-    func fetchCommentData() {
+    func loadCommentData() {
         guard let videoId = data?.id.videoId else { print("데이터가 없습니다"); return }
         youtubeManager.getComments(from: videoId) { result in
             switch result {
-            case .success(let comments):
-                print(comments)
-                self.commentData.append(comments)
-                self.commentTableView.reloadData()
+            case .success(let comment):
+                print("댓글 출력 확인\(comment)")
+                self.commentData += comment.item
             case .failure(let error):
-                print(error)
+                print("오류 출력 확인\(error)")
             }
         }
     }
+    
+    func fetchData(data: Thumbnails.Item) {
+        self.data = data
+    }
+    
 }
 
 extension CommentTableViewController: UITableViewDelegate {

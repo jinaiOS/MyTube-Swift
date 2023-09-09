@@ -18,7 +18,7 @@ final class YoutubeManger {
             "type": "video",
             "page": "\(page)",
             "maxResults": "20",
-            "key": TEST_KEY
+            "key": TEST3_KEY
         ]
         
         if let searchText = searchText {
@@ -37,7 +37,7 @@ final class YoutubeManger {
             return nil
         }
     }
-
+  
     func getComments(from videoId: String, completion: @escaping (Result<Comments, Error>) -> Void) {
         let params = [
             "textFormat": "plainText",
@@ -58,7 +58,6 @@ final class YoutubeManger {
                 } catch {
                     completion(.failure(error))
                 }
-
             case .failure(let error):
                 completion(.failure(error))
             }

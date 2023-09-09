@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2786D42A69524AD8D58B12DA /* Pods_MyTubeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FCF5C5FD2A86945A91620AA /* Pods_MyTubeTests.framework */; };
 		332156102AA7AE690045FC4C /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3321560F2AA7AE690045FC4C /* ImageCacheManager.swift */; };
 		3332CB852AAC6A8B002A74E8 /* ProfileThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3332CB842AAC6A8B002A74E8 /* ProfileThumbnail.swift */; };
 		33489C3F2AAC8F8A00EC9FC6 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33489C3E2AAC8F8A00EC9FC6 /* Channel.swift */; };
@@ -70,6 +71,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		13228EB9202B8CEEB688221B /* Pods-MyTube-MyTubeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyTube-MyTubeUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyTube-MyTubeUITests/Pods-MyTube-MyTubeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		1FCF5C5FD2A86945A91620AA /* Pods_MyTubeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyTubeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3321560F2AA7AE690045FC4C /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		3332CB842AAC6A8B002A74E8 /* ProfileThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileThumbnail.swift; sourceTree = "<group>"; };
 		33489C3E2AAC8F8A00EC9FC6 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
@@ -153,6 +156,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B031FFB95B54F26A1F9A4C9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7DB226410A059DB81610E562 /* Pods-MyTube.debug.xcconfig */,
+				94F5A818E8A881CA91FB07FB /* Pods-MyTube.release.xcconfig */,
+				13228EB9202B8CEEB688221B /* Pods-MyTube-MyTubeUITests.debug.xcconfig */,
+				BDF21270D5F72A49EF9CED97 /* Pods-MyTube-MyTubeUITests.release.xcconfig */,
+				D607DA9FF2E1CEA4CE27AD6C /* Pods-MyTubeTests.debug.xcconfig */,
+				6EF668C1E28F4FEFDAFE1A2D /* Pods-MyTubeTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		334B6FEC2AA6C8FC00C87609 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
@@ -585,6 +601,7 @@
 				BD2C37DB2AA70DC900B4CA25 /* CommentTableViewController.swift in Sources */,
 				BD2C37D72AA7019000B4CA25 /* CommentCell.swift in Sources */,
 				5632E64D2AA577FD00728F87 /* AppDelegate.swift in Sources */,
+				BD79CC732AAB8ED80015DD87 /* Constants.swift in Sources */,
 				BD72935B2AA85C82003F4B6F /* VideoCell.swift in Sources */,
 				3332CB852AAC6A8B002A74E8 /* ProfileThumbnail.swift in Sources */,
 				334B6FE12AA6C85300C87609 /* ThumbnailCell.swift in Sources */,
