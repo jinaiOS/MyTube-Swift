@@ -15,15 +15,22 @@ final class HomeViewController: UIViewController {
     private let viewModel = HomeViewModel()
     var subscriptions = Set<AnyCancellable>()
     
+    let attributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 14),
+        .foregroundColor: UIColor.gray
+    ]
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        let refresh = UIRefreshControl()
-        refresh.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
-        collectionView.refreshControl = refresh
         collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
         collectionView.register(SearchHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier)
+        let refresh = UIRefreshControl()
+        let attributedTitle = NSAttributedString(string: "당겨서 새로고침", attributes: attributes)
+        refresh.attributedTitle = attributedTitle
+        refresh.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
+        collectionView.refreshControl = refresh
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
@@ -55,7 +62,7 @@ private extension HomeViewController {
     func bindViewModel() {
         viewModel.$ThumbnailList.sink { [weak self] thumbnails in
             guard let self = self else { return }
-            //            print("thumbnails: \(thumbnails)")
+            print("thumbnails: \(thumbnails)")
             DispatchQueue.main.async {
                 self.collectionView.refreshControl?.endRefreshing()
                 self.collectionView.reloadData()
