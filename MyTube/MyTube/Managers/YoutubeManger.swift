@@ -18,7 +18,7 @@ final class YoutubeManger {
             "type": "video",
             "page": "\(page)",
             "maxResults": "20",
-            "key": TEST3_KEY
+            "key": TEST4_KEY
         ]
         
         if let searchText = searchText {
@@ -44,7 +44,7 @@ final class YoutubeManger {
             "part": "snippet",
             "videoId": "\(videoId)",
             "maxResults": "50",
-            "key": TEST3_KEY
+            "key": TEST4_KEY
         ]
         
         AF.request(CommentURL, method: .get, parameters: params).response { response in
@@ -69,7 +69,7 @@ final class YoutubeManger {
             "part": "snippet,contentDetails,statistics",
             "id": channelID,
             "fields": "items/snippet/thumbnails",
-            "key": TEST3_KEY
+            "key": TEST4_KEY
         ]
         let dataTask = AF.request(ChannelURL, method: .get, parameters: params)
             .serializingDecodable(ProfileThumbnail.self)
@@ -88,7 +88,7 @@ final class YoutubeManger {
         let params = [
             "part": "snippet,contentDetails,statistics",
             "id": channelID,
-            "key": TEST3_KEY
+            "key": TEST4_KEY
         ]
         
         let dataTask = AF.request(ChannelURL, method: .get, parameters: params)

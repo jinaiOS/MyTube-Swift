@@ -26,12 +26,13 @@ class DetailPageController: UIViewController {
     
     //MARK: - 영상 + 프로필 영역
     
-    let scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.backgroundColor = .clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isScrollEnabled = true
-        return view
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.frame = view.bounds
+        scrollView.backgroundColor = .clear
+        scrollView.isScrollEnabled = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
     }()
     
     lazy var videoPlayerView: YTPlayerView = {
@@ -193,7 +194,6 @@ class DetailPageController: UIViewController {
     }()
     
     //MARK: - 댓글 영역
-    
     let commentView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
@@ -294,6 +294,7 @@ class DetailPageController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        videoPlayerView.delegate = self
         
         // 하단 영상 썸네일 호출
         bindViewModel()
@@ -325,9 +326,9 @@ class DetailPageController: UIViewController {
         view.addSubview(videoPlayerView)
         
         if let data = data {
-            DispatchQueue.main.async {
-                self.videoPlayerView.load(withVideoId: data.id.videoId)
-            }
+            let videoId = data.id.videoId
+            videoPlayerView.load(withVideoId: videoId)
+            playerViewDidBecomeReady(videoPlayerView)
         }
         
         NSLayoutConstraint.activate([
@@ -627,5 +628,7 @@ extension DetailPageController: UICollectionViewDelegateFlowLayout {
 //MARK: - YTPlayerViewDelegate
 
 extension DetailPageController: YTPlayerViewDelegate {
-    
+    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+        playerView.playVideo()
+    }
 }
