@@ -274,27 +274,14 @@ class DetailPageController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-
-      // 하단 영상 썸네일 호출
+        
+        // 하단 영상 썸네일 호출
         bindViewModel()
         homeModel.getThumbnailData()
         
         setupUI()
         addSwipe()
-        
-        Task {
-            let channelID = self.data?.snippet.channelId
-            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID!)
-            if let channelInfo = channelInfo {
-                print("이렇게 해도 나오나? \(channelInfo)")
-                // 영상별 데이터가 아니라 전체 데이터를 가지고 왔네요! 🥲
-                let views = formatCount(Int(channelInfo.items[0].statistics.viewCount)!)
-                let followerCount = formatCount(Int(channelInfo.items[0].statistics.subscriberCount)!)
-                
-                statLabel.text = views
-                followerLabel.text = followerCount
-            }
-        }
+        populateData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -388,7 +375,7 @@ class DetailPageController: UIViewController {
         view.addSubview(videoCollectionView)
         setVideoCollectionView()
     }
-  
+    
     func setVideoCollectionView() {
         NSLayoutConstraint.activate([
             videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
@@ -397,8 +384,8 @@ class DetailPageController: UIViewController {
             videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
         ])
     }
-  
-    @objc func handleTap(sender: UITapGestureRecognizer) {        
+    
+    @objc func handleTap(sender: UITapGestureRecognizer) {
         if let sheet = self.commentTableView.sheetPresentationController, let data = data {
             sheet.detents = [.medium()]
             commentTableView.fetchData(data: data)
@@ -444,7 +431,7 @@ class DetailPageController: UIViewController {
             }
         }
     }
-        
+    
     func sendData(data: Thumbnails.Item) {
         commentTableView.data = data
     }
@@ -488,21 +475,20 @@ class DetailPageController: UIViewController {
         } else {
             dislikeButton.backgroundColor = .blue
             if let data = data {
-                print("싫어요를 누른 비디오 아이디는 \(data.id.videoId)")
+                print("싫어요를 해제한 비디오 아이디는 \(data.id.videoId)")
                 UserDefaultManager.sharedInstance.deleteDisLikeVido(videoId: data.id.videoId)
             }
         }
     }
     
     @objc func doShare() {
-        let shareText: String = "share text test!"
+        let shareText: String = "어떻게 공유할까요?"
         var shareObject = [Any]()
-        
         shareObject.append(shareText)
         
         let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
-                
+        
         self.present(activityViewController, animated: true, completion: nil)
     }
     
@@ -511,7 +497,7 @@ class DetailPageController: UIViewController {
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 1
         formatter.locale = Locale(identifier: "ko_KR") // Set the locale to Korean
-
+        
         if count < 1000 {
             return "\(count)"
         } else if count < 10_000 {
@@ -534,8 +520,31 @@ class DetailPageController: UIViewController {
             navigationController?.popViewController(animated: true)
         }
     }
-
-  deinit {
+    
+    func populateData() {
+        Task {
+            let channelID = self.data?.snippet.channelId
+            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID!)
+            if let channelInfo = channelInfo {
+                print("이렇게 해도 나오나? \(channelInfo)")
+                // 영상별 데이터가 아니라 전체 데이터를 가지고 왔네요! 🥲
+                let views = formatCount(Int(channelInfo.items[0].statistics.viewCount)!)
+                let followerCount = formatCount(Int(channelInfo.items[0].statistics.subscriberCount)!)
+                
+                statLabel.text = views
+                followerLabel.text = followerCount
+            }
+        }
+        
+        Task {
+            if let dataID = self.data?.snippet.channelId {
+                let profileImg = await YoutubeManger.shared.getProfileThumbnail(channelID: dataID)?.items?[0].snippet.thumbnails.medium.url
+                profileImage.image = await ImageCacheManager.shared.loadImage(url: profileImg ?? "")
+            }
+        }
+    }
+    
+    deinit {
         print("deinit - 디테일 페이지")
     }
 }
