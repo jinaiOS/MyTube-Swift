@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class LoginViewController: UIViewController {
     
@@ -194,7 +195,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginButtonTouched() {
-        UserDefaultManager.shared.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false) : nil
+                UserDefaultManager.shared.requestLogin(id: tfID.tf.text ?? "", pw: tfPassword.tf.text ?? "") ? (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController(), animated: false) : nil
     }
     
     @objc func joinMembershipButtonTouched() {
@@ -232,4 +233,19 @@ extension LoginViewController: CustomTextfieldViewDelegate {
     }
     
     
+}
+
+// SwiftUI를 활용한 미리보기
+struct LoginViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginViewControllerReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct LoginViewControllerReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UINavigationController(rootViewController: LoginViewController())
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }

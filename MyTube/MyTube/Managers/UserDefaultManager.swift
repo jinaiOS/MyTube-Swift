@@ -8,86 +8,171 @@
 import Foundation
 
 class UserDefaultManager {
-    static let shared = UserDefaultManager()
-        
-    private let userDefaults = UserDefaults.standard
-    private let contactKey = "Root"
-    private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    private var archiveURL: URL
     
-    init() {
-        archiveURL = Bundle.main.url(forResource: "User", withExtension: "plist")!
+    static let sharedInstance = UserDefaultManager()
+    
+    var userInfo : UserInfoModel?
+    
+    var userList = [UserInfoModel]() {
+        didSet {
+            self.saveUserInfo()
+        }
     }
     
-    // MARK: userDefaults
-    
-    func fetchContacts() -> [UserInfoModel] {
-        guard let data = userDefaults.object(forKey: contactKey) as? Data else { return [] }
-        guard let contacts = try? JSONDecoder().decode([UserInfoModel].self, from: data) else { return [] }
-        return contacts
+    var seeArray : [String] = []
+    var subscribeArray : [String] = []
+    var likeArray : [String] = []
+    var disLikeArray : [String] = []
+    var videoArray : [Thumbnails.Item] = []
+
+    func saveUserInfo() {
+        let data = self.userList.map {
+            [
+                "id": $0.id,
+                "nickName": $0.nickName,
+                "password": $0.password,
+                "name": $0.name,
+                "birth": $0.birth
+            ]
+        }
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(data, forKey: "userList")
+        print(userList)
     }
     
-    func save(contact: UserInfoModel) {
-        var contacts = fetchContacts()
-        contacts.append(contact)
-        guard let data = try? JSONEncoder().encode(contacts) else { return }
-        userDefaults.setValue(data, forKey: contactKey)
-    }
-    
-    func deleteContact(at index: Int) {
-        var contacts = fetchContacts()
-        contacts.remove(at: index)
-        guard let data = try? JSONEncoder().encode(contacts) else { return }
-        userDefaults.setValue(data, forKey: contactKey)
-    }
-    
-    // MARK: plist
-    
-    func fetchFromFile() -> [UserInfoModel] {
-        guard let data = try? Data(contentsOf: archiveURL) else { return [] }
-        guard let contacts = try? PropertyListDecoder().decode([UserInfoModel].self, from: data) else { return [] }
-        return contacts
-        
+    func loadUsers() {
+        let userDefaults = UserDefaults.standard
+        guard let data = userDefaults.object(forKey: "userList") as? [[String: Any]] else { return }
+
+        self.userList = data.compactMap {
+            guard let id = $0["id"] as? String else { return nil }
+            guard let nickName = $0["nickName"] as? String else { return nil }
+            guard let password = $0["password"] as? String else { return nil }
+            guard let name = $0["name"] as? String else { return nil }
+            guard let birth = $0["birth"] as? String else { return nil }
+            return UserInfoModel(id: id, nickName: nickName, password: password, name: name, birth: birth)
+        }
     }
     
     func requestLogin(id: String, pw: String) -> Bool {
-        var contacts = fetchFromFile()
-        
-        for i in contacts {
-            if i.id == id && i.password == pw {
-                print("login complete")
-                return true
-            }
+       for i in userList {
+           if i.id == id && i.password == pw {
+               print("login complete")
+               userInfo = i
+               return true
+           }
         }
         print("login fail")
         return false
     }
     
-    func saveToFile(with contact: UserInfoModel, index: Int? = nil) {
-        var contacts = fetchFromFile()
-        if let index = index {
-            contacts[index] = contact
-        } else {
-            contacts.append(contact)
+    func checkIDDoubleCheck(id: String) -> Bool {
+        for i in userList {
+            if i.id == id {
+                return true
+            }
         }
-
-        guard let data = try? PropertyListEncoder().encode(contacts) else {
-            return
-        }
-        
-        try? data.write(to: archiveURL, options: .noFileProtection)
-        print(fetchFromFile())
+        return false
     }
     
-    func deleteFromFile(at index: Int) {
-        var contacts = fetchFromFile()
-        contacts.remove(at: index)
-        
-        guard let data = try? PropertyListEncoder().encode(contacts) else {
-            return
+    func editMembership(id: String, nickName: String, pw: String, name: String, birth: String) {
+        for i in 0..<userList.count {
+            if userList[i].id == userInfo?.id {
+                userList[i] = UserInfoModel(id: id, nickName: nickName, password: pw, name: name, birth: birth)
+            }
         }
+    }
     
-        try? data.write(to: archiveURL, options: .noFileProtection)
-        print(fetchFromFile())
+    func saveCurrentVideo(videoId: String) {
+        seeArray.append(videoId)
+        for i in seeArray {
+            if i == "" {
+                seeArray.remove(at: 0)
+            }
+        }
+        seeArray = removeDuplicate(seeArray)
+       UserDefaults.standard.set(seeArray, forKey: "currentVideoId")
+    }
+    
+    func saveSubscribe(channelID: String) {
+        subscribeArray.append(channelID)
+        for i in subscribeArray {
+            if i == "" {
+                subscribeArray.remove(at: 0)
+            }
+        }
+        subscribeArray = removeDuplicate(subscribeArray)
+       UserDefaults.standard.set(subscribeArray, forKey: "subscribeChannelID")
+    }
+    
+    func deleteSubscribe(channelID: String) {
+        subscribeArray = subscribeArray.filter  { (element) -> Bool in
+           return element != channelID
+       }
+        for i in subscribeArray {
+            if i == "" {
+                subscribeArray.remove(at: 0)
+            }
+        }
+        subscribeArray = removeDuplicate(subscribeArray)
+       UserDefaults.standard.set(subscribeArray, forKey: "subscribeChannelID")
+    }
+    
+    func saveLikeVido(videoId: String) {
+        likeArray.append(videoId)
+        for i in likeArray {
+            if i == "" {
+                likeArray.remove(at: 0)
+            }
+        }
+        likeArray = removeDuplicate(likeArray)
+       UserDefaults.standard.set(likeArray, forKey: "likeVideoID")
+    }
+    
+    func deleteLikeVido(videoId: String) {
+        likeArray = likeArray.filter  { (element) -> Bool in
+            return element != videoId
+        }
+        for i in likeArray {
+            if i == "" {
+                likeArray.remove(at: 0)
+            }
+        }
+        likeArray = removeDuplicate(likeArray)
+       UserDefaults.standard.set(likeArray, forKey: "likeVideoID")
+    }
+    
+    func saveDisLikeVido(videoId: String) {
+        disLikeArray.append(videoId)
+        for i in disLikeArray {
+            if i == "" {
+                disLikeArray.remove(at: 0)
+            }
+        }
+        disLikeArray = removeDuplicate(disLikeArray)
+       UserDefaults.standard.set(disLikeArray, forKey: "likeVideoID")
+    }
+    
+    func deleteDisLikeVido(videoId: String) {
+        disLikeArray = disLikeArray.filter  { (element) -> Bool in
+            return element != videoId
+        }
+        for i in disLikeArray {
+            if i == "" {
+                disLikeArray.remove(at: 0)
+            }
+        }
+        disLikeArray = removeDuplicate(disLikeArray)
+       UserDefaults.standard.set(disLikeArray, forKey: "likeVideoID")
+    }
+    
+    func removeDuplicate (_ array: [String]) -> [String] {
+        var removedArray = [String]()
+        for i in array {
+            if removedArray.contains(i) == false {
+                removedArray.append(i)
+            }
+        }
+        return removedArray
     }
 }

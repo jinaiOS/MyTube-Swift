@@ -11,11 +11,18 @@ struct Thumbnails: Codable {
     let items: [Item]
     
     struct Item: Codable {
+        let id: ID
         let snippet: Snippet
+    }
+    
+    struct ID: Codable {
+        let kind: String
+        let videoId: String // 비디오 아이디
     }
     
     struct Snippet: Codable {
         let publishedAt: String
+        let channelId: String // 구독
         let title: String
         let description: String
         let thumbnails: ThumbnailSize
