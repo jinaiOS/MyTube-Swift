@@ -25,6 +25,15 @@ class DetailPageController: UIViewController {
     var subscribeIsTapped = false
     
     //MARK: - 영상 + 프로필 영역
+    
+    let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isScrollEnabled = true
+        return view
+    }()
+    
     lazy var videoPlayerView: YTPlayerView = {
         let video = YTPlayerView()
         video.contentMode = .scaleAspectFit
@@ -35,6 +44,7 @@ class DetailPageController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         let newSize = label.intrinsicContentSize
+        label.numberOfLines = 0
         label.textColor = .black
         label.frame.size = newSize
         label.text = "유튜브 영상 제목"
@@ -299,6 +309,11 @@ class DetailPageController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     //MARK: - setup 함수
     func setupUI() {
         setVideo()
@@ -504,9 +519,9 @@ class DetailPageController: UIViewController {
     }
     
     @objc func doShare() {
-        let shareText: String = "어떻게 공유할까요?"
+        let shareUrl: String = (data?.snippet.title)!
         var shareObject = [Any]()
-        shareObject.append(shareText)
+        shareObject.append(shareUrl)
         
         let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view

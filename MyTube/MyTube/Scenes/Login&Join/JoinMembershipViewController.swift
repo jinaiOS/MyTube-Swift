@@ -117,6 +117,7 @@ class JoinMembershipViewController: UIViewController {
         UserDefaultManager.sharedInstance.loadUsers()
         // keyboard scroll
         scrollView.keyboardDismissMode = .interactive
+        view.backgroundColor = .systemBackground
 
         setLayout()
         registerDelegate()

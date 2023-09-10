@@ -30,11 +30,7 @@ class MyPageViewController: UIViewController {
     let logoutButton = UIButton(type: .system)
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let nickname = UserDefaultManager.sharedInstance.userInfo?.nickName,
-           let id = UserDefaultManager.sharedInstance.userInfo?.id {
-            nicknameLabel.text = nickname
-            idLabel.text = "@" + id
-        }
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {
@@ -75,7 +71,7 @@ class MyPageViewController: UIViewController {
         }()
         
         // 프로필 사진 아이콘
-        let profileIcon = UIImageView(image: UIImage(named: "image1"))
+        let profileIcon = UIImageView(image: UIImage(named: "myMainImage"))
         profileIcon.contentMode = .scaleAspectFill
         profileIcon.clipsToBounds = true
         profileIcon.layer.cornerRadius = 25
@@ -90,7 +86,6 @@ class MyPageViewController: UIViewController {
         }
         
         // 닉네임 텍스트
-        let nicknameLabel = UILabel()
         nicknameLabel.text = "Janus"
         nicknameLabel.font = UIFont.systemFont(ofSize: 20)
         nicknameLabel.textColor = .black
@@ -106,7 +101,6 @@ class MyPageViewController: UIViewController {
         }
         
         // 아이디 텍스트
-        let idLabel = UILabel()
         idLabel.text = "@janus5307"
         idLabel.font = UIFont.systemFont(ofSize: 18)
         idLabel.textColor = .gray
@@ -327,6 +321,13 @@ class MyPageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        if let nickname = UserDefaultManager.sharedInstance.userInfo?.nickName,
+           let id = UserDefaultManager.sharedInstance.userInfo?.id {
+            nicknameLabel.text = nickname
+            idLabel.text = "@" + id
+        }
+
 
         let channelID = UserDefaults.standard.object(forKey: "subscribeChannelID") as? Array<String>
        
@@ -337,16 +338,16 @@ class MyPageViewController: UIViewController {
         for i in channelID ?? [] {
             let circleImageView = UIImageView(image: UIImage(systemName: "circle.fill"))
             circleImageView.tintColor = .gray // 이미지 뷰의 색상 설정
-            circleImageView.contentMode = .scaleAspectFit
-            circleImageView.clipsToBounds = true
+            circleImageView.contentMode = .scaleAspectFill
             Task {
                 let profileImg = await YoutubeManger.shared.getProfileThumbnail(channelID: i)?.items?[0].snippet.thumbnails.medium.url
                 circleImageView.image = await ImageCacheManager.shared.loadImage(url: profileImg ?? "")
             }
-            circleImageView.layer.cornerRadius = 40
+            circleImageView.layer.cornerRadius = 37.5
+            circleImageView.clipsToBounds = true
             circleImageView.translatesAutoresizingMaskIntoConstraints = false
-            circleImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 너비 조절
-            circleImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 높이 조절
+            circleImageView.widthAnchor.constraint(equalToConstant: 80).isActive = true // 원 모양 이미지 뷰의 너비 조절
+            circleImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true // 원 모양 이미지 뷰의 높이 조절
             
             // 원 모양 이미지 뷰를 스택 뷰에 추가
             circleStackView.addArrangedSubview(circleImageView)
