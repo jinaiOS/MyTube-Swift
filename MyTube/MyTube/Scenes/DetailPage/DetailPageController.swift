@@ -280,6 +280,7 @@ class DetailPageController: UIViewController {
         homeModel.getThumbnailData()
         
         setupUI()
+        addSwipe()
         
         Task {
             let channelID = self.data?.snippet.channelId
@@ -294,6 +295,11 @@ class DetailPageController: UIViewController {
                 followerLabel.text = followerCount
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     //MARK: - setup 함수
@@ -465,7 +471,7 @@ class DetailPageController: UIViewController {
         } else {
             likeButton.backgroundColor = .blue
             if let data = data {
-                print("좋아요를 누른 비디오 아이디는 \(data.id.videoId)")
+                print("좋아요를 해제한 비디오 아이디는 \(data.id.videoId)")
                 UserDefaultManager.sharedInstance.deleteLikeVido(videoId: data.id.videoId)
             }
         }
@@ -515,6 +521,18 @@ class DetailPageController: UIViewController {
         } else {
             let MCount = Double(count) / 10_000.0
             return "\(formatter.string(from: NSNumber(value: MCount)) ?? "\(MCount)")만"
+        }
+    }
+    
+    func addSwipe() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+    }
+    
+    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .right {
+            navigationController?.popViewController(animated: true)
         }
     }
 
