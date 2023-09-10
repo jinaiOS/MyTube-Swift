@@ -43,7 +43,7 @@ final class YoutubeManger {
             "textFormat": "plainText",
             "part": "snippet",
             "videoId": "\(videoId)",
-            "maxResults": "10",
+            "maxResults": "50",
             "key": TEST_KEY
         ]
         
