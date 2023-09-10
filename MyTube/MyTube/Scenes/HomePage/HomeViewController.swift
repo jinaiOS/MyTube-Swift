@@ -101,12 +101,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         detailVC.configureData(url: url, data: data)
         UserDefaultManager.sharedInstance.saveCurrentVideo(videoId: data.id.videoId)
         navigationController?.pushViewController(detailVC, animated: true)
-        
-        Task {
-            let channelID = data.snippet.channelId
-            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID)
-            print("====> \(channelInfo)")
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

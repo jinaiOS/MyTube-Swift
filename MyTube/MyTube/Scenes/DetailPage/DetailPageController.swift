@@ -13,14 +13,12 @@ import youtube_ios_player_helper
 class DetailPageController: UIViewController {
     
     //MARK: - 전역 변수
-    
-    
-    
     private let commentTableView = CommentTableViewController()
     private let homeModel = HomeViewModel()
     private let inset: CGFloat = 24
     private var url: String?
     var data: Thumbnails.Item?
+    var channelData: [Channel] = []
     var subscription = Set<AnyCancellable>()
     var likeIsTapped = false
     var dislikeIsTapped = false
@@ -254,7 +252,6 @@ class DetailPageController: UIViewController {
     }()
     
     //MARK: - 연관 영상 영역
-    
     private let flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -283,10 +280,23 @@ class DetailPageController: UIViewController {
         homeModel.getThumbnailData()
         
         setupUI()
+        
+        Task {
+            let channelID = self.data?.snippet.channelId
+            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID!)
+            if let channelInfo = channelInfo {
+                print("이렇게 해도 나오나? \(channelInfo)")
+                // 영상별 데이터가 아니라 전체 데이터를 가지고 왔네요! 🥲
+                let views = formatCount(Int(channelInfo.items[0].statistics.viewCount)!)
+                let followerCount = formatCount(Int(channelInfo.items[0].statistics.subscriberCount)!)
+                
+                statLabel.text = views
+                followerLabel.text = followerCount
+            }
+        }
     }
     
     //MARK: - setup 함수
-    
     func setupUI() {
         setVideo()
         setViewDetail()
@@ -413,6 +423,7 @@ class DetailPageController: UIViewController {
         
         if subscribeIsTapped {
             followButton.setTitle("구독중", for: .normal)
+            followButton.backgroundColor = .black
             if let data = data {
                 print("구독한 비디오 아이디는 \(data.snippet.channelId)")
                 UserDefaultManager.sharedInstance.saveSubscribe(channelID: data.snippet.channelId)
@@ -420,15 +431,15 @@ class DetailPageController: UIViewController {
             }
         } else {
             followButton.setTitle("구독", for: .normal)
+            followButton.backgroundColor = .systemGray
             if let data = data {
                 print("구독한 비디오 아이디는 \(data.snippet.channelId)")
                 UserDefaultManager.sharedInstance.deleteSubscribe(channelID: data.snippet.channelId)
                 sendData(data: data)
             }
         }
-       
     }
-    
+        
     func sendData(data: Thumbnails.Item) {
         commentTableView.data = data
     }
@@ -488,6 +499,23 @@ class DetailPageController: UIViewController {
         activityViewController.popoverPresentationController?.sourceView = self.view
                 
         self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func formatCount(_ count: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 1
+        formatter.locale = Locale(identifier: "ko_KR") // Set the locale to Korean
+
+        if count < 1000 {
+            return "\(count)"
+        } else if count < 10_000 {
+            let kCount = Double(count) / 1000.0
+            return "\(formatter.string(from: NSNumber(value: kCount)) ?? "\(kCount)")천"
+        } else {
+            let MCount = Double(count) / 10_000.0
+            return "\(formatter.string(from: NSNumber(value: MCount)) ?? "\(MCount)")만"
+        }
     }
 
   deinit {

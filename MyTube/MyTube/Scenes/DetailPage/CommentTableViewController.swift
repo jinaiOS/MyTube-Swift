@@ -40,11 +40,16 @@ class CommentTableViewController: UIViewController {
         youtubeManager.getComments(from: videoId) { result in
             switch result {
             case .success(let comment):
-                print("댓글 출력 확인\(comment)")
-                self.commentData += comment.item
+                self.appendComments(data: comment.items)
             case .failure(let error):
                 print("오류 출력 확인\(error)")
             }
+        }
+    }
+    
+    func appendComments(data: [Comments.Item]?) {
+        if let items = data {
+            commentData += items
         }
     }
     
@@ -69,8 +74,7 @@ extension CommentTableViewController: UITableViewDataSource {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
         let comment = commentData[indexPath.row]
         cell.contentView.backgroundColor = .white
-        // MARK: - 댓글 연결 실패
-//        cell.commentLabel.text = comment.items.
+        cell.commentLabel.text = comment.snippet.topLevelComment.snippet.textDisplay
         return cell
     }
 }
