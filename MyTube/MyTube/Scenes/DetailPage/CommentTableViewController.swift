@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import SwiftUI
+import SnapKit
 
 class CommentTableViewController: UIViewController {
     //MARK: - 전역 변수
@@ -30,17 +31,18 @@ class CommentTableViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(commentTableView)
         commentTableView.dataSource = self
-        commentTableView.delegate = self
         commentTableView.frame = view.bounds        
         loadCommentData()
     }
     
     func loadCommentData() {
         guard let videoId = data?.id.videoId else { print("데이터가 없습니다"); return }
-        youtubeManager.getComments(from: videoId) { result in
+        youtubeManager.getComments(from: videoId) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let comment):
                 self.appendComments(data: comment.items)
+                self.commentTableView.reloadData()
             case .failure(let error):
                 print("오류 출력 확인\(error)")
             }
@@ -56,13 +58,6 @@ class CommentTableViewController: UIViewController {
     func fetchData(data: Thumbnails.Item) {
         self.data = data
     }
-    
-}
-
-extension CommentTableViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("눌렸습니다. \(indexPath.row)")
-    }
 }
 
 extension CommentTableViewController: UITableViewDataSource {
@@ -75,6 +70,12 @@ extension CommentTableViewController: UITableViewDataSource {
         let comment = commentData[indexPath.row]
         cell.contentView.backgroundColor = .white
         cell.commentLabel.text = comment.snippet.topLevelComment.snippet.textDisplay
+        if let url = comment.snippet.topLevelComment.snippet.authorProfileImageURL {
+            Task {
+                let image = await ImageCacheManager.shared.loadImage(url: url)
+                cell.profileImage.image = image
+            }
+        }
         return cell
     }
 }
