@@ -327,6 +327,7 @@ class MyPageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         let channelID = UserDefaults.standard.object(forKey: "subscribeChannelID") as? Array<String>
        
         for view in self.circleStackView.subviews {
@@ -358,14 +359,19 @@ class MyPageViewController: UIViewController {
         let likeVideoID = UserDefaults.standard.object(forKey: "likeVideoID") as? Array<String>
         
         // 사각형 모양의 뷰를 6개 추가
-        for i in likeVideoID ?? [] {
+        for i in 0..<(likeVideoID?.count ?? 0) {
             let rectangleView = UIImageView()
             rectangleView.backgroundColor = .gray // 원하는 색상으로 설정하세요
             rectangleView.translatesAutoresizingMaskIntoConstraints = false
             rectangleView.layer.cornerRadius = 6 // 모서리 반지름 설정
             Task {
-                rectangleView.image = await ImageCacheManager.shared.loadImage(url: "https://img.youtube.com/vi/\(i)/0.jpg")
+                rectangleView.image = await ImageCacheManager.shared.loadImage(url: "https://img.youtube.com/vi/\(likeVideoID?[i] ?? "")/0.jpg")
             }
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(likeItemTapped(_:)))
+            rectangleView.isUserInteractionEnabled = true // 탭을 인식하도록 설정
+            rectangleView.addGestureRecognizer(tapGesture)
+            tapGesture.view?.tag = i
             
             rectangleStackView.addArrangedSubview(rectangleView)
             
@@ -387,7 +393,7 @@ class MyPageViewController: UIViewController {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(historyItemTapped(_:)))
                 historyItemView.isUserInteractionEnabled = true // 탭을 인식하도록 설정
                 historyItemView.addGestureRecognizer(tapGesture)
-    
+            tapGesture.view?.tag = i
 
                 historyItemView.layer.cornerRadius = 6 // 모서리 반지름 설정
                 historyStackView.addArrangedSubview(historyItemView)
@@ -399,8 +405,9 @@ class MyPageViewController: UIViewController {
     }
     
     @objc func historyItemTapped(_ sender: UITapGestureRecognizer) {
-        let detailPageController = DetailPageController()
-        let data = viewModel.ThumbnailList[sender.view?.tag ?? 0]
+        let historyVideo = UserDefaults.standard.object(forKey: "currentVideoId") as? Array<String>
+        print("videoArray: \(UserDefaultManager.sharedInstance.videoArray)")
+        let data = UserDefaultManager.sharedInstance.videoArray.filter { $0.id.videoId == historyVideo?[(sender.view?.tag ?? 0)] }[0]
         let videoID = data.id.videoId
         let url = "https://youtu.be/" + videoID
         
@@ -414,7 +421,25 @@ class MyPageViewController: UIViewController {
             let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID)
             print("====> \(channelInfo)")
         }
-        navigationController?.pushViewController(detailPageController, animated: true)
+    }
+    
+    @objc func likeItemTapped(_ sender: UITapGestureRecognizer) {
+        let historyVideo = UserDefaults.standard.object(forKey: "likeVideoID") as? Array<String>
+        print("videoArray: \(UserDefaultManager.sharedInstance.videoArray)")
+        let data = UserDefaultManager.sharedInstance.videoArray.filter { $0.id.videoId == historyVideo?[(sender.view?.tag ?? 0)] }[0]
+        let videoID = data.id.videoId
+        let url = "https://youtu.be/" + videoID
+        
+        let detailVC = DetailPageController()
+        detailVC.configureData(url: url, data: data)
+        UserDefaultManager.sharedInstance.saveCurrentVideo(videoId: data.id.videoId)
+        navigationController?.pushViewController(detailVC, animated: true)
+        
+        Task {
+            let channelID = data.snippet.channelId
+            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID)
+            print("====> \(channelInfo)")
+        }
     }
     
     // 로그아웃 버튼을 눌렀을 때 호출될 메서드
