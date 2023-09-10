@@ -126,11 +126,21 @@ class DetailPageController: UIViewController {
         return stack
     }()
     
+    let  buttonView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.layer.cornerRadius = 12
+        view.widthAnchor.constraint(equalToConstant: 87).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let likeButton: UIButton = {
         let button = UIButton()
         button.setTitle("👍🏻", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .blue
+        button.backgroundColor = .lightGray
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -142,7 +152,7 @@ class DetailPageController: UIViewController {
         let button = UIButton()
         button.setTitle("👎🏻", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .blue
+        button.backgroundColor = .lightGray
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -314,7 +324,7 @@ class DetailPageController: UIViewController {
     }
     
     func setViewDetail() {
-        [titleContainerStack, profileContainerStack, followButton, buttonStack, shareButton].forEach{ view.addSubview($0) }
+        [titleContainerStack, profileContainerStack, buttonView, followButton, buttonStack, shareButton].forEach{ view.addSubview($0) }
         setTitleContainer()
         setProfileView()
         setInteractionButton()
@@ -345,9 +355,13 @@ class DetailPageController: UIViewController {
     
     func setInteractionButton() {
         NSLayoutConstraint.activate([
-            buttonStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: inset),
-            buttonStack.topAnchor.constraint(equalTo: profileContainerStack.bottomAnchor, constant: 8),
-            shareButton.leadingAnchor.constraint(equalTo: buttonStack.trailingAnchor, constant: 8),
+            buttonView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: inset),
+            buttonView.topAnchor.constraint(equalTo: profileContainerStack.bottomAnchor, constant: 8),
+            
+            buttonStack.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor),
+            buttonStack.topAnchor.constraint(equalTo: buttonView.topAnchor),
+            buttonStack.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor),
+            shareButton.leadingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: 8),
             shareButton.topAnchor.constraint(equalTo: profileContainerStack.bottomAnchor, constant: 8),
         ])
     }
@@ -450,12 +464,16 @@ class DetailPageController: UIViewController {
         likeIsTapped.toggle()
         if likeIsTapped {
             likeButton.backgroundColor = .red
+            buttonView.alpha = 0.5
+            dislikeButton.alpha = 0.2
             if let data = data {
                 print("좋아요를 누른 비디오 아이디는 \(data.id.videoId)")
                 UserDefaultManager.sharedInstance.saveLikeVido(videoId: data.id.videoId)
             }
         } else {
-            likeButton.backgroundColor = .blue
+            likeButton.backgroundColor = .lightGray
+            buttonView.alpha = 1
+            dislikeButton.alpha = 1
             if let data = data {
                 print("좋아요를 해제한 비디오 아이디는 \(data.id.videoId)")
                 UserDefaultManager.sharedInstance.deleteLikeVido(videoId: data.id.videoId)
@@ -468,12 +486,16 @@ class DetailPageController: UIViewController {
         
         if dislikeIsTapped {
             dislikeButton.backgroundColor = .red
+            buttonView.alpha = 0.5
+            likeButton.alpha = 0.2
             if let data = data {
                 print("싫어요를 누른 비디오 아이디는 \(data.id.videoId)")
                 UserDefaultManager.sharedInstance.saveDisLikeVido(videoId: data.id.videoId)
             }
         } else {
-            dislikeButton.backgroundColor = .blue
+            dislikeButton.backgroundColor = .lightGray
+            buttonView.alpha = 1
+            likeButton.alpha = 1
             if let data = data {
                 print("싫어요를 해제한 비디오 아이디는 \(data.id.videoId)")
                 UserDefaultManager.sharedInstance.deleteDisLikeVido(videoId: data.id.videoId)
