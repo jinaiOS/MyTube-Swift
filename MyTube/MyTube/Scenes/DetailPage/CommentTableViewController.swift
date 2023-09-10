@@ -13,7 +13,7 @@ class CommentTableViewController: UIViewController {
     //MARK: - 전역 변수
     private let youtubeManager = YoutubeManger.shared
     var data: Thumbnails.Item?
-    var commentData: [Comments] = []
+    var commentData: [Comments.Item] = []
     
     //MARK: - IBOutlet
     let commentTableView: UITableView = {
@@ -28,28 +28,35 @@ class CommentTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
         view.addSubview(commentTableView)
         commentTableView.dataSource = self
         commentTableView.delegate = self
-        
-        commentTableView.frame = view.bounds
-        fetchCommentData()
+        commentTableView.frame = view.bounds        
+        loadCommentData()
     }
     
-    func fetchCommentData() {
+    func loadCommentData() {
         guard let videoId = data?.id.videoId else { print("데이터가 없습니다"); return }
         youtubeManager.getComments(from: videoId) { result in
             switch result {
-            case .success(let comments):
-                print(comments)
-                self.commentData.append(comments)
-                self.commentTableView.reloadData()
+            case .success(let comment):
+                self.appendComments(data: comment.items)
             case .failure(let error):
-                print(error)
+                print("오류 출력 확인\(error)")
             }
         }
     }
+    
+    func appendComments(data: [Comments.Item]?) {
+        if let items = data {
+            commentData += items
+        }
+    }
+    
+    func fetchData(data: Thumbnails.Item) {
+        self.data = data
+    }
+    
 }
 
 extension CommentTableViewController: UITableViewDelegate {
@@ -67,8 +74,7 @@ extension CommentTableViewController: UITableViewDataSource {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
         let comment = commentData[indexPath.row]
         cell.contentView.backgroundColor = .white
-        // MARK: - 댓글 연결 실패
-//        cell.commentLabel.text = comment.items.
+        cell.commentLabel.text = comment.snippet.topLevelComment.snippet.textDisplay
         return cell
     }
 }

@@ -15,15 +15,22 @@ final class HomeViewController: UIViewController {
     private let viewModel = HomeViewModel()
     var subscriptions = Set<AnyCancellable>()
     
+    let attributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 14),
+        .foregroundColor: UIColor.gray
+    ]
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        let refresh = UIRefreshControl()
-        refresh.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
-        collectionView.refreshControl = refresh
         collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
         collectionView.register(SearchHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier)
+        let refresh = UIRefreshControl()
+        let attributedTitle = NSAttributedString(string: "당겨서 새로고침", attributes: attributes)
+        refresh.attributedTitle = attributedTitle
+        refresh.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
+        collectionView.refreshControl = refresh
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
@@ -74,7 +81,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.ThumbnailList.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier,
                                                             for: indexPath) as? ThumbnailCell else { return UICollectionViewCell() }
@@ -82,7 +89,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.configure(data: item)
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let inset: CGFloat = 24
         return CGSize(width: view.bounds.width - inset * 2, height: 240)
@@ -93,15 +100,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let snippet = viewModel.ThumbnailList[indexPath.item].snippet
         let data = viewModel.ThumbnailList[indexPath.item]
-        
-        guard let videoID = snippet.thumbnails.high.url.getVideoID() else { return }
+        let videoID = data.id.videoId
         let url = "https://youtu.be/" + videoID
+        
         let detailVC = DetailPageController()
         detailVC.configureData(url: url, data: data)
+        UserDefaultManager.sharedInstance.saveCurrentVideo(videoId: data.id.videoId)
         navigationController?.pushViewController(detailVC, animated: true)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -113,6 +119,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.bounds.width, height: 50)
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let currentRow = indexPath.row

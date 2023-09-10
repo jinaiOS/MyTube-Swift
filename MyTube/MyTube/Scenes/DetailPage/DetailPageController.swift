@@ -13,15 +13,16 @@ import youtube_ios_player_helper
 class DetailPageController: UIViewController {
     
     //MARK: - 전역 변수
-    
-    
-    
     private let commentTableView = CommentTableViewController()
     private let homeModel = HomeViewModel()
     private let inset: CGFloat = 24
     private var url: String?
     var data: Thumbnails.Item?
+    var channelData: [Channel] = []
     var subscription = Set<AnyCancellable>()
+    var likeIsTapped = false
+    var dislikeIsTapped = false
+    var subscribeIsTapped = false
     
     //MARK: - 영상 + 프로필 영역
     lazy var videoPlayerView: YTPlayerView = {
@@ -108,7 +109,7 @@ class DetailPageController: UIViewController {
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(addVideoToList), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addSubscribe), for: .touchUpInside)
         return button
     }()
     
@@ -133,6 +134,7 @@ class DetailPageController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -140,10 +142,11 @@ class DetailPageController: UIViewController {
         let button = UIButton()
         button.setTitle("👎🏻", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .red
+        button.backgroundColor = .blue
         button.heightAnchor.constraint(equalToConstant: 26).isActive = true
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(dislikeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -156,6 +159,7 @@ class DetailPageController: UIViewController {
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(doShare), for: .touchUpInside)
         return button
     }()
     
@@ -248,7 +252,6 @@ class DetailPageController: UIViewController {
     }()
     
     //MARK: - 연관 영상 영역
-    
     private let flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -262,7 +265,7 @@ class DetailPageController: UIViewController {
         collectionView.dataSource = self
         collectionView.isScrollEnabled = true
         collectionView.showsVerticalScrollIndicator = true
-        collectionView.register(VideoCell.self, forCellWithReuseIdentifier: VideoCell.identifier)
+        collectionView.register(ThumbnailCell.self, forCellWithReuseIdentifier: ThumbnailCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -271,28 +274,35 @@ class DetailPageController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupUI()
+
+      // 하단 영상 썸네일 호출
+        bindViewModel()
+        homeModel.getThumbnailData()
         
-        view.backgroundColor = .systemBackground
-        if let data = data {
-            sendData(data: data)
+        setupUI()
+        addSwipe()
+        
+        Task {
+            let channelID = self.data?.snippet.channelId
+            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID!)
+            if let channelInfo = channelInfo {
+                print("이렇게 해도 나오나? \(channelInfo)")
+                // 영상별 데이터가 아니라 전체 데이터를 가지고 왔네요! 🥲
+                let views = formatCount(Int(channelInfo.items[0].statistics.viewCount)!)
+                let followerCount = formatCount(Int(channelInfo.items[0].statistics.subscriberCount)!)
+                
+                statLabel.text = views
+                followerLabel.text = followerCount
+            }
         }
-//        if let data = data {
-//            YoutubeManger.shared.getComments(from: data.id.videoId) { result in
-//                switch result {
-//                case .success(let comments):
-//                    print(comments)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//        }
-        
-        setupUI()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        commentStack.addGestureRecognizer(tapGesture)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    //MARK: - setup 함수
     func setupUI() {
         setVideo()
         setViewDetail()
@@ -357,6 +367,9 @@ class DetailPageController: UIViewController {
     
     func setCommentView() {
         view.addSubview(commentViewStack)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        commentStack.addGestureRecognizer(tapGesture)
+        
         [commentView, statStack, commentStack].forEach{commentViewStack.addSubview($0)}
         
         NSLayoutConstraint.activate([
@@ -375,7 +388,7 @@ class DetailPageController: UIViewController {
         view.addSubview(videoCollectionView)
         setVideoCollectionView()
     }
-    
+  
     func setVideoCollectionView() {
         NSLayoutConstraint.activate([
             videoCollectionView.topAnchor.constraint(equalTo: commentViewStack.bottomAnchor, constant: 25),
@@ -387,30 +400,143 @@ class DetailPageController: UIViewController {
   
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("눌려써요!")
-        if let sheet = self.commentTableView.sheetPresentationController {
+        if let sheet = self.commentTableView.sheetPresentationController, let data = data {
             sheet.detents = [.medium()]
+            commentTableView.fetchData(data: data)
         }
         self.present(self.commentTableView, animated: true, completion: nil)
     }
     
+    //MARK: - 데이터 호출 함수
+    // 탭한 유튜브 영상 데이터 가져오기 위한 함수
     func configureData(url: String, data: Thumbnails.Item) {
         self.url = url
         self.data = data
     }
     
+    // 탭한 영상 저장하도록 정리
     @objc func addVideoToList() {
         UserDefaults.standard.string(forKey: "currentVideoId")
         if let data = data {
             print("비디오 아이디는 \(data.id.videoId)")
-            sendData(data: data)
+            print("채널 아이디는 \(data.snippet.channelId)")
         }
     }
     
+    //MARK: - collectionView 데이터 채우기
+    @objc func addSubscribe() {
+        subscribeIsTapped.toggle()
+        
+        if subscribeIsTapped {
+            followButton.setTitle("구독중", for: .normal)
+            followButton.backgroundColor = .black
+            if let data = data {
+                print("구독한 비디오 아이디는 \(data.snippet.channelId)")
+                UserDefaultManager.sharedInstance.saveSubscribe(channelID: data.snippet.channelId)
+                sendData(data: data)
+            }
+        } else {
+            followButton.setTitle("구독", for: .normal)
+            followButton.backgroundColor = .systemGray
+            if let data = data {
+                print("구독한 비디오 아이디는 \(data.snippet.channelId)")
+                UserDefaultManager.sharedInstance.deleteSubscribe(channelID: data.snippet.channelId)
+                sendData(data: data)
+            }
+        }
+    }
+        
     func sendData(data: Thumbnails.Item) {
         commentTableView.data = data
     }
     
-    deinit {
+    func bindViewModel() {
+        homeModel.$ThumbnailList.sink { [weak self] thumbnails in
+            guard let self = self else { return }
+            print("thumbnails: \(thumbnails)")
+            DispatchQueue.main.async {
+                self.videoCollectionView.reloadData()
+            }
+        }.store(in: &subscription)
+    }
+    
+    @objc func likeButtonTapped() {
+        likeIsTapped.toggle()
+        if likeIsTapped {
+            likeButton.backgroundColor = .red
+            if let data = data {
+                print("좋아요를 누른 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.saveLikeVido(videoId: data.id.videoId)
+            }
+        } else {
+            likeButton.backgroundColor = .blue
+            if let data = data {
+                print("좋아요를 해제한 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.deleteLikeVido(videoId: data.id.videoId)
+            }
+        }
+    }
+    
+    @objc func dislikeButtonTapped() {
+        dislikeIsTapped.toggle()
+        
+        if dislikeIsTapped {
+            dislikeButton.backgroundColor = .red
+            if let data = data {
+                print("싫어요를 누른 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.saveDisLikeVido(videoId: data.id.videoId)
+            }
+        } else {
+            dislikeButton.backgroundColor = .blue
+            if let data = data {
+                print("싫어요를 누른 비디오 아이디는 \(data.id.videoId)")
+                UserDefaultManager.sharedInstance.deleteDisLikeVido(videoId: data.id.videoId)
+            }
+        }
+    }
+    
+    @objc func doShare() {
+        let shareText: String = "share text test!"
+        var shareObject = [Any]()
+        
+        shareObject.append(shareText)
+        
+        let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+                
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func formatCount(_ count: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 1
+        formatter.locale = Locale(identifier: "ko_KR") // Set the locale to Korean
+
+        if count < 1000 {
+            return "\(count)"
+        } else if count < 10_000 {
+            let kCount = Double(count) / 1000.0
+            return "\(formatter.string(from: NSNumber(value: kCount)) ?? "\(kCount)")천"
+        } else {
+            let MCount = Double(count) / 10_000.0
+            return "\(formatter.string(from: NSNumber(value: MCount)) ?? "\(MCount)")만"
+        }
+    }
+    
+    func addSwipe() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+    }
+    
+    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .right {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
+  deinit {
         print("deinit - 디테일 페이지")
     }
 }
@@ -423,15 +549,16 @@ extension DetailPageController: UICollectionViewDelegate {
 
 extension DetailPageController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return homeModel.ThumbnailList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.identifier, for: indexPath) as! VideoCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier, for: indexPath) as! ThumbnailCell
+        let item = homeModel.ThumbnailList[indexPath.item]
+        cell.configure(data: item)
         return cell
     }
     

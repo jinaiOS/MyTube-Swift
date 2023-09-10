@@ -17,7 +17,7 @@ struct Thumbnails: Codable {
     
     struct ID: Codable {
         let kind: String
-        let videoId: String // 최근 재생 영상
+        let videoId: String // 비디오 아이디
     }
     
     struct Snippet: Codable {

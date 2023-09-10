@@ -14,16 +14,24 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class MyPageViewController: UIViewController {
     let nicknameLabel = UILabel()
     let idLabel = UILabel()
+    let historyScrollView = UIScrollView()
+    let historyStackView = UIStackView()
+    let circleStackView = UIStackView()
+    let historyItemView = UIImageView()
+    let rectangleStackView = UIStackView()
+    var historyImageCnt = 0
+    private let viewModel = HomeViewModel()
     
     let logoutButton = UIButton(type: .system)
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let nickname = UserDefaults.standard.string(forKey: "nickname"),
-           let id = UserDefaults.standard.string(forKey: "id") {
+        if let nickname = UserDefaultManager.sharedInstance.userInfo?.nickName,
+           let id = UserDefaultManager.sharedInstance.userInfo?.id {
             nicknameLabel.text = nickname
             idLabel.text = "@" + id
         }
@@ -168,27 +176,13 @@ class MyPageViewController: UIViewController {
         circleScrollView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(circleScrollView)
         
-        let circleStackView = UIStackView()
         circleStackView.axis = .horizontal
         circleStackView.spacing = 14 // 원 사이의 간격 조절
         circleStackView.translatesAutoresizingMaskIntoConstraints = false
         circleScrollView.addSubview(circleStackView)
         circleScrollView.showsHorizontalScrollIndicator = false
         
-        // 원 모양 이미지 뷰 생성 및 스택 뷰에 추가
-        for _ in 0..<6 {
-            let circleImageView = UIImageView(image: UIImage(systemName: "circle.fill"))
-            circleImageView.tintColor = .gray // 이미지 뷰의 색상 설정
-            circleImageView.contentMode = .scaleAspectFit
-            circleImageView.clipsToBounds = true
-            circleImageView.layer.cornerRadius = 40
-            circleImageView.translatesAutoresizingMaskIntoConstraints = false
-            circleImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 너비 조절
-            circleImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 높이 조절
-            
-            // 원 모양 이미지 뷰를 스택 뷰에 추가
-            circleStackView.addArrangedSubview(circleImageView)
-        }
+
         
         // 원 모양 이미지 뷰 스택 뷰의 레이아웃 설정
         circleStackView.snp.makeConstraints { make in
@@ -231,23 +225,12 @@ class MyPageViewController: UIViewController {
         stackView.addArrangedSubview(rectangleScrollView)
         
         // 사각형 모양의 뷰들을 담을 스택 뷰
-        let rectangleStackView = UIStackView()
         rectangleStackView.axis = .horizontal
         rectangleStackView.spacing = 14 // 사각형 뷰들 사이의 간격 조절
         rectangleStackView.translatesAutoresizingMaskIntoConstraints = false
         rectangleScrollView.addSubview(rectangleStackView)
         
-        // 사각형 모양의 뷰를 6개 추가
-        for _ in 0..<6 {
-            let rectangleView = UIView()
-            rectangleView.backgroundColor = .gray // 원하는 색상으로 설정하세요
-            rectangleView.translatesAutoresizingMaskIntoConstraints = false
-            rectangleView.layer.cornerRadius = 6 // 모서리 반지름 설정
-            rectangleStackView.addArrangedSubview(rectangleView)
-            
-            rectangleView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
-            rectangleView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
-        }
+
         
         // 스크롤 뷰와 스택 뷰의 레이아웃 설정
         rectangleScrollView.snp.makeConstraints { make in
@@ -283,29 +266,16 @@ class MyPageViewController: UIViewController {
         
         // 시청 기록
         // 스크롤 가능한 컨테이너 뷰
-        let historyScrollView = UIScrollView()
         historyScrollView.showsHorizontalScrollIndicator = false // 가로 스크롤 바 숨김
         historyScrollView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(historyScrollView)
         
         // 사각형 모양의 뷰들을 담을 스택 뷰
-        let historyStackView = UIStackView()
         historyStackView.axis = .horizontal
         historyStackView.spacing = 14 // 사각형 뷰들 사이의 간격 조절
         historyStackView.translatesAutoresizingMaskIntoConstraints = false
         historyScrollView.addSubview(historyStackView)
         
-        // 사각형 모양의 뷰를 6개 추가
-        for _ in 0..<8 {
-            let historyItemView = UIView()
-            historyItemView.backgroundColor = .gray // 원하는 색상으로 설정하세요
-            historyItemView.translatesAutoresizingMaskIntoConstraints = false
-            historyItemView.layer.cornerRadius = 6 // 모서리 반지름 설정
-            historyStackView.addArrangedSubview(historyItemView)
-            
-            historyItemView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
-            historyItemView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
-        }
         
         // 스크롤 뷰와 스택 뷰의 레이아웃 설정
         historyScrollView.snp.makeConstraints { make in
@@ -354,6 +324,99 @@ class MyPageViewController: UIViewController {
         
         
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let channelID = UserDefaults.standard.object(forKey: "subscribeChannelID") as? Array<String>
+       
+        for view in self.circleStackView.subviews {
+            view.removeFromSuperview()
+        }
+        // 원 모양 이미지 뷰 생성 및 스택 뷰에 추가
+        for i in channelID ?? [] {
+            let circleImageView = UIImageView(image: UIImage(systemName: "circle.fill"))
+            circleImageView.tintColor = .gray // 이미지 뷰의 색상 설정
+            circleImageView.contentMode = .scaleAspectFit
+            circleImageView.clipsToBounds = true
+            Task {
+                let profileImg = await YoutubeManger.shared.getProfileThumbnail(channelID: i)?.items?[0].snippet.thumbnails.medium.url
+                circleImageView.image = await ImageCacheManager.shared.loadImage(url: profileImg ?? "")
+            }
+            circleImageView.layer.cornerRadius = 40
+            circleImageView.translatesAutoresizingMaskIntoConstraints = false
+            circleImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 너비 조절
+            circleImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 원 모양 이미지 뷰의 높이 조절
+            
+            // 원 모양 이미지 뷰를 스택 뷰에 추가
+            circleStackView.addArrangedSubview(circleImageView)
+        }
+        
+        for view in self.rectangleStackView.subviews {
+            view.removeFromSuperview()
+        }
+        
+        let likeVideoID = UserDefaults.standard.object(forKey: "likeVideoID") as? Array<String>
+        
+        // 사각형 모양의 뷰를 6개 추가
+        for i in likeVideoID ?? [] {
+            let rectangleView = UIImageView()
+            rectangleView.backgroundColor = .gray // 원하는 색상으로 설정하세요
+            rectangleView.translatesAutoresizingMaskIntoConstraints = false
+            rectangleView.layer.cornerRadius = 6 // 모서리 반지름 설정
+            Task {
+                rectangleView.image = await ImageCacheManager.shared.loadImage(url: "https://img.youtube.com/vi/\(i)/0.jpg")
+            }
+            
+            rectangleStackView.addArrangedSubview(rectangleView)
+            
+            rectangleView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
+            rectangleView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
+        }
+        
+        let historyVideo = UserDefaults.standard.object(forKey: "currentVideoId") as? Array<String>
+        for view in self.historyStackView.subviews {
+            view.removeFromSuperview()
+        }
+        for i in 0..<(historyVideo?.count ?? 0) {
+                let historyItemView = UIImageView()
+                historyItemView.backgroundColor = .gray // 원하는 색상으로 설정하세요
+                historyItemView.translatesAutoresizingMaskIntoConstraints = false
+                Task {
+                    historyItemView.image = await ImageCacheManager.shared.loadImage(url: "https://img.youtube.com/vi/\(historyVideo?[i] ?? "")/0.jpg")
+                }
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(historyItemTapped(_:)))
+                historyItemView.isUserInteractionEnabled = true // 탭을 인식하도록 설정
+                historyItemView.addGestureRecognizer(tapGesture)
+    
+
+                historyItemView.layer.cornerRadius = 6 // 모서리 반지름 설정
+                historyStackView.addArrangedSubview(historyItemView)
+
+                historyItemView.widthAnchor.constraint(equalToConstant: 140).isActive = true // 사각형 뷰의 너비 조절
+                historyItemView.heightAnchor.constraint(equalToConstant: 100).isActive = true // 사각형 뷰의 높이 조절
+            }
+
+    }
+    
+    @objc func historyItemTapped(_ sender: UITapGestureRecognizer) {
+        let detailPageController = DetailPageController()
+        let data = viewModel.ThumbnailList[sender.view?.tag ?? 0]
+        let videoID = data.id.videoId
+        let url = "https://youtu.be/" + videoID
+        
+        let detailVC = DetailPageController()
+        detailVC.configureData(url: url, data: data)
+        UserDefaultManager.sharedInstance.saveCurrentVideo(videoId: data.id.videoId)
+        navigationController?.pushViewController(detailVC, animated: true)
+        
+        Task {
+            let channelID = data.snippet.channelId
+            let channelInfo = await YoutubeManger.shared.getChannelInfo(channelID: channelID)
+            print("====> \(channelInfo)")
+        }
+        navigationController?.pushViewController(detailPageController, animated: true)
+    }
+    
     // 로그아웃 버튼을 눌렀을 때 호출될 메서드
     @objc func logoutButtonTapped() {
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController(), animated: false)
@@ -361,12 +424,26 @@ class MyPageViewController: UIViewController {
     
     @objc func editButtonTapped() {
         let joinMembershipVC = JoinMembershipViewController()
-        
+        joinMembershipVC.type = .Edit
         self.navigationController?.pushViewController(joinMembershipVC, animated: true)
-        
     }
     
     deinit {
         print("deinit - MyPageVC")
     }
+}
+
+// SwiftUI를 활용한 미리보기
+struct MyPageViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        MyPageViewControllerReprsentable().edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct MyPageViewControllerReprsentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UINavigationController(rootViewController: MyPageViewController())
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+    typealias UIViewControllerType = UIViewController
 }
