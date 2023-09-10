@@ -392,8 +392,7 @@ class DetailPageController: UIViewController {
         ])
     }
   
-    @objc func handleTap(sender: UITapGestureRecognizer) {
-        print("눌려써요!")
+    @objc func handleTap(sender: UITapGestureRecognizer) {        
         if let sheet = self.commentTableView.sheetPresentationController, let data = data {
             sheet.detents = [.medium()]
             commentTableView.fetchData(data: data)
