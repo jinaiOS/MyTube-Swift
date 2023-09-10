@@ -29,6 +29,7 @@ final class HomeViewModel: ObservableObject {
         Task {
             guard let result = await manager.getThumbnails(page: requestPage, searchText: searchText) else { return }
             ThumbnailList += result.items
+            UserDefaultManager.sharedInstance.videoArray += result.items
             requestPage += 1
         }
     }
@@ -36,6 +37,7 @@ final class HomeViewModel: ObservableObject {
     private func reset() {
         requestPage = 0
         ThumbnailList.removeAll()
+        UserDefaultManager.sharedInstance.videoArray.removeAll()
         refresh.toggle()
     }
 }

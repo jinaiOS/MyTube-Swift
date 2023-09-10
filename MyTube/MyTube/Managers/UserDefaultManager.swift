@@ -23,6 +23,7 @@ class UserDefaultManager {
     var subscribeArray : [String] = []
     var likeArray : [String] = []
     var disLikeArray : [String] = []
+    var videoArray : [Thumbnails.Item] = []
 
     func saveUserInfo() {
         let data = self.userList.map {
