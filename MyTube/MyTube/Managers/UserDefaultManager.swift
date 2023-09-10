@@ -79,6 +79,7 @@ class UserDefaultManager {
         for i in 0..<userList.count {
             if userList[i].id == userInfo?.id {
                 userList[i] = UserInfoModel(id: id, nickName: nickName, password: pw, name: name, birth: birth)
+                userInfo = UserInfoModel(id: id, nickName: nickName, password: pw, name: name, birth: birth)
             }
         }
     }
@@ -150,7 +151,7 @@ class UserDefaultManager {
             }
         }
         disLikeArray = removeDuplicate(disLikeArray)
-       UserDefaults.standard.set(disLikeArray, forKey: "likeVideoID")
+       UserDefaults.standard.set(disLikeArray, forKey: "dislikeVideoID")
     }
     
     func deleteDisLikeVido(videoId: String) {
@@ -163,7 +164,7 @@ class UserDefaultManager {
             }
         }
         disLikeArray = removeDuplicate(disLikeArray)
-       UserDefaults.standard.set(disLikeArray, forKey: "likeVideoID")
+       UserDefaults.standard.set(disLikeArray, forKey: "dislikeVideoID")
     }
     
     func removeDuplicate (_ array: [String]) -> [String] {

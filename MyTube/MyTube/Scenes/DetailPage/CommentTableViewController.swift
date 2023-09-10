@@ -67,8 +67,9 @@ extension CommentTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
         let comment = commentData[indexPath.row]
-        cell.contentView.backgroundColor = .white
+        cell.contentView.backgroundColor = .darkGray
         cell.commentLabel.text = comment.snippet.topLevelComment.snippet.textDisplay
+        cell.commentLabel.textColor = .white
         if let url = comment.snippet.topLevelComment.snippet.authorProfileImageURL {
             Task {
                 let image = await ImageCacheManager.shared.loadImage(url: url)
